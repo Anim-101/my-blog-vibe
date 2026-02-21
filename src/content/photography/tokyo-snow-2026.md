@@ -1,9 +1,9 @@
 ---
 title: "東京雪"
 images:
-  - "/src/assets/photos/shimo-takaido-station.jpg"
-  - "/src/assets/photos/shimo-takaido-koen.jpg"
-  - "/src/assets/photos/asakusa-sensoji.jpg"
+  - "/photos/shimo-takaido-station.jpg"
+  - "/photos/shimo-takaido-koen.jpg"
+  - "/photos/asakusa-sensoji.jpg"
   
 aspect: "square"
 date: "February 17, 2026"
