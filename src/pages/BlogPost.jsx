@@ -23,8 +23,8 @@ const BlogPost = () => {
     return (
         <article className="blog-post-detail animate-in">
             <div className="post-container">
-                <Link to="/devblog" className="back-link">
-                    <ArrowLeft size={16} /> Back to all posts
+                <Link to="/devblog" className="btn btn-outline" style={{ marginBottom: '3rem', marginTop: '1rem' }}>
+                    <ArrowLeft size={16} style={{ marginRight: '0.5rem' }} /> Back to all posts
                 </Link>
 
                 <header className="post-header">

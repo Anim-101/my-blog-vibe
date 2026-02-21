@@ -33,33 +33,52 @@ export const getBlogPostBySlug = (slug) => {
 };
 
 // --- Photography Content ---
-// Load all images from assets directory
-const imageFiles = import.meta.glob('/src/assets/photos/*.{png,jpg,jpeg,webp,gif}', {
-    eager: true,
-    import: 'default'
-});
+const photographyFiles = import.meta.glob('/src/content/photography/*.md', { query: '?raw', import: 'default', eager: true });
 
-export const getPhotos = () => {
-    return Object.entries(imageFiles).map(([path, url], index) => {
-        // Determine title from filename (e.g. 01-landscape-mountain.jpg -> landscape mountain)
-        const filename = path.split('/').pop().split('.')[0];
-        const cleanTitle = filename
-            .replace(/^\d+-?/, '') // Remove leading numbers (for ordering)
-            .replace(/-/g, ' ')    // Replace dashes with spaces
-            .replace(/\b\w/g, l => l.toUpperCase()); // Simple capitalize
-
-        // Determine aspect based on a naming convention or default to landscape
-        // You can name files like "portrait-me.jpg" or "landscape-view.jpg" to control this
-        let aspect = 'landscape';
-        if (filename.toLowerCase().includes('portrait')) {
-            aspect = 'portrait';
-        }
-
+export const getPhotoPosts = () => {
+    const posts = Object.entries(photographyFiles).map(([path, fileContent]) => {
+        const rawContent = typeof fileContent === 'string' ? fileContent : fileContent.default || String(fileContent);
+        const { attributes: data, body: content } = fm(rawContent);
+        const slug = path.split('/').pop().replace('.md', '');
         return {
-            id: index + 1,
-            url,
-            title: cleanTitle,
-            aspect
+            id: slug,
+            slug,
+            title: data.title || 'Untitled',
+            image: data.image || '',
+            aspect: data.aspect || 'landscape',
+            date: data.date || '',
+            content,
         };
     });
+    return posts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+};
+
+export const getPhotoPostBySlug = (slug) => {
+    return getPhotoPosts().find(post => post.slug === slug);
+};
+
+// --- Projects Content ---
+const projectFiles = import.meta.glob('/src/content/projects/*.md', { query: '?raw', import: 'default', eager: true });
+
+export const getProjectPosts = () => {
+    const posts = Object.entries(projectFiles).map(([path, fileContent]) => {
+        const rawContent = typeof fileContent === 'string' ? fileContent : fileContent.default || String(fileContent);
+        const { attributes: data, body: content } = fm(rawContent);
+        const slug = path.split('/').pop().replace('.md', '');
+        return {
+            id: slug,
+            slug,
+            title: data.title || 'Untitled',
+            description: data.description || '',
+            image: data.image || '',
+            link: data.link || '#',
+            tags: data.tags || [],
+            content,
+        };
+    });
+    return posts;
+};
+
+export const getProjectPostBySlug = (slug) => {
+    return getProjectPosts().find(post => post.slug === slug);
 };
