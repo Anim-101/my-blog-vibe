@@ -5,19 +5,21 @@
   --bg-primary: #0a0a0b;
   --bg-secondary: #121214;
   --bg-elevated: #1c1c1f;
-  
+
   --text-primary: #f8f9fa;
   --text-secondary: #a1a1aa;
   --text-muted: #52525b;
-  
-  --accent-primary: #6366f1; /* Indigo */
-  --accent-secondary: #8b5cf6; /* Violet */
+
+  --accent-primary: #6366f1;
+  /* Indigo */
+  --accent-secondary: #8b5cf6;
+  /* Violet */
   --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  
+
   /* Layout */
   --nav-height: 80px;
   --container-max-width: 1200px;
-  
+
   /* Utils */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,7 +42,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Outfit', sans-serif;
   line-height: 1.2;
 }
@@ -72,7 +79,8 @@ a:hover {
 
 .main-content {
   flex: 1;
-  padding-top: var(--nav-height); /* Space for fixed navbar */
+  padding-top: var(--nav-height);
+  /* Space for fixed navbar */
 }
 
 .container {
@@ -83,8 +91,15 @@ a:hover {
 
 /* Animation Utilities */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-in {
