@@ -8,10 +8,8 @@ const Home = () => {
         <div className="home-page animate-in">
             <section className="hero-section">
                 <div className="hero-content">
-                    <h1 className="hero-title" style={{ marginBottom: '-0.5rem' }}>
-                        Hi, I'm
-                    </h1>
                     <h1 className="hero-title">
+                        Hi, I'm <br />
                         <span className="text-gradient">{personalInfo.name}</span>
                     </h1>
                     <h2 className="hero-subtitle">
