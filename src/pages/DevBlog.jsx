@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
-import { blogPosts } from '../data/mockData';
+import { getBlogPosts } from '../utils/content';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import './DevBlog.css';
 
 const DevBlog = () => {
+    const posts = getBlogPosts();
+    console.log("DevBlog: Found posts:", posts);
+    console.log("DevBlog: is Array?", Array.isArray(posts));
+
     return (
         <div className="blog-page animate-in">
             <header className="page-header">
@@ -12,7 +16,7 @@ const DevBlog = () => {
             </header>
 
             <div className="blog-grid">
-                {blogPosts.map(post => (
+                {posts.map(post => (
                     <article key={post.id} className="blog-card">
                         <div className="blog-card-content">
                             <div className="blog-meta">
@@ -24,11 +28,11 @@ const DevBlog = () => {
                                 </span>
                             </div>
                             <h2 className="blog-title">
-                                <Link to="#">{post.title}</Link>
+                                <Link to={`/devblog/${post.slug}`}>{post.title}</Link>
                             </h2>
                             <p className="blog-excerpt">{post.excerpt}</p>
 
-                            <Link to="#" className="read-more">
+                            <Link to={`/devblog/${post.slug}`} className="read-more">
                                 Read Article <ArrowRight size={16} />
                             </Link>
                         </div>

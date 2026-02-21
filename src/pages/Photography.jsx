@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { photos } from '../data/mockData';
+import { getPhotos } from '../utils/content';
 import { X, ZoomIn } from 'lucide-react';
 import './Photography.css';
 
 const Photography = () => {
     const [selectedPhoto, setSelectedPhoto] = useState(null);
+    const photos = getPhotos();
 
     const openLightbox = (photo) => {
         setSelectedPhoto(photo);
