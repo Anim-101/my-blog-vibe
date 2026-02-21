@@ -1,4 +1,4 @@
-import { experiences } from '../data/mockData';
+import { experiences } from '../data/personal';
 import { getProjectPosts } from '../utils/content';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';

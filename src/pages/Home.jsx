@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
+import { personalInfo } from '../data/personal';
 import './Home.css';
 
 const Home = () => {
@@ -8,13 +9,15 @@ const Home = () => {
             <section className="hero-section">
                 <div className="hero-content">
                     <h1 className="hero-title">
-                        Hi, I'm <span className="text-gradient">John Doe</span>
+                        Hi, I'm <span className="text-gradient">{personalInfo.name}</span>
                     </h1>
                     <h2 className="hero-subtitle">
-                        Full Stack <br /> Software Engineer
+                        {personalInfo.role.split(',').map((part, index) => (
+                            <span key={index}>{part.trim()}{index < personalInfo.role.split(',').length - 1 ? <br /> : ''}</span>
+                        ))}
                     </h2>
                     <p className="hero-description">
-                        I craft seamless digital experiences, from robust backend architectures to dynamic user interfaces. When I'm not coding, I'm capturing the world through my lens.
+                        {personalInfo.bio}
                     </p>
 
                     <div className="hero-cta">
@@ -22,15 +25,21 @@ const Home = () => {
                             View My Work <ArrowRight size={18} />
                         </Link>
                         <div className="social-links">
-                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                                <Github size={24} />
-                            </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                                <Linkedin size={24} />
-                            </a>
-                            <a href="mailto:hello@example.com" className="social-icon">
-                                <Mail size={24} />
-                            </a>
+                            {personalInfo.socialLinks?.github && (
+                                <a href={personalInfo.socialLinks.github} target="_blank" rel="noopener noreferrer" className="social-icon">
+                                    <Github size={24} />
+                                </a>
+                            )}
+                            {personalInfo.socialLinks?.linkedin && (
+                                <a href={personalInfo.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="social-icon">
+                                    <Linkedin size={24} />
+                                </a>
+                            )}
+                            {personalInfo.socialLinks?.email && (
+                                <a href={`mailto:${personalInfo.socialLinks.email}`} className="social-icon">
+                                    <Mail size={24} />
+                                </a>
+                            )}
                         </div>
                     </div>
                 </div>

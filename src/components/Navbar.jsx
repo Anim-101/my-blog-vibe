@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Camera, Code, Briefcase, Home, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { personalInfo } from '../data/personal';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -23,11 +24,13 @@ const Navbar = () => {
     { name: 'Photography', path: '/photography', icon: <Camera size={18} /> },
   ];
 
+  const firstName = personalInfo.name.split(' ')[0];
+
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container nav-container">
         <Link to="/" className="nav-logo">
-          <span className="text-gradient">Portfolio.</span>
+          <span className="text-gradient">{firstName}.</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -45,7 +48,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Nav Toggle */}
-        <button 
+        <button
           className="mobile-menu-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >

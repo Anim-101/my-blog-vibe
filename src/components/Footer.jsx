@@ -1,4 +1,5 @@
 import React from 'react';
+import { personalInfo } from '../data/personal';
 
 const Footer = () => {
     return (
@@ -10,7 +11,7 @@ const Footer = () => {
             color: 'var(--text-muted)'
         }}>
             <div className="container">
-                <p>© {new Date().getFullYear()} Your Name. All rights reserved.</p>
+                <p>© {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
                 <p style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>Built with React, Vite, and Vanilla CSS</p>
             </div>
         </footer>
