@@ -40,12 +40,21 @@ export const getPhotoPosts = () => {
         const rawContent = typeof fileContent === 'string' ? fileContent : fileContent.default || String(fileContent);
         const { attributes: data, body: content } = fm(rawContent);
         const slug = path.split('/').pop().replace('.md', '');
+
+        // Support array of images or fallback to single image string
+        let images = [];
+        if (Array.isArray(data.images) && data.images.length > 0) {
+            images = data.images;
+        } else if (data.image) {
+            images = [data.image];
+        }
+
         return {
             id: slug,
             slug,
             title: data.title || 'Untitled',
-            image: data.image || '',
-            aspect: data.aspect || 'landscape',
+            images,
+            aspect: data.aspect || 'landscape', // Keeping for legacy, though grid ignores it now
             date: data.date || '',
             content,
         };

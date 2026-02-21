@@ -7,27 +7,26 @@
 
 .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    grid-auto-rows: 250px;
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    /* classic 3-column instagram profile grid */
+    gap: 1rem;
+    width: 100%;
+    max-width: 935px;
+    /* common IG profile width wrapper */
+    margin: 0 auto;
 }
 
 .photo-item {
     position: relative;
-    border-radius: var(--radius-md);
+    border-radius: 4px;
+    /* less rounded than before for IG feel */
     overflow: hidden;
     cursor: pointer;
     background: var(--bg-secondary);
+    aspect-ratio: 1 / 1;
 }
 
-.photo-item.landscape {
-    grid-column: span 2;
-}
-
-.photo-item.portrait {
-    grid-row: span 2;
-}
-
+/* Remove old masonry layout handlers */
 .photo-item img {
     width: 100%;
     height: 100%;
@@ -36,18 +35,18 @@
 }
 
 .photo-item:hover img {
-    transform: scale(1.08);
+    transform: scale(1.05);
+    /* slightly subtler IG hover */
 }
 
 .photo-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%);
+    background: rgba(0, 0, 0, 0.5);
+    /* uniform semi-transparent dark */
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    padding: 1.5rem;
     opacity: 0;
     transition: opacity var(--transition-normal);
 }
@@ -59,93 +58,25 @@
 .photo-title {
     color: white;
     font-weight: 500;
-    font-size: 1.125rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    opacity: 0;
     transform: translateY(10px);
-    transition: transform var(--transition-normal);
+    transition: all var(--transition-normal);
 }
 
 .photo-item:hover .photo-title {
-    transform: translateY(0);
-}
-
-/* Lightbox */
-.lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 10, 11, 0.98);
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--transition-fast);
-    backdrop-filter: blur(10px);
-}
-
-.lightbox.active {
     opacity: 1;
-    pointer-events: auto;
-}
-
-.lightbox-content {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.lightbox-content img {
-    max-width: 100%;
-    max-height: 85vh;
-    object-fit: contain;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-}
-
-.lightbox-caption {
-    margin-top: 1rem;
-    color: var(--text-primary);
-    font-size: 1.125rem;
-}
-
-.lightbox-close {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    z-index: 2001;
-}
-
-.lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
+    transform: translateY(0);
 }
 
 @media (max-width: 768px) {
     .photo-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 2px;
+        /* much tighter gap on mobile classic IG */
     }
 
-    .photo-item.landscape {
-        grid-column: span 1;
-    }
-
-    .lightbox-close {
-        top: 1rem;
-        right: 1rem;
+    .photo-item {
+        border-radius: 0;
+        /* square edges on mobile */
     }
 }

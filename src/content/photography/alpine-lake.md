@@ -1,6 +1,9 @@
 ---
 title: "Alpine Lake"
-image: "/src/assets/photos/01-landscape-alpine-lake.jpg"
+images:
+  - "/src/assets/photos/01-landscape-alpine-lake.jpg"
+  - "/src/assets/photos/02-portrait-neon-nights.jpg"
+  - "/src/assets/photos/03-landscape-desert-dunes.jpg"
 aspect: "landscape"
 date: "October 10, 2023"
 ---

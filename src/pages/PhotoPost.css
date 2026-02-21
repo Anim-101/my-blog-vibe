@@ -9,23 +9,107 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    height: 60vh;
+    height: 65vh;
     min-height: 400px;
-    max-height: 800px;
+    max-height: 900px;
     overflow: hidden;
     background: var(--bg-secondary);
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
-.photo-hero img {
+.slider-track {
+    display: flex;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.photo-hero img.portrait {
+.carousel-image {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    padding: 2rem 0;
+    /* ensures whole image is visible like an IG post */
+    background: var(--bg-secondary);
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    z-index: 10;
+}
+
+.slider-btn:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.slider-btn:disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.slider-btn.prev {
+    left: 2rem;
+}
+
+.slider-btn.next {
+    right: 2rem;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.slider-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.slider-dots .dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .photo-hero {
+        height: 50vh;
+    }
+
+    .slider-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .slider-btn.prev {
+        left: 1rem;
+    }
+
+    .slider-btn.next {
+        right: 1rem;
+    }
 }
