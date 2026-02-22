@@ -51,6 +51,8 @@
     font-size: 1.125rem;
     line-height: 1.8;
     color: var(--text-secondary);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .post-content h2,

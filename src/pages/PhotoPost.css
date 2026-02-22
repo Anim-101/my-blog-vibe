@@ -116,7 +116,7 @@
     }
 
     .carousel-slide {
-        padding: 1rem;
+        padding: 1rem 1rem 2.5rem 1rem;
     }
 
     .slider-btn {
@@ -125,12 +125,15 @@
     }
 
     .slider-btn.prev {
-        left: 1rem;
+        left: 0.5rem;
     }
 
-
     .slider-btn.next {
-        right: 1rem;
+        right: 0.5rem;
+    }
+
+    .slider-dots {
+        bottom: 10px;
     }
 }
 
@@ -174,16 +177,6 @@
 
 @media (max-width: 768px) {
     .btn-preview {
-        width: 80px;
-        height: 80px;
-        border-radius: var(--radius-sm);
-    }
-
-    .prev-preview {
-        margin-left: -60px;
-    }
-
-    .next-preview {
-        margin-right: -60px;
+        display: none;
     }
 }
