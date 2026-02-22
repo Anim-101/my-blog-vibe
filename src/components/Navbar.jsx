@@ -36,6 +36,11 @@ const Navbar = () => {
   const firstName = personalInfo.name.split(' ')[0];
 
   const toggleTheme = () => {
+    document.body.classList.add('theme-transition');
+    setTimeout(() => {
+      document.body.classList.remove('theme-transition');
+    }, 300);
+
     setIsDarkMode(!isDarkMode);
     if (isDarkMode) {
       document.body.classList.add('light-mode');
