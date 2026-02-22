@@ -57,28 +57,26 @@ const PhotoPost = () => {
 
                 {hasMultipleImages && (
                     <>
-                        <button
-                            className="slider-btn prev"
-                            onClick={prevImage}
-                            disabled={currentIndex === 0}
-                            aria-label="Previous image"
-                        >
-                            <ChevronLeft size={24} />
-                            {currentIndex > 0 && (
+                        {currentIndex > 0 && (
+                            <button
+                                className="slider-btn prev"
+                                onClick={prevImage}
+                                aria-label="Previous image"
+                            >
+                                <ChevronLeft size={24} />
                                 <img src={post.images[currentIndex - 1]} alt="Previous" className="btn-preview prev-preview" />
-                            )}
-                        </button>
-                        <button
-                            className="slider-btn next"
-                            onClick={nextImage}
-                            disabled={currentIndex === post.images.length - 1}
-                            aria-label="Next image"
-                        >
-                            <ChevronRight size={24} />
-                            {currentIndex < post.images.length - 1 && (
+                            </button>
+                        )}
+                        {currentIndex < post.images.length - 1 && (
+                            <button
+                                className="slider-btn next"
+                                onClick={nextImage}
+                                aria-label="Next image"
+                            >
+                                <ChevronRight size={24} />
                                 <img src={post.images[currentIndex + 1]} alt="Next" className="btn-preview next-preview" />
-                            )}
-                        </button>
+                            </button>
+                        )}
 
                         <div className="slider-dots">
                             {post.images.map((_, idx) => (
