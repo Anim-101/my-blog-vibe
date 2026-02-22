@@ -32,7 +32,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 5rem;
+    padding: 1rem 5rem;
 }
 
 .carousel-image {
@@ -40,7 +40,7 @@
     max-height: 100%;
     object-fit: contain;
     background: var(--bg-primary);
-    border-radius: var(--radius-md);
+    border-radius: 4px;
     box-shadow: 0 25px 50px -12px var(--shadow-color);
     border: 1px solid var(--border-medium);
 }
@@ -113,7 +113,7 @@
     }
 
     .carousel-slide {
-        padding: 1rem 3rem;
+        padding: 0.5rem 3rem;
     }
 
     .slider-btn {
