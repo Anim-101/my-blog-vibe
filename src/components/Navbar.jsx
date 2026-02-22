@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Camera, Code, Briefcase, Home, Menu, X } from 'lucide-react';
+import { Camera, Code, Briefcase, Home, Menu, X, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { personalInfo } from '../data/personal';
 import './Navbar.css';
@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/', icon: <Home size={18} /> },
+    { name: 'About', path: '/about', icon: <User size={18} /> },
     { name: 'Experience', path: '/experience', icon: <Briefcase size={18} /> },
     { name: 'Dev Blog', path: '/devblog', icon: <Code size={18} /> },
     { name: 'Photography', path: '/photography', icon: <Camera size={18} /> },

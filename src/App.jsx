@@ -9,6 +9,7 @@ import BlogPost from './pages/BlogPost';
 import PhotoPost from './pages/PhotoPost';
 import ProjectPost from './pages/ProjectPost';
 import Photography from './pages/Photography';
+import About from './pages/About';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <main className="main-content container">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route path="/experience" element={<Experience />} />
           <Route path="/project/:slug" element={<ProjectPost />} />
           <Route path="/devblog" element={<DevBlog />} />
