@@ -41,11 +41,19 @@ const About = () => {
                     <div className="about-stats">
                         <div className="stat-card glass-card">
                             <h4>Certifications</h4>
-                            <p>RHCE, AWS SAA-C03, JLPT N2</p>
+                            <ul className="stats-list">
+                                {personalInfo.certifications?.map((cert, index) => (
+                                    <li key={index}>{cert}</li>
+                                ))}
+                            </ul>
                         </div>
                         <div className="stat-card glass-card">
                             <h4>Focus Areas</h4>
-                            <p>Cloud, Blockchain, LLMs</p>
+                            <ul className="stats-list">
+                                {personalInfo.expertise?.map((exp, index) => (
+                                    <li key={index}>{exp}</li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>
