@@ -11,7 +11,9 @@ export const personalInfo = {
     expertise: [
         "Full-Stack Web Development",
         "Data Engineering & Cloud (AWS)",
-        "AI Agents (SemanticKernel, AutoGen)"
+        "AI Agents (SemanticKernel, AutoGen)",
+        "OS Development",
+        "Blockchain Development"
     ],
     socialLinks: {
         github: "https://github.com/Anim-101",

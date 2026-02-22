@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Camera, Code, Briefcase, Home, Menu, X, User } from 'lucide-react';
+import { Camera, Code, Briefcase, Home, Menu, X, User, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { personalInfo } from '../data/personal';
 import './Navbar.css';
@@ -7,9 +7,17 @@ import './Navbar.css';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
+    // Load theme setting initially
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      setIsDarkMode(false);
+      document.body.classList.add('light-mode');
+    }
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -26,6 +34,17 @@ const Navbar = () => {
   ];
 
   const firstName = personalInfo.name.split(' ')[0];
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    if (isDarkMode) {
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
+    }
+  };
 
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
@@ -48,13 +67,23 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Nav Toggle */}
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', padding: '0.5rem', borderRadius: '50%' }}
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+          {/* Mobile Nav Toggle */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}

@@ -28,6 +28,22 @@
   --radius-lg: 24px;
 }
 
+body.light-mode {
+  /* Core Colors */
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-elevated: #f1f3f5;
+
+  --text-primary: #121214;
+  --text-secondary: #495057;
+  --text-muted: #868e96;
+
+  /* We can keep accent colors similar or slightly darker for contrast */
+  --accent-primary: #4f46e5;
+  --accent-secondary: #7c3aed;
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+}
+
 * {
   margin: 0;
   padding: 0;

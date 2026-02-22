@@ -24,8 +24,8 @@ const ProjectPost = () => {
     return (
         <article className="project-post-detail animate-in">
             <div className="post-container" style={{ paddingTop: '3rem' }}>
-                <Link to="/experience" className="btn btn-outline" style={{ marginBottom: '2rem' }}>
-                    <ArrowLeft size={16} style={{ marginRight: '0.5rem' }} /> Back to Projects
+                <Link to="/experience" className="back-link">
+                    <ArrowLeft size={16} /> Back to Projects
                 </Link>
 
                 <div className="project-hero-image">
