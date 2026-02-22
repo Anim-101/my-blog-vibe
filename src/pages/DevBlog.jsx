@@ -4,19 +4,7 @@ import { getBlogPosts } from '../utils/content';
 import { Calendar, Clock, ArrowRight, Search, FileX2 } from 'lucide-react';
 import './DevBlog.css';
 
-const isSubsequence = (query, text) => {
-    if (!query) return true;
-    query = query.toLowerCase();
-    text = text.toLowerCase();
-    let queryIndex = 0;
-    for (let i = 0; i < text.length; i++) {
-        if (queryIndex === query.length) break;
-        if (text[i] === query[queryIndex]) {
-            queryIndex++;
-        }
-    }
-    return queryIndex === query.length;
-};
+// Removed subsequence algorithm in favor of standard text match
 
 const DevBlog = () => {
     const allPosts = getBlogPosts();
@@ -25,8 +13,13 @@ const DevBlog = () => {
     const postsPerPage = 5;
 
     const filteredPosts = allPosts.filter(post => {
-        // Evaluate subsequence match strictly against the title
-        return isSubsequence(searchQuery, post.title);
+        if (!searchQuery) return true;
+        const query = searchQuery.toLowerCase();
+        return (
+            post.title.toLowerCase().includes(query) ||
+            (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
+            (post.tags && post.tags.some(tag => tag.toLowerCase().includes(query)))
+        );
     });
 
     // Reset to page 1 if posts length changes significantly (e.g. search filter added)
