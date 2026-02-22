@@ -161,6 +161,7 @@ a:hover {
 
 .animate-in {
   animation: fadeIn var(--transition-normal) forwards;
+  will-change: transform, opacity;
 }
 
 /* Component specifics (Buttons, Cards, etc.) can be added here or split into files */

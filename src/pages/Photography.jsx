@@ -20,7 +20,7 @@ const Photography = () => {
                         key={photo.id}
                         className={`photo-item`}
                     >
-                        <img src={photo.images[0]} alt={photo.title} loading="lazy" />
+                        <img src={photo.images[0]} alt={photo.title} loading="lazy" decoding="async" />
                         <div className="photo-overlay">
                             <span className="photo-title">{photo.title}</span>
                             <ZoomIn size={24} color="white" />
