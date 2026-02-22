@@ -23,14 +23,14 @@ const ProjectPost = () => {
 
     return (
         <article className="project-post-detail animate-in">
-            <div className="project-hero" style={{ backgroundImage: `url(${post.image})` }}>
-                <div className="project-hero-overlay"></div>
-            </div>
-
-            <div className="post-container">
-                <Link to="/experience" className="btn btn-outline back-link">
+            <div className="post-container" style={{ paddingTop: '3rem' }}>
+                <Link to="/experience" className="btn btn-outline back-link" style={{ marginBottom: '2rem' }}>
                     <ArrowLeft size={16} /> Back to Projects
                 </Link>
+
+                <div className="project-hero-image">
+                    <img src={post.image} alt={post.title} className="project-detail-img" />
+                </div>
 
                 <header className="post-header">
                     <h1 className="post-title">{post.title}</h1>

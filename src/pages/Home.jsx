@@ -49,8 +49,8 @@ const Home = () => {
                     <div className="visual-circle circle-1"></div>
                     <div className="visual-circle circle-2"></div>
                     <div className="glass-card">
-                        <h3>Currently Building</h3>
-                        <p>Next-gen React Applications</p>
+                        <h3>Currently Exploring</h3>
+                        <p>AI Agents & Data Pipelines</p>
                     </div>
                 </div>
             </section>
