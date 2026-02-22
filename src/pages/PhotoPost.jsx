@@ -42,10 +42,15 @@ const PhotoPost = () => {
             <div className={`photo-hero ${hasMultipleImages ? 'has-slider' : ''}`}>
                 <div
                     className="slider-track"
-                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                    style={{ transform: `translateX(calc(-${currentIndex} * 85vw))` }}
                 >
                     {post.images && post.images.map((imgUrl, idx) => (
-                        <img key={idx} src={imgUrl} alt={`${post.title} - ${idx + 1}`} className="carousel-image" />
+                        <img
+                            key={idx}
+                            src={imgUrl}
+                            alt={`${post.title} - ${idx + 1}`}
+                            className={`carousel-image ${idx === currentIndex ? 'active' : ''}`}
+                        />
                     ))}
                 </div>
 
