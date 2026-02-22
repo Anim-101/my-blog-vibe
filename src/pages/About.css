@@ -108,6 +108,8 @@
     align-items: center;
     gap: 1rem;
     margin-top: 2rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 .section-title {
@@ -123,11 +125,13 @@
 
 .github-calendar-container {
     width: 100%;
+    max-width: 100vw;
     padding: 3rem;
     display: flex;
     justify-content: center;
     overflow-x: auto;
     transform: none;
+    box-sizing: border-box;
 }
 
 .github-calendar-container.glass-card:hover {
@@ -137,8 +141,8 @@
 @media (max-width: 968px) {
     .about-main-section {
         flex-direction: column;
-        padding: 2rem;
-        gap: 3rem;
+        padding: 1.5rem;
+        gap: 2rem;
     }
 
     .about-image-container {
@@ -151,7 +155,10 @@
     }
 
     .github-calendar-container {
-        padding: 1.5rem;
+        padding: 1rem;
         justify-content: flex-start;
+        /* Ensure responsive scrolling without breaking parents */
+        max-width: 100%;
+        overflow-x: auto;
     }
 }

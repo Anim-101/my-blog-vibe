@@ -93,3 +93,13 @@
     min-width: 100px;
     text-align: center;
 }
+
+@media (max-width: 640px) {
+    .blog-title {
+        font-size: 1.3rem;
+    }
+
+    .blog-excerpt {
+        font-size: 1rem;
+    }
+}

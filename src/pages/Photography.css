@@ -71,12 +71,11 @@
 
 @media (max-width: 768px) {
     .photo-grid {
-        gap: 2px;
-        /* much tighter gap on mobile classic IG */
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     .photo-item {
-        border-radius: 0;
-        /* square edges on mobile */
+        border-radius: var(--radius-sm);
     }
 }

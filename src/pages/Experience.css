@@ -219,4 +219,13 @@
     .timeline-header {
         flex-direction: column;
     }
+
+    .timeline-item {
+        padding-left: 1.5rem;
+        padding-bottom: 2rem;
+    }
+
+    .timeline-content {
+        padding: 1.25rem;
+    }
 }
