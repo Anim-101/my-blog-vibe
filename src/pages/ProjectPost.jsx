@@ -24,8 +24,8 @@ const ProjectPost = () => {
     return (
         <article className="project-post-detail animate-in">
             <div className="post-container" style={{ paddingTop: '3rem' }}>
-                <Link to="/experience" className="back-link">
-                    <ArrowLeft size={16} /> Back to Projects
+                <Link to="/experience" className="btn btn-outline" style={{ marginBottom: '2rem' }}>
+                    <ArrowLeft size={16} style={{ marginRight: '0.5rem' }} /> Back to Projects
                 </Link>
 
                 <div className="project-hero-image">
@@ -51,7 +51,7 @@ const ProjectPost = () => {
 
                     <div className="project-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                         {post.tags?.map((tag, i) => (
-                            <span key={i} className="tech-badge" style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }}>{tag}</span>
+                            <span key={i} className="tech-badge" style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', background: 'var(--bg-glass-heavy)', borderRadius: '4px' }}>{tag}</span>
                         ))}
                     </div>
                 </header>
