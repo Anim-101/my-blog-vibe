@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getBlogPosts } from '../utils/content';
-import { Calendar, Clock, ArrowRight, Search } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Search, FileX2 } from 'lucide-react';
 import './DevBlog.css';
 
 const isSubsequence = (query, text) => {
@@ -90,8 +90,12 @@ const DevBlog = () => {
                     </article>
                 )) : (
                     <div className="no-results glass-card">
+                        <div className="no-results-icon">
+                            <FileX2 size={48} />
+                        </div>
                         <h3>No articles found</h3>
-                        <p>No articles match your subsequence search query: "{searchQuery}"</p>
+                        <p>We couldn't find anything matching "<span className="highlight-query">{searchQuery}</span>".</p>
+                        <p className="no-results-subtext">Try using different keywords or checking your spelling.</p>
                     </div>
                 )}
             </div>
