@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { getPhotoPostBySlug } from '../utils/content';
 import { ArrowLeft, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -8,6 +9,7 @@ import './PhotoPost.css';
 import './BlogPost.css'; // Reuse markdown styles
 
 const PhotoPost = () => {
+    const { t } = useTranslation();
     const { slug } = useParams();
     const post = getPhotoPostBySlug(slug);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,9 +17,9 @@ const PhotoPost = () => {
     if (!post) {
         return (
             <div className="container" style={{ paddingTop: 'var(--nav-height)', textAlign: 'center' }}>
-                <h2>Photo not found</h2>
+                <h2>{t('post.photoNotFound')}</h2>
                 <Link to="/photography" className="btn btn-primary" style={{ marginTop: '1rem' }}>
-                    Back to Gallery
+                    {t('post.backGallery')}
                 </Link>
             </div>
         );
@@ -61,20 +63,20 @@ const PhotoPost = () => {
                             <button
                                 className="slider-btn prev"
                                 onClick={prevImage}
-                                aria-label="Previous image"
+                                aria-label={t('post.prevImage')}
                             >
                                 <ChevronLeft size={24} />
-                                <img src={post.images[currentIndex - 1]} alt="Previous" className="btn-preview prev-preview" />
+                                <img src={post.images[currentIndex - 1]} alt={t('post.prevImage')} className="btn-preview prev-preview" />
                             </button>
                         )}
                         {currentIndex < post.images.length - 1 && (
                             <button
                                 className="slider-btn next"
                                 onClick={nextImage}
-                                aria-label="Next image"
+                                aria-label={t('post.nextImage')}
                             >
                                 <ChevronRight size={24} />
-                                <img src={post.images[currentIndex + 1]} alt="Next" className="btn-preview next-preview" />
+                                <img src={post.images[currentIndex + 1]} alt={t('post.nextImage')} className="btn-preview next-preview" />
                             </button>
                         )}
 
@@ -94,7 +96,7 @@ const PhotoPost = () => {
 
             <div className="post-container">
                 <Link to="/photography" className="btn btn-outline back-link">
-                    <ArrowLeft size={16} /> Back to Gallery
+                    <ArrowLeft size={16} /> {t('post.backGallery')}
                 </Link>
 
                 <header className="post-header">

@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { personalInfo } from '../data/personal';
 import './Home.css';
 
 const Home = () => {
+    const { t } = useTranslation();
     return (
         <div className="home-page animate-in">
             <section className="hero-section">
                 <div className="hero-content">
                     <h1 className="hero-title">
-                        Hi, I'm <br />
+                        {t('home.greeting')} <br />
                         <span className="text-gradient">{personalInfo.name}</span>
                     </h1>
                     <h2 className="hero-subtitle">
@@ -23,7 +25,7 @@ const Home = () => {
 
                     <div className="hero-cta">
                         <Link to="/experience" className="btn btn-primary">
-                            View My Work <ArrowRight size={18} />
+                            {t('home.cta')} <ArrowRight size={18} />
                         </Link>
                         <div className="social-links">
                             {personalInfo.socialLinks?.github && (
@@ -49,8 +51,8 @@ const Home = () => {
                     <div className="visual-circle circle-1"></div>
                     <div className="visual-circle circle-2"></div>
                     <div className="glass-card">
-                        <h3>Currently Exploring</h3>
-                        <p>AI Agents & Data Pipelines</p>
+                        <h3>{t('home.exploring')}</h3>
+                        <p>{t('home.exploringSub')}</p>
                     </div>
                 </div>
             </section>
@@ -58,14 +60,14 @@ const Home = () => {
             {/* Quick Links Section */}
             <section className="highlights-section">
                 <div className="highlight-card">
-                    <h3>Software Engineering</h3>
-                    <p>Read about my thoughts on modern web development, architecture, and best practices.</p>
-                    <Link to="/devblog" className="highlight-link">Read the Blog <ArrowRight size={16} /></Link>
+                    <h3>{t('home.se')}</h3>
+                    <p>{t('home.seDesc')}</p>
+                    <Link to="/devblog" className="highlight-link">{t('home.readBlog')} <ArrowRight size={16} /></Link>
                 </div>
                 <div className="highlight-card">
-                    <h3>Photography</h3>
-                    <p>Explore my visual journey through landscapes, street photography, and portraits.</p>
-                    <Link to="/photography" className="highlight-link">View Gallery <ArrowRight size={16} /></Link>
+                    <h3>{t('home.photo')}</h3>
+                    <p>{t('home.photoDesc')}</p>
+                    <Link to="/photography" className="highlight-link">{t('home.viewGallery')} <ArrowRight size={16} /></Link>
                 </div>
             </section>
         </div>

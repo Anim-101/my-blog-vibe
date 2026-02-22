@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { getBlogPosts } from '../utils/content';
 import { Calendar, Clock, ArrowRight, Search, FileX2 } from 'lucide-react';
@@ -7,6 +8,7 @@ import './DevBlog.css';
 // Removed subsequence algorithm in favor of standard text match
 
 const DevBlog = () => {
+    const { t } = useTranslation();
     const allPosts = getBlogPosts();
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -45,14 +47,14 @@ const DevBlog = () => {
     return (
         <div className="blog-page animate-in">
             <header className="page-header">
-                <h1 className="page-title">Software <span className="text-gradient">Engineering</span></h1>
-                <p className="page-subtitle">Thoughts, learnings, and deep dives into modern web development architecture.</p>
+                <h1 className="page-title">{t('devblog.title1')} <span className="text-gradient">{t('devblog.title2')}</span></h1>
+                <p className="page-subtitle">{t('devblog.subtitle')}</p>
                 <div className="search-container">
                     <Search className="search-icon" size={20} />
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Search for articles, technologies, or concepts..."
+                        placeholder={t('devblog.searchPlaceholder')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -77,7 +79,7 @@ const DevBlog = () => {
                             <p className="blog-excerpt">{post.excerpt}</p>
 
                             <Link to={`/devblog/${post.slug}`} className="read-more">
-                                Read Article <ArrowRight size={16} />
+                                {t('devblog.readArticle')} <ArrowRight size={16} />
                             </Link>
                         </div>
                     </article>
@@ -86,9 +88,9 @@ const DevBlog = () => {
                         <div className="no-results-icon">
                             <FileX2 size={48} />
                         </div>
-                        <h3>No articles found</h3>
-                        <p>We couldn't find anything matching "<span className="highlight-query">{searchQuery}</span>".</p>
-                        <p className="no-results-subtext">Try using different keywords or checking your spelling.</p>
+                        <h3>{t('devblog.noResults')}</h3>
+                        <p>{t('devblog.noResultsText')} "<span className="highlight-query">{searchQuery}</span>".</p>
+                        <p className="no-results-subtext">{t('devblog.tryDifferent')}</p>
                     </div>
                 )}
             </div>
@@ -100,17 +102,17 @@ const DevBlog = () => {
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
                     >
-                        Previous
+                        {t('devblog.prev')}
                     </button>
                     <span className="page-info">
-                        Page {currentPage} of {totalPages}
+                        {t('devblog.page')} {currentPage} {t('devblog.of')} {totalPages}
                     </span>
                     <button
                         className="btn btn-outline"
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
                     >
-                        Next
+                        {t('devblog.next')}
                     </button>
                 </div>
             )}

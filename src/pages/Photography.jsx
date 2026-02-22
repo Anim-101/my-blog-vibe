@@ -1,16 +1,18 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { getPhotoPosts } from '../utils/content';
 import { ZoomIn } from 'lucide-react';
 import './Photography.css';
 
 const Photography = () => {
+    const { t } = useTranslation();
     const photos = getPhotoPosts();
 
     return (
         <div className="photo-page animate-in">
             <header className="page-header">
-                <h1 className="page-title">Through the <span className="text-gradient">Lens</span></h1>
-                <p className="page-subtitle">A collection of moments captured around the world.</p>
+                <h1 className="page-title">{t('photography.title1')} <span className="text-gradient">{t('photography.title2')}</span></h1>
+                <p className="page-subtitle">{t('photography.subtitle')}</p>
             </header>
 
             <div className="photo-grid">

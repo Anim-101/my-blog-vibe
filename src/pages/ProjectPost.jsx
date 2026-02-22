@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { getProjectPostBySlug } from '../utils/content';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -7,15 +8,16 @@ import './ProjectPost.css';
 import './BlogPost.css'; // Reuse markdown styles
 
 const ProjectPost = () => {
+    const { t } = useTranslation();
     const { slug } = useParams();
     const post = getProjectPostBySlug(slug);
 
     if (!post) {
         return (
             <div className="container" style={{ paddingTop: 'var(--nav-height)', textAlign: 'center' }}>
-                <h2>Project not found</h2>
+                <h2>{t('post.projectNotFound')}</h2>
                 <Link to="/experience" className="btn btn-primary" style={{ marginTop: '1rem' }}>
-                    Back to Experience
+                    {t('post.backExperience')}
                 </Link>
             </div>
         );
@@ -25,7 +27,7 @@ const ProjectPost = () => {
         <article className="project-post-detail animate-in">
             <div className="post-container">
                 <Link to="/experience" className="back-link">
-                    <ArrowLeft size={16} /> Back to Projects
+                    <ArrowLeft size={16} /> {t('post.backProjects')}
                 </Link>
 
                 <div className="project-hero-image">
@@ -39,12 +41,12 @@ const ProjectPost = () => {
                     <div className="project-links-meta" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                         {post.link && post.link !== '#' && (
                             <a href={post.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-                                <ExternalLink size={16} /> Live Demo
+                                <ExternalLink size={16} /> {t('post.liveDemo')}
                             </a>
                         )}
                         {post.github && (
                             <a href={post.github} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-                                <Github size={16} /> View Source
+                                <Github size={16} /> {t('post.viewSource')}
                             </a>
                         )}
                     </div>

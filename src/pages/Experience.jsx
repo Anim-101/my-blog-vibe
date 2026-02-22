@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { experiences } from '../data/personal';
 import { getProjectPosts } from '../utils/content';
 import { ExternalLink } from 'lucide-react';
@@ -5,28 +6,28 @@ import { Link } from 'react-router-dom';
 import './Experience.css';
 
 const Experience = () => {
+    const { t } = useTranslation();
     const projects = getProjectPosts();
 
     return (
         <div className="experience-page animate-in">
             <header className="page-header">
-                <h1 className="page-title">Experience & <span className="text-gradient">Work</span></h1>
-                <p className="page-subtitle">A timeline of my professional journey and selected case studies.</p>
+                <h1 className="page-title">{t('experience.title')} <span className="text-gradient">{t('experience.journey')}</span></h1>
+                <p className="page-subtitle">{t('experience.subtitle')}</p>
             </header>
 
             <section className="timeline-section">
-                <h2>Professional Timeline</h2>
                 <div className="timeline">
                     {experiences.map((exp, index) => (
                         <div key={exp.id} className="timeline-item">
                             <div className="timeline-marker"></div>
                             <div className="timeline-content gap">
                                 <div className="timeline-header">
-                                    <h3>{exp.role}</h3>
+                                    <h3>{t(`experience.roles.${exp.id}.role`, { defaultValue: exp.role })}</h3>
                                     <span className="timeline-period">{exp.period}</span>
                                 </div>
-                                <h4 className="timeline-company">{exp.company}</h4>
-                                <p className="timeline-desc">{exp.description}</p>
+                                <h4 className="timeline-company">{t(`experience.roles.${exp.id}.company`, { defaultValue: exp.company })}</h4>
+                                <p className="timeline-desc">{t(`experience.roles.${exp.id}.description`, { defaultValue: exp.description })}</p>
                                 <div className="tech-stack">
                                     {exp.technologies.map(tech => (
                                         <span key={tech} className="tech-badge">{tech}</span>
@@ -39,7 +40,6 @@ const Experience = () => {
             </section>
 
             <section className="projects-section">
-                <h2>Selected Projects</h2>
                 <div className="projects-grid">
                     {projects.map(project => (
                         <div key={project.id} className="project-card">

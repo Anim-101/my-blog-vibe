@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { GitHubCalendar } from 'react-github-calendar';
 import { personalInfo } from '../data/personal';
 import './About.css';
 
 const About = () => {
+    const { t } = useTranslation();
     // Extract username from github URL
     const githubUrlParts = personalInfo.socialLinks.github.split('/');
     const githubUsername = githubUrlParts[githubUrlParts.length - 1] || 'Anim-101';
@@ -11,8 +13,8 @@ const About = () => {
     return (
         <div className="about-page animate-in">
             <header className="page-header">
-                <h1 className="page-title">About <span className="text-gradient">Me</span></h1>
-                <p className="page-subtitle">Get to know the person behind the code.</p>
+                <h1 className="page-title">{t('about.title')} <span className="text-gradient">{t('about.me')}</span></h1>
+                <p className="page-subtitle">{t('about.subtitle')}</p>
             </header>
 
             <section className="about-main-section">
@@ -29,18 +31,18 @@ const About = () => {
                 </div>
 
                 <div className="about-details">
-                    <h2 className="about-greeting">Hi, I'm {personalInfo.name}</h2>
-                    <h3 className="about-role text-gradient">{personalInfo.role}</h3>
+                    <h2 className="about-greeting">{t('home.greeting')} {personalInfo.name}</h2>
+                    <h3 className="about-role text-gradient">{t('about.role')}</h3>
 
                     <div className="about-bio">
-                        {personalInfo.bio.split('. ').map((sentence, index) => (
-                            sentence ? <p key={index}>{sentence}{index !== personalInfo.bio.split('. ').length - 1 ? '.' : ''}</p> : null
-                        ))}
+                        {t('about.bio').match(/[^.。]+[.。]+/g)?.map((sentence, index) => (
+                            <p key={index}>{sentence.trim()}</p>
+                        )) || <p>{t('about.bio')}</p>}
                     </div>
 
                     <div className="about-stats">
                         <div className="stat-card glass-card">
-                            <h4>Certifications</h4>
+                            <h4>{t('about.certifications')}</h4>
                             <ul className="stats-list">
                                 {personalInfo.certifications?.map((cert, index) => (
                                     <li key={index}>{cert}</li>
@@ -48,7 +50,7 @@ const About = () => {
                             </ul>
                         </div>
                         <div className="stat-card glass-card">
-                            <h4>Focus Areas</h4>
+                            <h4>{t('about.focusAreas')}</h4>
                             <ul className="stats-list">
                                 {personalInfo.expertise?.map((exp, index) => (
                                     <li key={index}>{exp}</li>
@@ -60,8 +62,8 @@ const About = () => {
             </section>
 
             <section className="github-activity-section">
-                <h3 className="section-title">GitHub <span className="text-gradient">Activity</span></h3>
-                <p className="section-subtitle">Days I code</p>
+                <h3 className="section-title">{t('about.githubTitle')} <span className="text-gradient">{t('about.githubActivity')}</span></h3>
+                <p className="section-subtitle">{t('about.githubSubtitle')}</p>
                 <div className="github-calendar-container glass-card">
                     <GitHubCalendar
                         username={githubUsername}
