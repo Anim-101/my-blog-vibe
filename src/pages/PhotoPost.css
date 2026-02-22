@@ -125,26 +125,31 @@
     border-radius: var(--radius-sm);
     box-shadow: 0 10px 20px -5px var(--shadow-color);
     border: 2px solid var(--bg-elevated);
-    opacity: 0;
+    opacity: 0.3;
+    filter: brightness(0.4) blur(1px);
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: -1;
 }
 
 .prev-preview {
     left: 100%;
-    margin-left: 1rem;
-    transform: translateX(-10px);
+    margin-left: -60px;
 }
 
 .next-preview {
     right: 100%;
-    margin-right: 1rem;
-    transform: translateX(10px);
+    margin-right: -60px;
 }
 
-.slider-btn:hover .prev-preview,
+.slider-btn:hover .prev-preview {
+    opacity: 1;
+    filter: brightness(1) blur(0px);
+    margin-left: 1rem;
+}
+
 .slider-btn:hover .next-preview {
     opacity: 1;
-    transform: translateX(0);
+    filter: brightness(1) blur(0px);
+    margin-right: 1rem;
 }

@@ -22,12 +22,8 @@
 }
 
 .back-link:hover {
-    color: var(--text-primary);
+    color: #ffffff;
     background: var(--accent-primary);
-}
-
-.back-link:hover {
-    color: var(--accent-primary);
 }
 
 .post-header {
