@@ -26,6 +26,19 @@
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 24px;
+
+  /* Glassmorphism & Borders */
+  --border-light: rgba(255, 255, 255, 0.05);
+  --border-medium: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --border-dashed: rgba(255, 255, 255, 0.15);
+  --bg-glass-light: rgba(255, 255, 255, 0.03);
+  --bg-glass-medium: rgba(255, 255, 255, 0.05);
+  --bg-glass-heavy: rgba(255, 255, 255, 0.1);
+  --bg-glass-strong: rgba(255, 255, 255, 0.4);
+  --bg-nav: rgba(10, 10, 11, 0.85);
+  --bg-overlay: rgba(10, 10, 11, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.5);
 }
 
 body.light-mode {
@@ -42,6 +55,20 @@ body.light-mode {
   --accent-primary: #4f46e5;
   --accent-secondary: #7c3aed;
   --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+
+  /* Glassmorphism & Borders */
+  --border-light: rgba(0, 0, 0, 0.05);
+  --border-medium: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.2);
+  --border-dashed: rgba(0, 0, 0, 0.15);
+  --bg-glass-light: rgba(0, 0, 0, 0.03);
+  --bg-glass-medium: rgba(0, 0, 0, 0.05);
+  --bg-glass-heavy: rgba(0, 0, 0, 0.1);
+  --bg-glass-strong: rgba(0, 0, 0, 0.05);
+  /* Lighter in light mode to not look dirty */
+  --bg-nav: rgba(255, 255, 255, 0.85);
+  --bg-overlay: rgba(255, 255, 255, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.15);
 }
 
 * {

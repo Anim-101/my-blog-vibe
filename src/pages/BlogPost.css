@@ -33,7 +33,7 @@
 .post-header {
     margin-bottom: 3rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .post-title {
@@ -132,7 +132,7 @@
     border-radius: var(--radius-md);
     overflow-x: auto;
     margin: 2rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
 }
 
 .post-content pre code {
@@ -157,7 +157,7 @@
 
 .post-content th,
 .post-content td {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-medium);
     padding: 0.75rem 1rem;
     text-align: left;
 }

@@ -41,7 +41,7 @@
     bottom: 0;
     left: 0;
     width: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-glass-heavy);
 }
 
 .timeline-item {
@@ -74,7 +74,7 @@
 
 .timeline-content {
     background: var(--bg-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
     padding: 2rem;
     border-radius: var(--radius-md);
     transition: all var(--transition-normal);
@@ -83,7 +83,7 @@
 .timeline-item:hover .timeline-content {
     background: var(--bg-elevated);
     transform: translateX(5px);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-medium);
 }
 
 .timeline-header {
@@ -131,15 +131,15 @@
 .tech-badge {
     font-size: 0.75rem;
     color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-glass-medium);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-medium);
     transition: all var(--transition-fast);
 }
 
 .timeline-item:hover .tech-badge {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--border-strong);
     color: var(--text-primary);
 }
 
@@ -154,14 +154,14 @@
     background: var(--bg-secondary);
     border-radius: var(--radius-md);
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
     transition: all var(--transition-normal);
 }
 
 .project-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px -10px var(--shadow-color);
+    border-color: var(--border-medium);
 }
 
 .project-image-wrap {
@@ -187,7 +187,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 10, 11, 0.8);
+    background: var(--bg-overlay);
     display: flex;
     align-items: center;
     justify-content: center;

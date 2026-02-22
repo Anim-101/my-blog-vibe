@@ -112,12 +112,12 @@
 }
 
 .glass-card {
-    background: rgba(28, 28, 31, 0.4);
+    background: var(--bg-elevated);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-medium);
     padding: 2rem;
     border-radius: var(--radius-lg);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 50px -12px var(--shadow-color);
     transform: rotate(-2deg);
     transition: transform var(--transition-normal);
 }
@@ -143,7 +143,7 @@
 
 .highlight-card {
     background: var(--bg-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     transition: all var(--transition-normal);
@@ -154,7 +154,7 @@
 .highlight-card:hover {
     background: var(--bg-elevated);
     transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-medium);
 }
 
 .highlight-card h3 {
