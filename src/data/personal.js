@@ -4,7 +4,9 @@ export const personalInfo = {
     bio: "Hello! I am Anim Akash, a Consultant and Full-Stack Software Engineer currently based in Tokyo, Japan. With a background extending from deep infrastructure and data engineering to crafting modern frontend experiences, I specialize in architecting resilient, full-stack systems that thrive at scale. I recently joined Avanade, where I build robust data pipelines and cloud applications. Previously, I spent several years at Business Architects Inc. designing critical infrastructure and leading frontend development teams. Beyond traditional web development, I am deeply invested in the intersection of Software Engineering and Artificial Intelligence, frequently exploring AI agents, Semantic Kernel, and advanced architectures.",
     certifications: [
         "Red Hat Certified Engineer (RHCE) - 300/300",
-        "Red Hat Certified System Administrator (RHCSA) - 300/300"
+        "Red Hat Certified System Administrator (RHCSA) - 300/300",
+        "AWS Certified Solutions Architect – Associate (SAA-C03)",
+        "Japanese Language Proficiency Test (JLPT) N2"
     ],
     expertise: [
         "Full-Stack Web Development",
