@@ -59,7 +59,7 @@ const DevBlog = () => {
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="Search articles... (Try subsequence matching, e.g., 'rtp' for 'React Patterns')"
+                        placeholder="Search for articles, technologies, or concepts..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
