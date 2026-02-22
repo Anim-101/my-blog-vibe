@@ -45,12 +45,13 @@ const PhotoPost = () => {
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                 >
                     {post.images && post.images.map((imgUrl, idx) => (
-                        <img
-                            key={idx}
-                            src={imgUrl}
-                            alt={`${post.title} - ${idx + 1}`}
-                            className="carousel-image"
-                        />
+                        <div key={idx} className="carousel-slide">
+                            <img
+                                src={imgUrl}
+                                alt={`${post.title} - ${idx + 1}`}
+                                className="carousel-image"
+                            />
+                        </div>
                     ))}
                 </div>
 

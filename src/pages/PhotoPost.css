@@ -25,13 +25,24 @@
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.carousel-image {
+.carousel-slide {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 5rem;
+}
+
+.carousel-image {
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
-    /* ensures whole image is visible like an IG post */
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    box-shadow: 0 25px 50px -12px var(--shadow-color);
+    border: 1px solid var(--border-medium);
 }
 
 .slider-btn {
@@ -99,6 +110,10 @@
 @media (max-width: 768px) {
     .photo-hero {
         height: 50vh;
+    }
+
+    .carousel-slide {
+        padding: 1rem 3rem;
     }
 
     .slider-btn {
