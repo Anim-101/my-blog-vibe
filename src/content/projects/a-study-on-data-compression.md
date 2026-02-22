@@ -2,7 +2,7 @@
 title: "A Study on Data Compression"
 date: "Sep 2017 - Nov 2018"
 tags: ["C", "Algorithms", "Thesis", "Data Compression", "Encoders"]
-image: "/photos/profile.png"
+image: "/photos/data-compression.png"
 description: "Building a New Approach to Data Compression by Understanding, Implementing, Updating, and Comparing Standard Techniques."
 ---
 
