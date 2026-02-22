@@ -1,8 +1,8 @@
 ---
 title: "Neon Nights"
 images:
-  - "/photos/02-portrait-neon-nights.jpg"
-  - "/photos/04-portrait-city-rain.jpg"
+  - "/photos/neon-nights/02-portrait-neon-nights.jpg"
+  - "/photos/neon-nights/04-portrait-city-rain.jpg"
 aspect: "portrait"
 date: "November 22, 2023"
 ---
