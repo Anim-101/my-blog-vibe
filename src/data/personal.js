@@ -12,26 +12,34 @@ export const personalInfo = {
 export const experiences = [
     {
         id: 1,
-        role: "Senior Full Stack Engineer",
-        company: "Tech Corp Inc.",
-        period: "2021 - Present",
-        description: "Led the architectural transition from a monolithic backend to microservices. Mentored junior developers and established CI/CD best practices.",
-        technologies: ["React", "Node.js", "Docker", "AWS", "PostgreSQL"]
+        role: "System Engineer",
+        company: "Business Architects Inc.",
+        period: "Apr 2022 - Feb 2025",
+        description: "Served as Infrastructure & Backend engineer on various renewals including a consulting service, a shopping mall, a security service, and a financial/banking platform. Handled stress testing, AWS kernel upgrades, and overall infrastructure deployment logic.",
+        technologies: ["AWS", "Infrastructure", "Backend", "Frontend", "Linux"]
     },
     {
         id: 2,
-        role: "Frontend Developer",
-        company: "Creative Digital Studio",
-        period: "2018 - 2021",
-        description: "Built pixel-perfect, highly performant web applications for diverse clients. Specialized in creating fluid animations and interactive experiences.",
-        technologies: ["React", "TypeScript", "Three.js", "Tailwind CSS"]
+        role: "Freelance Software Engineer",
+        company: "Business Architects Inc.",
+        period: "Oct 2020 - Mar 2022",
+        description: "Worked as the main backend and infrastructure engineer for an in-house SaaS system. Built custom admin and role-based interaction systems, and managed AWS deployments from initial requirement definitions through production.",
+        technologies: ["Node.js", "SaaS Architecture", "AWS", "Backend Design"]
     },
     {
         id: 3,
-        role: "Web Developer",
-        company: "StartUp X",
-        period: "2016 - 2018",
-        description: "Developed and maintained the company's core product frontend, contributing to a 40% increase in user retention.",
-        technologies: ["JavaScript", "Vue.js", "CSS3", "HTML5"]
+        role: "Trainee",
+        company: "Japan International Cooperation Agency (JICA)",
+        period: "Feb 2020 - Aug 2020",
+        description: "Engaged in learning Japanese business manners and language through direct collaboration with experienced linguists.",
+        technologies: ["Japanese Language", "Business Culture Adaptation"]
+    },
+    {
+        id: 4,
+        role: "Teaching Assistant",
+        company: "American International University-Bangladesh",
+        period: "Mar 2018 - Apr 2018",
+        description: "Assisted in teaching a computer graphics lab course strictly focused on OpenGL, actively enhancing participating students' fundamental technical skills.",
+        technologies: ["OpenGL", "Computer Graphics", "Mentoring"]
     }
 ];
