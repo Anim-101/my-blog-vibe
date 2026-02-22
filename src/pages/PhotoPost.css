@@ -20,31 +20,18 @@
 
 .slider-track {
     display: flex;
-    align-items: center;
     width: 100%;
     height: 100%;
-    gap: 5vw;
-    padding: 0 10vw;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .carousel-image {
-    flex: 0 0 80vw;
-    width: 80vw;
-    height: 85%;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* ensures whole image is visible like an IG post */
     background: var(--bg-secondary);
-    opacity: 0.3;
-    transform: scale(0.85);
-    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: 0 10px 30px -10px var(--shadow-color);
-}
-
-.carousel-image.active {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 25px 50px -12px var(--shadow-color);
 }
 
 .slider-btn {
@@ -123,7 +110,41 @@
         left: 1rem;
     }
 
+
     .slider-btn.next {
         right: 1rem;
     }
+}
+
+/* Slider Preview Thumbnails */
+.btn-preview {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 10px 20px -5px var(--shadow-color);
+    border: 2px solid var(--bg-elevated);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: -1;
+}
+
+.prev-preview {
+    left: 100%;
+    margin-left: 1rem;
+    transform: translateX(-10px);
+}
+
+.next-preview {
+    right: 100%;
+    margin-right: 1rem;
+    transform: translateX(10px);
+}
+
+.slider-btn:hover .prev-preview,
+.slider-btn:hover .next-preview {
+    opacity: 1;
+    transform: translateX(0);
 }

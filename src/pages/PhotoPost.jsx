@@ -42,14 +42,14 @@ const PhotoPost = () => {
             <div className={`photo-hero ${hasMultipleImages ? 'has-slider' : ''}`}>
                 <div
                     className="slider-track"
-                    style={{ transform: `translateX(calc(-${currentIndex} * 85vw))` }}
+                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                 >
                     {post.images && post.images.map((imgUrl, idx) => (
                         <img
                             key={idx}
                             src={imgUrl}
                             alt={`${post.title} - ${idx + 1}`}
-                            className={`carousel-image ${idx === currentIndex ? 'active' : ''}`}
+                            className="carousel-image"
                         />
                     ))}
                 </div>
@@ -63,6 +63,9 @@ const PhotoPost = () => {
                             aria-label="Previous image"
                         >
                             <ChevronLeft size={24} />
+                            {currentIndex > 0 && (
+                                <img src={post.images[currentIndex - 1]} alt="Previous" className="btn-preview prev-preview" />
+                            )}
                         </button>
                         <button
                             className="slider-btn next"
@@ -71,6 +74,9 @@ const PhotoPost = () => {
                             aria-label="Next image"
                         >
                             <ChevronRight size={24} />
+                            {currentIndex < post.images.length - 1 && (
+                                <img src={post.images[currentIndex + 1]} alt="Next" className="btn-preview next-preview" />
+                            )}
                         </button>
 
                         <div className="slider-dots">
