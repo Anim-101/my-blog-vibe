@@ -25,8 +25,8 @@ const DevBlog = () => {
     const postsPerPage = 5;
 
     const filteredPosts = allPosts.filter(post => {
-        const searchText = `${post.title} ${post.excerpt}`;
-        return isSubsequence(searchQuery, searchText);
+        // Evaluate subsequence match strictly against the title
+        return isSubsequence(searchQuery, post.title);
     });
 
     // Reset to page 1 if posts length changes significantly (e.g. search filter added)
