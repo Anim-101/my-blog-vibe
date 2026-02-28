@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useDeferredValue } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { getBlogPosts } from '../utils/content';
 import { Calendar, Clock, ArrowRight, Search, FileX2 } from 'lucide-react';
+import Fuse from 'fuse.js';
 import './DevBlog.css';
-
-// Removed subsequence algorithm in favor of standard text match
 
 const DevBlog = () => {
     const { t } = useTranslation();
@@ -14,15 +13,33 @@ const DevBlog = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 5;
 
-    const filteredPosts = allPosts.filter(post => {
-        if (!searchQuery) return true;
-        const query = searchQuery.toLowerCase();
-        return (
-            post.title.toLowerCase().includes(query) ||
-            (post.excerpt && post.excerpt.toLowerCase().includes(query)) ||
-            (post.tags && post.tags.some(tag => tag.toLowerCase().includes(query)))
-        );
-    });
+    // STEP 1: Add a deferred value for better performance. 
+    // React will wait until the user stops typing to update the deferredQuery and filter the list.
+    const deferredQuery = useDeferredValue(searchQuery);
+
+    // STEP 2: Configure Fuse.js for fuzzy typo-tolerant full-text search
+    const fuse = useMemo(() => {
+        return new Fuse(allPosts, {
+            keys: [
+                { name: 'title', weight: 3 },     // Title matches are prioritized highest
+                { name: 'tags', weight: 2 },      // Tag matches are next
+                { name: 'excerpt', weight: 1 },   // Then excerpt
+                { name: 'content', weight: 0.5 }  // Finally, the full post body markdown content!
+            ],
+            threshold: 0.3, // A balance between strictness and typo-tolerance (0.0 perfect, 1.0 loose)
+            ignoreLocation: true, // Don't penalize words that appear late in the text body
+            includeMatches: true, // Useful if you ever want to highlight matches later
+        });
+    }, [allPosts]);
+
+    // STEP 3: Execute the search based on the deferred delayed query
+    const filteredPosts = useMemo(() => {
+        if (!deferredQuery.trim()) return allPosts; // If empty search, return all posts
+
+        // fuse.search returns objects shaped like { item, refIndex, score }
+        // We unpack 'item' here so the rest of your app UI code can render it like normal.
+        return fuse.search(deferredQuery).map(result => result.item);
+    }, [deferredQuery, fuse, allPosts]);
 
     // Reset to page 1 if posts length changes significantly (e.g. search filter added)
     useEffect(() => {
