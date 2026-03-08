@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { getPhotoPostBySlug } from '../utils/content';
@@ -14,6 +14,11 @@ const PhotoPost = () => {
     const post = getPhotoPostBySlug(slug);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    // Bug Fix 1: Reset slider index when navigating to a new photo post
+    useEffect(() => {
+        setCurrentIndex(0);
+    }, [slug]);
+
     if (!post) {
         return (
             <div className="container" style={{ paddingTop: 'var(--nav-height)', textAlign: 'center' }}>
@@ -25,15 +30,40 @@ const PhotoPost = () => {
         );
     }
 
+    // Bug Fix 2: Add touch swiping for real Instagram-like mobile feel
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
+    const minSwipeDistance = 50;
+
+    // Bug Fix 3: Use functional state updates to prevent rapid double-clicks from going out of bounds
     const nextImage = () => {
-        if (post.images && currentIndex < post.images.length - 1) {
-            setCurrentIndex(prev => prev + 1);
+        if (post.images) {
+            setCurrentIndex(prev => Math.min(prev + 1, post.images.length - 1));
         }
     };
 
     const prevImage = () => {
-        if (post.images && currentIndex > 0) {
-            setCurrentIndex(prev => prev - 1);
+        if (post.images) {
+            setCurrentIndex(prev => Math.max(prev - 1, 0));
+        }
+    };
+
+    const onTouchStart = (e) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEndAction = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        if (distance > minSwipeDistance) {
+            nextImage(); // Swiped left
+        } else if (distance < -minSwipeDistance) {
+            prevImage(); // Swiped right
         }
     };
 
@@ -41,7 +71,12 @@ const PhotoPost = () => {
 
     return (
         <article className="photo-post-detail animate-in">
-            <div className={`photo-hero ${hasMultipleImages ? 'has-slider' : ''}`}>
+            <div
+                className={`photo-hero ${hasMultipleImages ? 'has-slider' : ''}`}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEndAction}
+            >
                 <div
                     className="slider-track"
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -59,26 +94,30 @@ const PhotoPost = () => {
 
                 {hasMultipleImages && (
                     <>
-                        {currentIndex > 0 && (
-                            <button
-                                className="slider-btn prev"
-                                onClick={prevImage}
-                                aria-label={t('post.prevImage')}
-                            >
-                                <ChevronLeft size={24} />
+                        {/* Bug Fix 4: Use 'disabled' attribute instead of conditionally hiding buttons, so CSS :disabled styles apply gracefully */}
+                        <button
+                            className="slider-btn prev"
+                            onClick={prevImage}
+                            aria-label={t('post.prevImage')}
+                            disabled={currentIndex === 0}
+                        >
+                            <ChevronLeft size={24} />
+                            {currentIndex > 0 && (
                                 <img src={post.images[currentIndex - 1]} alt={t('post.prevImage')} className="btn-preview prev-preview" />
-                            </button>
-                        )}
-                        {currentIndex < post.images.length - 1 && (
-                            <button
-                                className="slider-btn next"
-                                onClick={nextImage}
-                                aria-label={t('post.nextImage')}
-                            >
-                                <ChevronRight size={24} />
+                            )}
+                        </button>
+
+                        <button
+                            className="slider-btn next"
+                            onClick={nextImage}
+                            aria-label={t('post.nextImage')}
+                            disabled={currentIndex === post.images.length - 1}
+                        >
+                            <ChevronRight size={24} />
+                            {currentIndex < post.images.length - 1 && (
                                 <img src={post.images[currentIndex + 1]} alt={t('post.nextImage')} className="btn-preview next-preview" />
-                            </button>
-                        )}
+                            )}
+                        </button>
 
                         <div className="slider-dots">
                             {post.images.map((_, idx) => (
