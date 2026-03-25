@@ -140,6 +140,8 @@
 /* Slider Preview Thumbnails */
 .btn-preview {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: 140px;
     height: 140px;
     object-fit: cover;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { getPhotoPostBySlug } from '../utils/content';
@@ -31,8 +31,8 @@ const PhotoPost = () => {
     }
 
     // Bug Fix 2: Add touch swiping for real Instagram-like mobile feel
-    const [touchStart, setTouchStart] = useState(null);
-    const [touchEnd, setTouchEnd] = useState(null);
+    const touchStart = useRef(null);
+    const touchEnd = useRef(null);
     const minSwipeDistance = 50;
 
     // Bug Fix 3: Use functional state updates to prevent rapid double-clicks from going out of bounds
@@ -49,17 +49,17 @@ const PhotoPost = () => {
     };
 
     const onTouchStart = (e) => {
-        setTouchEnd(null);
-        setTouchStart(e.targetTouches[0].clientX);
+        touchEnd.current = null;
+        touchStart.current = e.targetTouches[0].clientX;
     };
 
     const onTouchMove = (e) => {
-        setTouchEnd(e.targetTouches[0].clientX);
+        touchEnd.current = e.targetTouches[0].clientX;
     };
 
     const onTouchEndAction = () => {
-        if (!touchStart || !touchEnd) return;
-        const distance = touchStart - touchEnd;
+        if (!touchStart.current || !touchEnd.current) return;
+        const distance = touchStart.current - touchEnd.current;
         if (distance > minSwipeDistance) {
             nextImage(); // Swiped left
         } else if (distance < -minSwipeDistance) {
