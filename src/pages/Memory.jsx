@@ -55,7 +55,8 @@ const Memory = () => {
                     width: `${size.toFixed(2)}px`, 
                     height: `${size.toFixed(2)}px`,
                     '--rotation': rotation // Pass CSS variable dynamically!
-                }
+                },
+                isNearBottom: top > 55 // If it spawned below 55% height, treat it as near bottom!
             };
         });
     }, [photos]);
@@ -166,7 +167,7 @@ const Memory = () => {
                     return (
                         <div 
                             key={star.id}
-                            className="memory-star-wrapper"
+                            className={`memory-star-wrapper ${star.isNearBottom ? 'near-bottom' : ''}`}
                             style={{
                                 top: star.position.top,
                                 left: star.position.left,

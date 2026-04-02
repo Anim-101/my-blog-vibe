@@ -88,7 +88,7 @@
     opacity: 1;
     pointer-events: auto;
     /* Bounces into its precalculated random rotation! */
-    transform: translate(-50%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
+    transform: translate(-50%, 40px) scale(0.6) rotate(var(--rotation, 0deg));
 }
 
 .memory-preview {
@@ -96,7 +96,7 @@
     top: 50%;
     left: 50%;
     /* Initially hidden, rotated intensely so it untwists, and shrunk */
-    transform: translate(-50%, -100%) scale(0) rotate(-30deg); 
+    transform: translate(-50%, 0) scale(0) rotate(-30deg); 
     opacity: 0;
     pointer-events: none;
     z-index: 50;
@@ -109,6 +109,17 @@
     /* Extra bouncy cubic bezier! */
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 5px 15px rgba(0,0,0,0.4);
+    transform-origin: top center;
+}
+
+/* If the star spawns near the bottom of the screen, flip the popup upwards to avoid clipping! */
+.near-bottom .memory-star:hover .memory-preview, 
+.near-bottom .memory-star.active .memory-preview {
+    transform: translate(-50%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
+}
+
+.near-bottom .memory-preview {
+    transform: translate(-50%, -100%) scale(0) rotate(-30deg);
     transform-origin: bottom center;
 }
 
