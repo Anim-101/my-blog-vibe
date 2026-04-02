@@ -27,6 +27,18 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Force dark mode on /memory page since it's an immersive space view
+  useEffect(() => {
+    if (location.pathname === '/memory' && !isDarkMode) {
+      document.body.classList.add('theme-transition');
+      setTimeout(() => document.body.classList.remove('theme-transition'), 300);
+      
+      setIsDarkMode(true);
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
+    }
+  }, [location.pathname, isDarkMode]);
+
   const navLinks = [
     { name: t('nav.home'), path: '/', icon: <Home size={18} /> },
     { name: t('nav.about'), path: '/about', icon: <User size={18} /> },
