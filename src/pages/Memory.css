@@ -1,0 +1,180 @@
+.memory-container {
+    background: radial-gradient(circle at center, #0B0E14 0%, #030406 100%);
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - var(--nav-height));
+    margin: 0;
+    border-radius: 0;
+    overflow: hidden;
+    font-family: inherit;
+    box-shadow: none;
+    z-index: 10;
+}
+
+/* We want memory container to respect navbar if it's within the main tags, 
+   but since it's a full immersive experience, maybe it takes full screen and we position it absolute.
+   Actually, `App.jsx` wraps Routes in `<main className="main-content container">` which might restrict width and height.
+   Let's check App.jsx styling briefly or just break out of container using `position: fixed` or `100vw` negative margins.
+   Using position fixed is perfectly fine for a full-screen experience. 
+*/
+
+.memory-space {
+    position: absolute;
+    width: 120%; /* Expanded padding significantly to allow massive 90px tracking bounds */
+    height: 120%;
+    top: -10%;
+    left: -10%;
+    z-index: 20; /* Ensure space isn't submerged into gradient */
+}
+
+/* Back button */
+.memory-close {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 100;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.memory-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.memory-star-wrapper {
+    position: absolute;
+    /* Provides a stable coordinate center */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.memory-star-wrapper:hover {
+    z-index: 100;
+}
+
+.memory-star {
+    position: relative;
+    /* Instead of solid white, it falls back to white if no image is present */
+    background-color: white; 
+    border-radius: 50%;
+    /* Super glowing borders to make the tiny photo pop beautifully in the void */
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8), 0 0 20px 4px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    /* Super bouncy spring elasticity for touching the actual star orb! */
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.memory-star:hover, .memory-star.active {
+    transform: scale(2.0); /* Big satisfying pop, but less aggressive since they start larger now */
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 1), 0 0 35px 12px rgba(100, 200, 255, 0.8);
+    /* Removed the pale blue background so the image doesn't get tinted weirdly */
+}
+
+.memory-star:hover .memory-preview, .memory-star.active .memory-preview {
+    opacity: 1;
+    pointer-events: auto;
+    /* Bounces into its precalculated random rotation! */
+    transform: translate(-50%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
+}
+
+.memory-preview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Initially hidden, rotated intensely so it untwists, and shrunk */
+    transform: translate(-50%, -100%) scale(0) rotate(-30deg); 
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    background: white; /* Polaroid aesthetics */
+    border: 6px solid white;
+    padding-bottom: 30px; /* Space for the polaroid text */
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    /* Extra bouncy cubic bezier! */
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 5px 15px rgba(0,0,0,0.4);
+    transform-origin: bottom center;
+}
+
+.memory-preview img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+}
+
+.memory-title {
+    color: #1a1a1a; /* Dark text for the white polaroid background */
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+    padding: 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+/* Base scattered small stars for background texture */
+.bg-star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: twinkle 4s infinite alternate, drift 60s infinite linear;
+}
+
+/* Shooting Stars */
+.shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(-45deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    border-radius: 999px;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1));
+    animation: shoot 5s infinite linear;
+    transform: rotate(-45deg);
+    opacity: 0;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.8; box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8); }
+    100% { opacity: 0.3; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(5px, -10px); }
+    66% { transform: translate(-5px, 10px); }
+}
+
+@keyframes drift {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-100px) translateX(50px); }
+}
+
+@keyframes shoot {
+    0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; width: 0; }
+    10% { width: 150px; }
+    20% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg); opacity: 0; }
+    100% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg); opacity: 0; }
+}

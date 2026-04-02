@@ -10,7 +10,8 @@ const resources = {
                 "about": "About",
                 "experience": "Experience",
                 "devBlog": "Dev Blog",
-                "photography": "Photography"
+                "photography": "Photography",
+                "memory": "Memory"
             },
             "home": {
                 "greeting": "Hi, I'm",
@@ -91,7 +92,8 @@ const resources = {
                 "about": "自己紹介",
                 "experience": "経歴",
                 "devBlog": "開発ブログ",
-                "photography": "写真"
+                "photography": "写真",
+                "memory": "メモリー"
             },
             "home": {
                 "greeting": "こんにちは、",
