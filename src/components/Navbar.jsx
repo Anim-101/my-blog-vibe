@@ -30,9 +30,8 @@ const Navbar = () => {
   // Force dark mode on /memory page since it's an immersive space view
   useEffect(() => {
     if (location.pathname === '/memory' && !isDarkMode) {
-      document.body.classList.add('theme-transition');
-      setTimeout(() => document.body.classList.remove('theme-transition'), 300);
-      
+      // Do not use the global 'theme-transition' class here! 
+      // Setting 'transition: all' directly onto the 200+ memory stars causes severe frame drops and lag.
       setIsDarkMode(true);
       document.body.classList.remove('light-mode');
       localStorage.setItem('theme', 'dark');
