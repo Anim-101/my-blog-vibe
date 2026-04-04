@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { getPhotoPosts } from '../utils/content';
+import { getMemoryPhotos } from '../utils/content';
 import './Memory.css';
 
 const Memory = () => {
@@ -10,22 +10,8 @@ const Memory = () => {
     // Memoize the photos array so it doesn't return a new array reference every render,
     // which was triggering the stars useMemo to re-roll random coordinates on every hover state change!
     const photos = useMemo(() => {
-        let basePhotos = getPhotoPosts();
-        
-        // If there are fewer than 30 photos, generate some beautiful placeholder memories
-        if (basePhotos.length < 30) {
-            const dummyPhotos = [];
-            const required = 30 - basePhotos.length;
-            for (let i = 0; i < required; i++) {
-                dummyPhotos.push({
-                    id: `dummy-${i}`,
-                    title: `Cosmic Memory #${i + 1}`,
-                    images: [`https://picsum.photos/seed/${i + 100}/400/400`], 
-                });
-            }
-            return [...basePhotos, ...dummyPhotos];
-        }
-        return basePhotos;
+        // Exclusively load raw memory image files!
+        return getMemoryPhotos();
     }, []);
 
     const containerRef = useRef(null);
@@ -92,6 +78,12 @@ const Memory = () => {
     }, []);
 
     useEffect(() => {
+        // Anti-scrapping: Tell AI bots and search engines NOT to index the memory pictures
+        const meta = document.createElement('meta');
+        meta.name = "robots";
+        meta.content = "noindex, noimageindex, noarchive";
+        document.head.appendChild(meta);
+
         const handleGlobalMouseMove = (e) => {
             if (!spaceRef.current) return;
             const { clientX, clientY } = e;
@@ -102,7 +94,10 @@ const Memory = () => {
         };
 
         window.addEventListener('mousemove', handleGlobalMouseMove);
-        return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+        return () => {
+            window.removeEventListener('mousemove', handleGlobalMouseMove);
+            document.head.removeChild(meta); // Clean up the anti-AI bot tag when leaving memory page
+        };
     }, []);
 
     const handleBackgroundClick = (e) => {
@@ -191,7 +186,13 @@ const Memory = () => {
                             >
                                 <div className="memory-preview">
                                     {star.images && star.images[0] && (
-                                        <img src={star.images[0]} alt={star.title} />
+                                        <img 
+                                            src={star.images[0]} 
+                                            alt={star.title}
+                                            onContextMenu={(e) => e.preventDefault()} // Disable right-click saving
+                                            onDragStart={(e) => e.preventDefault()} // Disable drag-and-drop saving
+                                            style={{ userSelect: 'none', WebkitUserDrag: 'none' }} // Disable selection
+                                        />
                                     )}
                                     <h3 className="memory-title">{star.title}</h3>
                                 </div>

@@ -66,6 +66,39 @@ export const getPhotoPostBySlug = (slug) => {
     return getPhotoPosts().find(post => post.slug === slug);
 };
 
+// --- Memory Raw Image Content ---
+// Automatically imports all jpg/png files placed directly in the src/assets/memory folder
+const memoryImageFiles = import.meta.glob('/src/assets/memory/*.{jpg,jpeg,png,webp,avif}', { eager: true, import: 'default' });
+
+export const getMemoryPhotos = () => {
+    return Object.entries(memoryImageFiles).map(([path, url], index) => {
+        // Extract basic filename to use as title
+        const filename = path.split('/').pop().replace(/\.[^/.]+$/, "");
+        
+        let displayTitle = filename;
+        // Try to parse Pixel format: PXL_YYYYMMDD_...
+        const pxlMatch = filename.match(/^PXL_(\d{4})(\d{2})(\d{2})/);
+        if (pxlMatch) {
+            const [, year, month, day] = pxlMatch;
+            const date = new Date(year, month - 1, day);
+            const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            displayTitle = `Memory from ${dateStr}`;
+        } else {
+            // Format normal names nicely (e.g. "my-cool_photo" -> "My Cool Photo")
+            displayTitle = filename.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        return {
+            id: `memory-img-${index}`,
+            slug: `memory-img-${index}`,
+            title: displayTitle || `Memory ${index + 1}`,
+            images: [url], // The eager imported default is the hashed URL to the image string in Vite!
+            date: '', // No date available from just raw files
+            content: ''
+        };
+    });
+};
+
 // --- Projects Content ---
 const projectFiles = import.meta.glob('/src/content/projects/*.md', { query: '?raw', import: 'default', eager: true });
 
