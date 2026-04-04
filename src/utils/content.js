@@ -67,8 +67,8 @@ export const getPhotoPostBySlug = (slug) => {
 };
 
 // --- Memory Raw Image Content ---
-// Automatically imports all jpg/png files placed directly in the src/assets/memory folder
-const memoryImageFiles = import.meta.glob('/src/assets/memory/*.{jpg,jpeg,png,webp,avif}', { eager: true, import: 'default' });
+// Automatically imports all jpg/png/heic files placed directly in the src/assets/memory folder
+const memoryImageFiles = import.meta.glob('/src/assets/memory/*.{jpg,jpeg,png,webp,avif,heic,HEIC}', { eager: true, import: 'default' });
 
 export const getMemoryPhotos = () => {
     return Object.entries(memoryImageFiles).map(([path, url], index) => {
@@ -76,16 +76,16 @@ export const getMemoryPhotos = () => {
         const filename = path.split('/').pop().replace(/\.[^/.]+$/, "");
         
         let displayTitle = filename;
-        // Try to parse Pixel format: PXL_YYYYMMDD_...
-        const pxlMatch = filename.match(/^PXL_(\d{4})(\d{2})(\d{2})/);
-        if (pxlMatch) {
-            const [, year, month, day] = pxlMatch;
+        // Try to parse Pixel or iPhone format: PXL_YYYYMMDD_... or IMG_YYYYMMDD_...
+        const cameraMatch = filename.match(/^(?:PXL|IMG)_(\d{4})(\d{2})(\d{2})/i);
+        if (cameraMatch) {
+            const [, year, month, day] = cameraMatch;
             const date = new Date(year, month - 1, day);
             const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
             displayTitle = `Memory from ${dateStr}`;
         } else {
             // Format normal names nicely (e.g. "my-cool_photo" -> "My Cool Photo")
-            displayTitle = filename.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            displayTitle = filename.replace(/[-_.]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         }
 
         return {
