@@ -18,18 +18,31 @@ const Memory = () => {
     const spaceRef = useRef(null);
     const [activeStarId, setActiveStarId] = useState(null);
 
-    // Generate random positions ONLY ONCE using useMemo
+    // Generate random but EVENLY SPACED positions using a Jittered Grid layout
     const stars = useMemo(() => {
-        return photos.map(photo => {
-            // Safe Zone bounds so images don't clip off the screen edges!
-            // Top: 25% to 75% | Left: 15% to 85%
-            const top = 25 + Math.random() * 50;
-            const left = 15 + Math.random() * 70;
+        const cols = Math.ceil(Math.sqrt(photos.length)) || 1;
+        const rows = Math.ceil(photos.length / cols) || 1;
+
+        return photos.map((photo, i) => {
+            // Assign to a grid cell
+            const col = i % cols;
+            const row = Math.floor(i / cols);
+
+            // Safe Zone: Compress vertical padding to prevent top/bottom clipping on hover expansions
+            const cellWidth = 80 / cols;
+            const cellHeight = 56 / rows;
+
+            const baseLeft = 10 + (col * cellWidth);
+            const baseTop = 22 + (row * cellHeight); // Starts at 22%, ends at 78%
+
+            // Jitter randomly within its designated cell so it feels scattered but never clumps!
+            const left = baseLeft + (Math.random() * (cellWidth * 0.7));
+            const top = baseTop + (Math.random() * (cellHeight * 0.7));
             
             // Random animation delay so they don't twinkle synchronously
             const delay = Math.random() * 3 + 's';
             
-            // Instead of tiny 6px white dots, let's make them 30px-50px glowing picture orbs!
+            // Orbs from 35px to 60px
             const size = 35 + Math.random() * 25; 
             const rotation = `${Math.random() * 16 - 8}deg`; // -8 to +8 degrees rotation for polaroid effect
             
@@ -40,9 +53,9 @@ const Memory = () => {
                     animationDelay: delay, 
                     width: `${size.toFixed(2)}px`, 
                     height: `${size.toFixed(2)}px`,
-                    '--rotation': rotation // Pass CSS variable dynamically!
+                    '--rotation': rotation 
                 },
-                isNearBottom: top > 55 // If it spawned below 55% height, treat it as near bottom!
+                isNearBottom: top > 50
             };
         });
     }, [photos]);
@@ -63,19 +76,35 @@ const Memory = () => {
         return arr;
     }, []);
 
-    // Generate shooting stars
-    const shootingStars = useMemo(() => {
-        const arr = [];
-        for (let i = 0; i < 6; i++) {
-            arr.push({
-                id: i,
-                top: `${(Math.random() * 50).toFixed(2)}%`, // Start higher up
-                left: `${(50 + Math.random() * 50).toFixed(2)}%`, // Start more to the right
-                delay: `${(Math.random() * 15).toFixed(2)}s`
-            });
-        }
-        return arr;
+    // State-based dynamic shooting stars so they spawn randomly over time instead of repeating CSS keyframes
+    const [shootingStars, setShootingStars] = useState([]);
+
+    useEffect(() => {
+        const spawnShootingStar = () => {
+            const newStar = {
+                id: Date.now() + Math.random(),
+                top: `${(Math.random() * 60).toFixed(2)}%`, // Start upper chunk
+                left: `${(30 + Math.random() * 70).toFixed(2)}%`, // Start middle-to-right
+            };
+            setShootingStars(prev => [...prev, newStar]);
+
+            // Clean it up exactly when its 3-second CSS animation ends
+            setTimeout(() => {
+                setShootingStars(prev => prev.filter(s => s.id !== newStar.id));
+            }, 3000);
+        };
+
+        // Every 2 seconds, 60% chance to spawn a comet!
+        const interval = setInterval(() => {
+            if (Math.random() > 0.4) spawnShootingStar();
+        }, 2000);
+
+        return () => clearInterval(interval);
     }, []);
+
+    const targetRef = useRef({ x: 0, y: 0 });
+    const currentRef = useRef({ x: 0, y: 0 });
+    const requestRef = useRef();
 
     useEffect(() => {
         // Anti-scrapping: Tell AI bots and search engines NOT to index the memory pictures
@@ -84,18 +113,34 @@ const Memory = () => {
         meta.content = "noindex, noimageindex, noarchive";
         document.head.appendChild(meta);
 
+        // Hardware-synchronized 60fps game loop for perfectly buttery parallax
+        const updateParallax = () => {
+            if (spaceRef.current) {
+                // Linear Interpolation (Lerp): Move 5% of the distance to the target every single frame.
+                // This creates natural mass/inertia without CSS conflicts!
+                currentRef.current.x += (targetRef.current.x - currentRef.current.x) * 0.05;
+                currentRef.current.y += (targetRef.current.y - currentRef.current.y) * 0.05;
+                
+                spaceRef.current.style.transform = `translate3d(${currentRef.current.x}px, ${currentRef.current.y}px, 0px)`;
+            }
+            requestRef.current = requestAnimationFrame(updateParallax);
+        };
+
         const handleGlobalMouseMove = (e) => {
-            if (!spaceRef.current) return;
             const { clientX, clientY } = e;
             const x = (clientX / window.innerWidth) * 2 - 1;
             const y = (clientY / window.innerHeight) * 2 - 1;
-            // Increased the parallax multiplier to make movement extremely visible and fast
-            spaceRef.current.style.transform = `translate(${x * -90}px, ${y * -90}px)`;
+            // Record target: Keep massive horizontal parallax (90px), but limit vertical (40px)
+            // This prevents stars from slamming into the vertical screen boundaries and clipping popups
+            targetRef.current = { x: x * -90, y: y * -40 };
         };
 
         window.addEventListener('mousemove', handleGlobalMouseMove);
+        requestRef.current = requestAnimationFrame(updateParallax);
+
         return () => {
             window.removeEventListener('mousemove', handleGlobalMouseMove);
+            if (requestRef.current) cancelAnimationFrame(requestRef.current);
             document.head.removeChild(meta); // Clean up the anti-AI bot tag when leaving memory page
         };
     }, []);
@@ -150,8 +195,7 @@ const Memory = () => {
                         className="shooting-star"
                         style={{
                             top: star.top,
-                            left: star.left,
-                            animationDelay: star.delay
+                            left: star.left
                         }}
                     />
                 ))}
