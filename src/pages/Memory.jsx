@@ -126,22 +126,42 @@ const Memory = () => {
             requestRef.current = requestAnimationFrame(updateParallax);
         };
 
-        const handleGlobalMouseMove = (e) => {
-            const { clientX, clientY } = e;
+        const handleGlobalMove = (e) => {
+            // Unify touch and mouse coordinates!
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
             const x = (clientX / window.innerWidth) * 2 - 1;
             const y = (clientY / window.innerHeight) * 2 - 1;
-            // Record target: Keep massive horizontal parallax (90px), but limit vertical (40px)
-            // This prevents stars from slamming into the vertical screen boundaries and clipping popups
+            
             targetRef.current = { x: x * -90, y: y * -40 };
         };
 
-        window.addEventListener('mousemove', handleGlobalMouseMove);
+        const handleGyroscope = (e) => {
+            if (!e.gamma || !e.beta) return; // Failsafe if device lacks hardware sensors
+            // Gamma: left/right tilt [-90 to 90]. Beta: front/back tilt [0 to 90 typical holding angle]
+            let x = e.gamma / 45; 
+            let y = (e.beta - 45) / 45; 
+
+            // Clamp bounds strictly to normal tracking limits so the galaxy doesn't fly off screen
+            x = Math.max(-1, Math.min(1, x));
+            y = Math.max(-1, Math.min(1, y));
+
+            targetRef.current = { x: x * -90, y: y * -40 };
+        };
+
+        window.addEventListener('mousemove', handleGlobalMove);
+        window.addEventListener('touchmove', handleGlobalMove, { passive: true });
+        window.addEventListener('deviceorientation', handleGyroscope);
+        
         requestRef.current = requestAnimationFrame(updateParallax);
 
         return () => {
-            window.removeEventListener('mousemove', handleGlobalMouseMove);
+            window.removeEventListener('mousemove', handleGlobalMove);
+            window.removeEventListener('touchmove', handleGlobalMove);
+            window.removeEventListener('deviceorientation', handleGyroscope);
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
-            document.head.removeChild(meta); // Clean up the anti-AI bot tag when leaving memory page
+            document.head.removeChild(meta); 
         };
     }, []);
 
