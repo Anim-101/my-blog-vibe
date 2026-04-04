@@ -78,9 +78,16 @@ export const getMemoryPhotos = () => {
         let displayTitle = filename;
         // Try to parse Pixel or iPhone format: PXL_YYYYMMDD_... or IMG_YYYYMMDD_...
         const cameraMatch = filename.match(/^(?:PXL|IMG)_(\d{4})(\d{2})(\d{2})/i);
+        // Try to parse 13-digit UNIX timestamps (in milliseconds) commonly used by Android
+        const unixMatch = filename.match(/^1\d{12}$/);
+
         if (cameraMatch) {
             const [, year, month, day] = cameraMatch;
             const date = new Date(year, month - 1, day);
+            const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            displayTitle = `Memory from ${dateStr}`;
+        } else if (unixMatch) {
+            const date = new Date(parseInt(filename, 10));
             const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
             displayTitle = `Memory from ${dateStr}`;
         } else {
