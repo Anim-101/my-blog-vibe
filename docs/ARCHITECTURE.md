@@ -3,6 +3,61 @@
 ## 1. Overview
 This project is a high-performance, single-page application (SPA) portfolio and blog. It serves as an interactive showcase, blending standard content management with highly immersive, mathematically-driven graphical experiences.
 
+### High-Level Architecture Flow
+```mermaid
+graph TD
+    %% User Inputs & Environment
+    subgraph Client Environment
+        User[User Interactions]
+        Desktop[Mouse Panning]
+        Mobile[Gyroscope Sensor]
+        Touch[Touch Dragging]
+    end
+
+    %% The Physics & UI Engine
+    subgraph React Application Core
+        Router[React Router SPA]
+        Memory[Memory Physics Engine]
+        I18N[i18n Context Layer]
+        Search[Fuse.js Global Search]
+        
+        Router --> Memory
+        Router --> I18N
+        Router --> Search
+    end
+
+    %% Data Processing Pipeline
+    subgraph Data Pipeline & Parsing
+        Glob[Vite import.meta.glob]
+        Parser[Smart Regex Timestamp Parser]
+        FM[Front-Matter Parser]
+        
+        Glob --> Parser
+        Glob --> FM
+    end
+
+    %% Local File Systems
+    subgraph Statically Typed Content
+        Assets[(src/assets/memory/*.jpg)]
+        Blog[(src/content/blog/*.md)]
+        Photography[(src/content/photography/*.md)]
+    end
+
+    %% Inter-connections
+    Desktop -->|mousemove| Memory
+    Mobile -->|deviceorientation| Memory
+    Touch -->|touchmove| Memory
+
+    Memory -.->|requestAnimationFrame Lerping| User
+
+    Parser -.-> Memory
+    Assets --> Glob
+    Blog --> Glob
+    Photography --> Glob
+    
+    FM -.-> Search
+```
+
 ## 2. Technology Stack
 - **Core:** React (Vite build system)
 - **Routing:** React Router v6
