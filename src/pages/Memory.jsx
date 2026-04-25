@@ -105,6 +105,10 @@ const Memory = () => {
     const targetRef = useRef({ x: 0, y: 0 });
     const currentRef = useRef({ x: 0, y: 0 });
     const requestRef = useRef();
+    // Detect touch device once at mount
+    const isTouchDevice = useRef(
+        typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    );
 
     useEffect(() => {
         // Anti-scrapping: Tell AI bots and search engines NOT to index the memory pictures
@@ -126,39 +130,35 @@ const Memory = () => {
             requestRef.current = requestAnimationFrame(updateParallax);
         };
 
-        const handleGlobalMove = (e) => {
-            // Unify touch and mouse coordinates!
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            
-            const x = (clientX / window.innerWidth) * 2 - 1;
-            const y = (clientY / window.innerHeight) * 2 - 1;
-            
+        // Mouse-only parallax: only used on non-touch devices
+        const handleMouseMove = (e) => {
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            const y = (e.clientY / window.innerHeight) * 2 - 1;
             targetRef.current = { x: x * -90, y: y * -40 };
         };
 
+        // Gyroscope parallax: primary parallax driver on touch/mobile devices
         const handleGyroscope = (e) => {
-            if (!e.gamma || !e.beta) return; // Failsafe if device lacks hardware sensors
-            // Gamma: left/right tilt [-90 to 90]. Beta: front/back tilt [0 to 90 typical holding angle]
-            let x = e.gamma / 45; 
-            let y = (e.beta - 45) / 45; 
-
-            // Clamp bounds strictly to normal tracking limits so the galaxy doesn't fly off screen
+            if (e.gamma == null || e.beta == null) return;
+            let x = e.gamma / 45;
+            let y = (e.beta - 45) / 45;
             x = Math.max(-1, Math.min(1, x));
             y = Math.max(-1, Math.min(1, y));
-
             targetRef.current = { x: x * -90, y: y * -40 };
         };
 
-        window.addEventListener('mousemove', handleGlobalMove);
-        window.addEventListener('touchmove', handleGlobalMove, { passive: true });
-        window.addEventListener('deviceorientation', handleGyroscope);
+        // On touch devices: use gyroscope for parallax — do NOT use touchmove
+        // (touchmove interferes with star taps and causes janky pan-and-zoom conflicts)
+        if (isTouchDevice.current) {
+            window.addEventListener('deviceorientation', handleGyroscope);
+        } else {
+            window.addEventListener('mousemove', handleMouseMove);
+        }
         
         requestRef.current = requestAnimationFrame(updateParallax);
 
         return () => {
-            window.removeEventListener('mousemove', handleGlobalMove);
-            window.removeEventListener('touchmove', handleGlobalMove);
+            window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('deviceorientation', handleGyroscope);
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
             document.head.removeChild(meta); 
@@ -244,8 +244,9 @@ const Memory = () => {
                                     backgroundPosition: 'center',
                                     animation: `twinkle 4s infinite alternate ${star.style.animationDelay}`
                                 }}
-                                onMouseEnter={() => setActiveStarId(star.id)}
-                                onMouseLeave={() => setActiveStarId(null)}
+                                // Mouse hover only applies on non-touch devices to avoid ghost events
+                                onMouseEnter={!isTouchDevice.current ? () => setActiveStarId(star.id) : undefined}
+                                onMouseLeave={!isTouchDevice.current ? () => setActiveStarId(null) : undefined}
                                 onClick={(e) => handleStarClick(e, star.id)}
                             >
                                 <div className="memory-preview">
