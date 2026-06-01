@@ -332,10 +332,12 @@ const Memory = () => {
                             >
                                 <div className="memory-preview">
                                     <div className="memory-preview-img-wrapper">
-                                        {isActive && star.images && star.images[0] && (
+                                        {star.images && star.images[0] && (
                                             <img 
                                                 src={star.images[0]} 
                                                 alt={star.title}
+                                                loading="lazy"
+                                                decoding="async"
                                                 onContextMenu={(e) => e.preventDefault()} // Disable right-click saving
                                                 onDragStart={(e) => e.preventDefault()} // Disable drag-and-drop saving
                                                 style={{ userSelect: 'none', WebkitUserDrag: 'none' }} // Disable selection
