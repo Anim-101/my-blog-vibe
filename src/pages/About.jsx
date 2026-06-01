@@ -19,20 +19,21 @@ const About = () => {
         let isMounted = true;
         const fetchContributions = async () => {
             try {
-                const response = await fetch(`https://github-contributions-api.deno.dev/${githubUsername}.json`);
+                // Fetch from the exact same jogruber API as react-github-calendar, and add cache-busting timestamp
+                const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${githubUsername}?y=last&t=${Date.now()}`);
                 if (!response.ok) throw new Error('Failed to fetch contributions');
                 const data = await response.json();
                 
                 if (isMounted) {
-                    const days = data.contributions ? data.contributions.flat() : [];
-                    const totalContributions = data.totalContributions || 0;
+                    const days = data.contributions || [];
+                    const totalContributions = data.total?.lastYear || 0;
                     
                     let currentStreak = 0;
                     let longestStreak = 0;
                     let tempStreak = 0;
                     
                     for (let i = 0; i < days.length; i++) {
-                        const count = days[i].contributionCount;
+                        const count = days[i].count;
                         if (count > 0) {
                             tempStreak++;
                             if (tempStreak > longestStreak) {
@@ -44,18 +45,18 @@ const About = () => {
                     }
                     
                     for (let i = days.length - 1; i >= 0; i--) {
-                        if (days[i].contributionCount > 0) {
+                        if (days[i].count > 0) {
                             currentStreak++;
                         } else {
                             // If today (last item) is 0, check if yesterday was active to keep streak alive
-                            if (i === days.length - 1 && days[days.length - 2] && days[days.length - 2].contributionCount > 0) {
+                            if (i === days.length - 1 && days[days.length - 2] && days[days.length - 2].count > 0) {
                                 continue;
                             }
                             break;
                         }
                     }
                     
-                    const activeDays = days.filter(d => d.contributionCount > 0).length;
+                    const activeDays = days.filter(d => d.count > 0).length;
                     
                     setStats({
                         totalContributions,
