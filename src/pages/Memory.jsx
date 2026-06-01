@@ -18,6 +18,23 @@ const seededRandom = (seedString) => {
 const Memory = () => {
     const navigate = useNavigate();
     
+    // Track viewport size dynamically to calculate aspect ratio grid layout
+    const [viewportSize, setViewportSize] = useState(() => ({
+        width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+        height: typeof window !== 'undefined' ? window.innerHeight : 800
+    }));
+
+    useEffect(() => {
+        const handleResize = () => {
+            setViewportSize({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Memoize the photos array so it doesn't return a new array reference every render,
     // which was triggering the stars useMemo to re-roll random coordinates on every hover state change!
     const photos = useMemo(() => {
@@ -31,20 +48,29 @@ const Memory = () => {
 
     // Generate random but EVENLY SPACED positions using a Jittered Grid layout
     const stars = useMemo(() => {
-        const cols = Math.ceil(Math.sqrt(photos.length)) || 1;
-        const rows = Math.ceil(photos.length / cols) || 1;
+        const isPortrait = viewportSize.width < viewportSize.height;
+        let cols, rows;
+        if (isPortrait) {
+            // Squeezed narrow screen: use 3 columns, more rows to fit screen vertically
+            cols = 3;
+            rows = Math.ceil(photos.length / cols) || 1;
+        } else {
+            // Wide screen: use 5 columns, fewer rows
+            cols = 5;
+            rows = Math.ceil(photos.length / cols) || 1;
+        }
 
         return photos.map((photo, i) => {
             // Assign to a grid cell
             const col = i % cols;
             const row = Math.floor(i / cols);
 
-            // Safe Zone: Compress vertical padding to prevent top/bottom clipping on hover expansions
-            const cellWidth = 80 / cols;
-            const cellHeight = 56 / rows;
+            // Safe Zone: Compress vertical/horizontal padding to prevent clipping on screen edges
+            const cellWidth = 70 / cols;
+            const cellHeight = 50 / rows;
 
-            const baseLeft = 10 + (col * cellWidth);
-            const baseTop = 22 + (row * cellHeight); // Starts at 22%, ends at 78%
+            const baseLeft = 15 + (col * cellWidth);
+            const baseTop = 25 + (row * cellHeight);
 
             // Use the photo id as seed for stable placement and sizes
             const seed = photo.id;
@@ -65,6 +91,18 @@ const Memory = () => {
             const size = 35 + sizeVal * 25; 
             const rotation = `${rotateVal * 16 - 8}deg`; // -8 to +8 degrees rotation for polaroid effect
             
+            // Classify edge zones: left 35% are 'left', right 65% are 'right', middle is 'center'
+            const relativeLeft = left / 100;
+            let horizontalAlign = 'center';
+            if (relativeLeft < 0.35) {
+                horizontalAlign = 'left';
+            } else if (relativeLeft > 0.65) {
+                horizontalAlign = 'right';
+            }
+
+            // Classify vertical zones: bottom 55% are 'near-bottom'
+            const isNearBottom = top > 55;
+            
             return {
                 ...photo,
                 position: { top: `${top.toFixed(2)}%`, left: `${left.toFixed(2)}%` },
@@ -74,10 +112,11 @@ const Memory = () => {
                     height: `${size.toFixed(2)}px`,
                     '--rotation': rotation 
                 },
-                isNearBottom: top > 50
+                horizontalAlign,
+                isNearBottom
             };
         });
-    }, [photos]);
+    }, [photos, viewportSize]);
 
     // Generate random background purely aesthetic stars
     const bgStars = useMemo(() => {
@@ -268,7 +307,7 @@ const Memory = () => {
                     return (
                         <div 
                             key={star.id}
-                            className={`memory-star-wrapper ${star.isNearBottom ? 'near-bottom' : ''}`}
+                            className={`memory-star-wrapper ${star.isNearBottom ? 'near-bottom' : 'near-top'} align-${star.horizontalAlign}`}
                             style={{
                                 top: star.position.top,
                                 left: star.position.left,

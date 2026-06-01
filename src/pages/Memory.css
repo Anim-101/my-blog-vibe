@@ -114,15 +114,54 @@
     will-change: transform, opacity;
 }
 
-/* If the star spawns near the bottom of the screen, flip the popup upwards to avoid clipping! */
-.near-bottom .memory-star:hover .memory-preview, 
-.near-bottom .memory-star.active .memory-preview {
-    transform: translate(-50%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
+/* Custom transform origins and starting states based on alignment classes */
+.align-left .memory-preview {
+    transform: translate(-15%, 0) scale(0) rotate(-30deg);
+    transform-origin: top left;
+}
+.align-right .memory-preview {
+    transform: translate(-85%, 0) scale(0) rotate(-30deg);
+    transform-origin: top right;
 }
 
-.near-bottom .memory-preview {
+.near-bottom.align-center .memory-preview {
     transform: translate(-50%, -100%) scale(0) rotate(-30deg);
     transform-origin: bottom center;
+}
+.near-bottom.align-left .memory-preview {
+    transform: translate(-15%, -100%) scale(0) rotate(-30deg);
+    transform-origin: bottom left;
+}
+.near-bottom.align-right .memory-preview {
+    transform: translate(-85%, -100%) scale(0) rotate(-30deg);
+    transform-origin: bottom right;
+}
+
+/* Hover and Active Popups for Desktop */
+.align-center .memory-star:hover .memory-preview, 
+.align-center .memory-star.active .memory-preview {
+    transform: translate(-50%, 40px) scale(0.6) rotate(var(--rotation, 0deg));
+}
+.align-left .memory-star:hover .memory-preview, 
+.align-left .memory-star.active .memory-preview {
+    transform: translate(-15%, 40px) scale(0.6) rotate(var(--rotation, 0deg));
+}
+.align-right .memory-star:hover .memory-preview, 
+.align-right .memory-star.active .memory-preview {
+    transform: translate(-85%, 40px) scale(0.6) rotate(var(--rotation, 0deg));
+}
+
+.near-bottom.align-center .memory-star:hover .memory-preview, 
+.near-bottom.align-center .memory-star.active .memory-preview {
+    transform: translate(-50%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
+}
+.near-bottom.align-left .memory-star:hover .memory-preview, 
+.near-bottom.align-left .memory-star.active .memory-preview {
+    transform: translate(-15%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
+}
+.near-bottom.align-right .memory-star:hover .memory-preview, 
+.near-bottom.align-right .memory-star.active .memory-preview {
+    transform: translate(-85%, calc(-100% - 30px)) scale(0.6) rotate(var(--rotation, 0deg));
 }
 
 .memory-preview img {
@@ -242,14 +281,30 @@
         padding-bottom: 20px;
     }
 
-    /* Increased scale from 0.6 to 0.95 for clear legibility on mobile */
-    .memory-star:hover .memory-preview,
-    .memory-star.active .memory-preview {
+    /* Hover and Active Popups for Mobile (increased scale to 0.95) */
+    .align-center .memory-star:hover .memory-preview,
+    .align-center .memory-star.active .memory-preview {
         transform: translate(-50%, 20px) scale(0.95) rotate(var(--rotation, 0deg));
     }
+    .align-left .memory-star:hover .memory-preview,
+    .align-left .memory-star.active .memory-preview {
+        transform: translate(-15%, 20px) scale(0.95) rotate(var(--rotation, 0deg));
+    }
+    .align-right .memory-star:hover .memory-preview,
+    .align-right .memory-star.active .memory-preview {
+        transform: translate(-85%, 20px) scale(0.95) rotate(var(--rotation, 0deg));
+    }
 
-    .near-bottom .memory-star:hover .memory-preview,
-    .near-bottom .memory-star.active .memory-preview {
+    .near-bottom.align-center .memory-star:hover .memory-preview,
+    .near-bottom.align-center .memory-star.active .memory-preview {
         transform: translate(-50%, calc(-100% - 15px)) scale(0.95) rotate(var(--rotation, 0deg));
+    }
+    .near-bottom.align-left .memory-star:hover .memory-preview,
+    .near-bottom.align-left .memory-star.active .memory-preview {
+        transform: translate(-15%, calc(-100% - 15px)) scale(0.95) rotate(var(--rotation, 0deg));
+    }
+    .near-bottom.align-right .memory-star:hover .memory-preview,
+    .near-bottom.align-right .memory-star.active .memory-preview {
+        transform: translate(-85%, calc(-100% - 15px)) scale(0.95) rotate(var(--rotation, 0deg));
     }
 }
