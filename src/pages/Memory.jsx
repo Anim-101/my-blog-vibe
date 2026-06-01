@@ -307,7 +307,7 @@ const Memory = () => {
                     return (
                         <div 
                             key={star.id}
-                            className={`memory-star-wrapper ${star.isNearBottom ? 'near-bottom' : 'near-top'} align-${star.horizontalAlign}`}
+                            className={`memory-star-wrapper ${star.isNearBottom ? 'near-bottom' : 'near-top'} align-${star.horizontalAlign} ${isActive ? 'active-wrapper' : ''}`}
                             style={{
                                 top: star.position.top,
                                 left: star.position.left,

@@ -62,7 +62,8 @@
     justify-content: center;
 }
 
-.memory-star-wrapper:hover {
+.memory-star-wrapper:hover,
+.memory-star-wrapper.active-wrapper {
     z-index: 100;
 }
 
@@ -85,9 +86,10 @@
     /* Removed the pale blue background so the image doesn't get tinted weirdly */
 }
 
+/* Make preview click-through (pointer-events: none) at all times so it never blocks background clicks or neighboring star taps */
 .memory-star:hover .memory-preview, .memory-star.active .memory-preview {
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: none;
     /* Bounces into its precalculated random rotation! */
     transform: translate(-50%, 40px) scale(0.6) rotate(var(--rotation, 0deg));
 }
