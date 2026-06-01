@@ -66,11 +66,11 @@ const Memory = () => {
             const row = Math.floor(i / cols);
 
             // Safe Zone: Compress vertical/horizontal padding to prevent clipping on screen edges
-            const cellWidth = 70 / cols;
-            const cellHeight = 50 / rows;
+            const cellWidth = 56 / cols;
+            const cellHeight = 42 / rows;
 
-            const baseLeft = 15 + (col * cellWidth);
-            const baseTop = 25 + (row * cellHeight);
+            const baseLeft = 22 + (col * cellWidth);
+            const baseTop = 29 + (row * cellHeight);
 
             // Use the photo id as seed for stable placement and sizes
             const seed = photo.id;
@@ -91,12 +91,12 @@ const Memory = () => {
             const size = 35 + sizeVal * 25; 
             const rotation = `${rotateVal * 16 - 8}deg`; // -8 to +8 degrees rotation for polaroid effect
             
-            // Classify edge zones: left 35% are 'left', right 65% are 'right', middle is 'center'
+            // Classify edge zones: left 38% are 'left', right 62% are 'right', middle is 'center'
             const relativeLeft = left / 100;
             let horizontalAlign = 'center';
-            if (relativeLeft < 0.35) {
+            if (relativeLeft < 0.38) {
                 horizontalAlign = 'left';
-            } else if (relativeLeft > 0.65) {
+            } else if (relativeLeft > 0.62) {
                 horizontalAlign = 'right';
             }
 
@@ -202,7 +202,7 @@ const Memory = () => {
         const handleMouseMove = (e) => {
             const x = (e.clientX / window.innerWidth) * 2 - 1;
             const y = (e.clientY / window.innerHeight) * 2 - 1;
-            targetRef.current = { x: x * -90, y: y * -40 };
+            targetRef.current = { x: x * -40, y: y * -20 };
         };
 
         // Gyroscope parallax variables for low-pass filter (smoothing)
@@ -225,7 +225,7 @@ const Memory = () => {
             lastY = lastY * 0.9 + targetY * 0.1;
             
             // Scale down movement bounds on mobile to prevent GPU performance hits
-            targetRef.current = { x: lastX * -30, y: lastY * -15 };
+            targetRef.current = { x: lastX * -15, y: lastY * -8 };
         };
 
         // On touch devices: use gyroscope for parallax — do NOT use touchmove
