@@ -296,3 +296,21 @@
         font-size: 2rem;
     }
 }
+
+/* Custom styles for GitHub activity calendar tooltips */
+.react-activity-calendar__tooltip {
+    background: rgba(15, 23, 42, 0.9) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+    font-weight: 500 !important;
+    z-index: 1000 !important;
+}
+
+.react-activity-calendar__tooltip-arrow {
+    fill: rgba(15, 23, 42, 0.9) !important;
+}

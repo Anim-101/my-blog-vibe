@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GitHubCalendar } from 'react-github-calendar';
 import { personalInfo } from '../data/personal';
+import 'react-activity-calendar/tooltips.css';
 import './About.css';
 
 const About = () => {
@@ -172,6 +173,20 @@ const About = () => {
                         blockSize={14}
                         blockMargin={5}
                         fontSize={14}
+                        tooltips={{
+                            activity: {
+                                text: (activity) => {
+                                    const dateStr = new Date(activity.date).toLocaleDateString(undefined, {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: 'numeric'
+                                    });
+                                    const count = activity.count;
+                                    const text = count === 1 ? 'contribution' : 'contributions';
+                                    return `${count} ${text} on ${dateStr}`;
+                                }
+                            }
+                        }}
                     />
                 </div>
             </section>
