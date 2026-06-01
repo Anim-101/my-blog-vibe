@@ -4,6 +4,17 @@ import { ArrowLeft } from 'lucide-react';
 import { getMemoryPhotos } from '../utils/content';
 import './Memory.css';
 
+// A simple deterministic PRNG (pseudo-random number generator) to satisfy React 19 rules of hook purity
+const seededRandom = (seedString) => {
+    let hash = 0;
+    for (let i = 0; i < seedString.length; i++) {
+        hash = seedString.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    // Sine-based deterministic pseudo-random float between 0 and 1
+    const x = Math.sin(hash) * 10000;
+    return x - Math.floor(x);
+};
+
 const Memory = () => {
     const navigate = useNavigate();
     
@@ -35,16 +46,24 @@ const Memory = () => {
             const baseLeft = 10 + (col * cellWidth);
             const baseTop = 22 + (row * cellHeight); // Starts at 22%, ends at 78%
 
+            // Use the photo id as seed for stable placement and sizes
+            const seed = photo.id;
+            const leftJitter = seededRandom(seed + '-left');
+            const topJitter = seededRandom(seed + '-top');
+            const delayVal = seededRandom(seed + '-delay');
+            const sizeVal = seededRandom(seed + '-size');
+            const rotateVal = seededRandom(seed + '-rotate');
+
             // Jitter randomly within its designated cell so it feels scattered but never clumps!
-            const left = baseLeft + (Math.random() * (cellWidth * 0.7));
-            const top = baseTop + (Math.random() * (cellHeight * 0.7));
+            const left = baseLeft + (leftJitter * (cellWidth * 0.7));
+            const top = baseTop + (topJitter * (cellHeight * 0.7));
             
             // Random animation delay so they don't twinkle synchronously
-            const delay = Math.random() * 3 + 's';
+            const delay = delayVal * 3 + 's';
             
             // Orbs from 35px to 60px
-            const size = 35 + Math.random() * 25; 
-            const rotation = `${Math.random() * 16 - 8}deg`; // -8 to +8 degrees rotation for polaroid effect
+            const size = 35 + sizeVal * 25; 
+            const rotation = `${rotateVal * 16 - 8}deg`; // -8 to +8 degrees rotation for polaroid effect
             
             return {
                 ...photo,
@@ -62,15 +81,24 @@ const Memory = () => {
 
     // Generate random background purely aesthetic stars
     const bgStars = useMemo(() => {
+        const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+        const count = isTouch ? 40 : 150;
         const arr = [];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < count; i++) {
+            const seed = `bg-star-${i}`;
+            const topVal = seededRandom(seed + '-top');
+            const leftVal = seededRandom(seed + '-left');
+            const sizeVal = seededRandom(seed + '-size');
+            const delayVal = seededRandom(seed + '-delay');
+            const driftVal = seededRandom(seed + '-drift');
+
             arr.push({
                 id: i,
-                top: `${(Math.random() * 100).toFixed(2)}%`,
-                left: `${(Math.random() * 100).toFixed(2)}%`,
-                size: `${(Math.random() * 2 + 1).toFixed(2)}px`,
-                delay: `${(Math.random() * 5).toFixed(2)}s`,
-                driftDelay: `-${(Math.random() * 60).toFixed(2)}s`
+                top: `${(topVal * 100).toFixed(2)}%`,
+                left: `${(leftVal * 100).toFixed(2)}%`,
+                size: `${(sizeVal * 2 + 1).toFixed(2)}px`,
+                delay: `${(delayVal * 5).toFixed(2)}s`,
+                driftDelay: `-${(driftVal * 60).toFixed(2)}s`
             });
         }
         return arr;
@@ -105,10 +133,11 @@ const Memory = () => {
     const targetRef = useRef({ x: 0, y: 0 });
     const currentRef = useRef({ x: 0, y: 0 });
     const requestRef = useRef();
-    // Detect touch device once at mount
-    const isTouchDevice = useRef(
-        typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
-    );
+
+    // Detect touch device once at mount (using lazy state initialization to comply with React 19 safety)
+    const [isTouchDevice] = useState(() => {
+        return typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    });
 
     useEffect(() => {
         // Anti-scrapping: Tell AI bots and search engines NOT to index the memory pictures
@@ -137,19 +166,32 @@ const Memory = () => {
             targetRef.current = { x: x * -90, y: y * -40 };
         };
 
+        // Gyroscope parallax variables for low-pass filter (smoothing)
+        let lastX = 0;
+        let lastY = 0;
+
         // Gyroscope parallax: primary parallax driver on touch/mobile devices
         const handleGyroscope = (e) => {
             if (e.gamma == null || e.beta == null) return;
-            let x = e.gamma / 45;
-            let y = (e.beta - 45) / 45;
-            x = Math.max(-1, Math.min(1, x));
-            y = Math.max(-1, Math.min(1, y));
-            targetRef.current = { x: x * -90, y: y * -40 };
+            
+            // Normalize inputs
+            let targetX = e.gamma / 30;
+            let targetY = (e.beta - 45) / 30;
+            
+            targetX = Math.max(-1, Math.min(1, targetX));
+            targetY = Math.max(-1, Math.min(1, targetY));
+            
+            // Low-pass filter (90% previous, 10% new) to smooth out raw sensor noise
+            lastX = lastX * 0.9 + targetX * 0.1;
+            lastY = lastY * 0.9 + targetY * 0.1;
+            
+            // Scale down movement bounds on mobile to prevent GPU performance hits
+            targetRef.current = { x: lastX * -30, y: lastY * -15 };
         };
 
         // On touch devices: use gyroscope for parallax — do NOT use touchmove
         // (touchmove interferes with star taps and causes janky pan-and-zoom conflicts)
-        if (isTouchDevice.current) {
+        if (isTouchDevice) {
             window.addEventListener('deviceorientation', handleGyroscope);
         } else {
             window.addEventListener('mousemove', handleMouseMove);
@@ -163,7 +205,7 @@ const Memory = () => {
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
             document.head.removeChild(meta); 
         };
-    }, []);
+    }, [isTouchDevice]);
 
     const handleBackgroundClick = (e) => {
         if (e.target.classList.contains('memory-space') || e.target.classList.contains('memory-container')) {
@@ -239,26 +281,26 @@ const Memory = () => {
                                     width: star.style.width,
                                     height: star.style.height,
                                     '--rotation': star.style['--rotation'],
-                                    backgroundImage: star.images && star.images[0] ? `url(${star.images[0]})` : 'none',
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
+                                    background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, rgba(99,102,241,0.3) 100%)',
                                     animation: `twinkle 4s infinite alternate ${star.style.animationDelay}`
                                 }}
                                 // Mouse hover only applies on non-touch devices to avoid ghost events
-                                onMouseEnter={!isTouchDevice.current ? () => setActiveStarId(star.id) : undefined}
-                                onMouseLeave={!isTouchDevice.current ? () => setActiveStarId(null) : undefined}
+                                onMouseEnter={!isTouchDevice ? () => setActiveStarId(star.id) : undefined}
+                                onMouseLeave={!isTouchDevice ? () => setActiveStarId(null) : undefined}
                                 onClick={(e) => handleStarClick(e, star.id)}
                             >
                                 <div className="memory-preview">
-                                    {star.images && star.images[0] && (
-                                        <img 
-                                            src={star.images[0]} 
-                                            alt={star.title}
-                                            onContextMenu={(e) => e.preventDefault()} // Disable right-click saving
-                                            onDragStart={(e) => e.preventDefault()} // Disable drag-and-drop saving
-                                            style={{ userSelect: 'none', WebkitUserDrag: 'none' }} // Disable selection
-                                        />
-                                    )}
+                                    <div className="memory-preview-img-wrapper">
+                                        {isActive && star.images && star.images[0] && (
+                                            <img 
+                                                src={star.images[0]} 
+                                                alt={star.title}
+                                                onContextMenu={(e) => e.preventDefault()} // Disable right-click saving
+                                                onDragStart={(e) => e.preventDefault()} // Disable drag-and-drop saving
+                                                style={{ userSelect: 'none', WebkitUserDrag: 'none' }} // Disable selection
+                                            />
+                                        )}
+                                    </div>
                                     <h3 className="memory-title">{star.title}</h3>
                                 </div>
                             </div>

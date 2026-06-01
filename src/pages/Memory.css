@@ -152,7 +152,18 @@
     background: white;
     border-radius: 50%;
     opacity: 0.3;
-    animation: twinkle 4s infinite alternate, drift 60s infinite linear;
+    animation: twinkle-basic 4s infinite ease-in-out, drift 60s infinite linear;
+    will-change: opacity;
+}
+
+/* Image wrapper for polaroid preview to support lazy loading placeholder */
+.memory-preview-img-wrapper {
+    width: 220px;
+    height: 220px;
+    background: #f3f3f3;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
 }
 
 /* Shooting Stars */
@@ -166,6 +177,12 @@
     animation: shoot 5s infinite linear;
     transform: rotate(-45deg);
     opacity: 0;
+}
+
+@keyframes twinkle-basic {
+    0% { opacity: 0.15; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.15; }
 }
 
 @keyframes twinkle {
@@ -199,15 +216,25 @@
         touch-action: none;
     }
 
-    /* Shrink the polaroid so it doesn't overflow the screen */
+    /* Disable drift animation on mobile to save GPU cycles */
+    .bg-star {
+        animation: twinkle-basic 4s infinite ease-in-out;
+    }
+
+    .memory-preview-img-wrapper {
+        width: 160px;
+        height: 160px;
+    }
+
+    /* Polaroid size optimization for mobile screens */
     .memory-preview img {
-        width: 140px;
-        height: 140px;
+        width: 160px;
+        height: 160px;
     }
 
     .memory-title {
-        font-size: 0.85rem;
-        max-width: 128px;
+        font-size: 0.9rem;
+        max-width: 148px;
     }
 
     .memory-preview {
@@ -215,14 +242,14 @@
         padding-bottom: 20px;
     }
 
-    /* Slightly tighter popup offset for small screens */
+    /* Increased scale from 0.6 to 0.95 for clear legibility on mobile */
     .memory-star:hover .memory-preview,
     .memory-star.active .memory-preview {
-        transform: translate(-50%, 30px) scale(0.6) rotate(var(--rotation, 0deg));
+        transform: translate(-50%, 20px) scale(0.95) rotate(var(--rotation, 0deg));
     }
 
     .near-bottom .memory-star:hover .memory-preview,
     .near-bottom .memory-star.active .memory-preview {
-        transform: translate(-50%, calc(-100% - 20px)) scale(0.6) rotate(var(--rotation, 0deg));
+        transform: translate(-50%, calc(-100% - 15px)) scale(0.95) rotate(var(--rotation, 0deg));
     }
 }

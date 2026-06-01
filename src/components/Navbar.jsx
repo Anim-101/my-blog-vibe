@@ -9,15 +9,26 @@ const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme !== 'light';
+  });
   const location = useLocation();
 
+  // Adjust theme state directly in render for /memory immersive mode to comply with React 19 safety
+  if (location.pathname === '/memory' && !isDarkMode) {
+    setIsDarkMode(true);
+    document.body.classList.remove('light-mode');
+    localStorage.setItem('theme', 'dark');
+  }
+
   useEffect(() => {
-    // Load theme setting initially
+    // Ensure body matches the initial theme
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
-      setIsDarkMode(false);
       document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
     }
 
     const handleScroll = () => {
@@ -26,17 +37,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Force dark mode on /memory page since it's an immersive space view
-  useEffect(() => {
-    if (location.pathname === '/memory' && !isDarkMode) {
-      // Do not use the global 'theme-transition' class here! 
-      // Setting 'transition: all' directly onto the 200+ memory stars causes severe frame drops and lag.
-      setIsDarkMode(true);
-      document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
-    }
-  }, [location.pathname, isDarkMode]);
 
   const navLinks = [
     { name: t('nav.home'), path: '/', icon: <Home size={18} /> },

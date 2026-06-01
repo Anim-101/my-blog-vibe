@@ -13,11 +13,31 @@ const PhotoPost = () => {
     const { slug } = useParams();
     const post = getPhotoPostBySlug(slug);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isMobileViewport, setIsMobileViewport] = useState(() => {
+        return typeof window !== 'undefined' && window.innerWidth <= 768;
+    });
 
-    // Bug Fix 1: Reset slider index when navigating to a new photo post
+    // Bug Fix 2: Add touch swiping for real Instagram-like mobile feel with directional detection
+    const touchStartX = useRef(null);
+    const touchStartY = useRef(null);
+    const touchEndX = useRef(null);
+    const touchEndY = useRef(null);
+    const minSwipeDistance = 50;
+
     useEffect(() => {
+        const checkMobile = () => {
+            setIsMobileViewport(window.innerWidth <= 768);
+        };
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Reset slider index directly in render when slug changes (avoiding useEffect layout thrashing)
+    const [prevSlug, setPrevSlug] = useState(slug);
+    if (slug !== prevSlug) {
+        setPrevSlug(slug);
         setCurrentIndex(0);
-    }, [slug]);
+    }
 
     if (!post) {
         return (
@@ -29,11 +49,6 @@ const PhotoPost = () => {
             </div>
         );
     }
-
-    // Bug Fix 2: Add touch swiping for real Instagram-like mobile feel
-    const touchStart = useRef(null);
-    const touchEnd = useRef(null);
-    const minSwipeDistance = 50;
 
     // Bug Fix 3: Use functional state updates to prevent rapid double-clicks from going out of bounds
     const nextImage = () => {
@@ -49,21 +64,37 @@ const PhotoPost = () => {
     };
 
     const onTouchStart = (e) => {
-        touchEnd.current = null;
-        touchStart.current = e.targetTouches[0].clientX;
+        touchEndX.current = null;
+        touchEndY.current = null;
+        touchStartX.current = e.targetTouches[0].clientX ?? 0;
+        touchStartY.current = e.targetTouches[0].clientY ?? 0;
     };
 
     const onTouchMove = (e) => {
-        touchEnd.current = e.targetTouches[0].clientX;
+        touchEndX.current = e.targetTouches[0].clientX ?? 0;
+        touchEndY.current = e.targetTouches[0].clientY ?? 0;
     };
 
     const onTouchEndAction = () => {
-        if (!touchStart.current || !touchEnd.current) return;
-        const distance = touchStart.current - touchEnd.current;
-        if (distance > minSwipeDistance) {
-            nextImage(); // Swiped left
-        } else if (distance < -minSwipeDistance) {
-            prevImage(); // Swiped right
+        if (
+            touchStartX.current === null ||
+            touchEndX.current === null ||
+            touchStartY.current === null ||
+            touchEndY.current === null
+        ) {
+            return;
+        }
+        
+        const deltaX = touchStartX.current - touchEndX.current;
+        const deltaY = touchStartY.current - touchEndY.current;
+        
+        // Only trigger horizontal swipe if horizontal movement is significantly greater than vertical movement
+        if (Math.abs(deltaX) > 2 * Math.abs(deltaY)) {
+            if (deltaX > minSwipeDistance) {
+                nextImage(); // Swiped left
+            } else if (deltaX < -minSwipeDistance) {
+                prevImage(); // Swiped right
+            }
         }
     };
 
@@ -102,7 +133,7 @@ const PhotoPost = () => {
                             disabled={currentIndex === 0}
                         >
                             <ChevronLeft size={24} />
-                            {currentIndex > 0 && (
+                            {currentIndex > 0 && !isMobileViewport && (
                                 <img src={post.images[currentIndex - 1]} alt={t('post.prevImage')} className="btn-preview prev-preview" />
                             )}
                         </button>
@@ -114,7 +145,7 @@ const PhotoPost = () => {
                             disabled={currentIndex === post.images.length - 1}
                         >
                             <ChevronRight size={24} />
-                            {currentIndex < post.images.length - 1 && (
+                            {currentIndex < post.images.length - 1 && !isMobileViewport && (
                                 <img src={post.images[currentIndex + 1]} alt={t('post.nextImage')} className="btn-preview next-preview" />
                             )}
                         </button>

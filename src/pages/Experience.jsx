@@ -18,7 +18,7 @@ const Experience = () => {
 
             <section className="timeline-section">
                 <div className="timeline">
-                    {experiences.map((exp, index) => (
+                    {experiences.map((exp) => (
                         <div key={exp.id} className="timeline-item">
                             <div className="timeline-marker"></div>
                             <div className="timeline-content gap">

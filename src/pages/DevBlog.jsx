@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useDeferredValue } from 'react';
+import { useState, useMemo, useDeferredValue } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { getBlogPosts } from '../utils/content';
@@ -41,10 +41,12 @@ const DevBlog = () => {
         return fuse.search(deferredQuery).map(result => result.item);
     }, [deferredQuery, fuse, allPosts]);
 
-    // Reset to page 1 if posts length changes significantly (e.g. search filter added)
-    useEffect(() => {
+    // Reset to page 1 directly in render if posts length changes (avoiding useEffect cascading renders)
+    const [prevPostsLength, setPrevPostsLength] = useState(filteredPosts.length);
+    if (filteredPosts.length !== prevPostsLength) {
+        setPrevPostsLength(filteredPosts.length);
         setCurrentPage(1);
-    }, [filteredPosts.length]);
+    }
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
