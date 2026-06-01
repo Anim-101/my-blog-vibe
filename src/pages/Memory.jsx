@@ -281,7 +281,9 @@ const Memory = () => {
                                     width: star.style.width,
                                     height: star.style.height,
                                     '--rotation': star.style['--rotation'],
-                                    background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, rgba(99,102,241,0.3) 100%)',
+                                    backgroundImage: star.images && star.images[0] ? `url(${star.images[0]})` : 'none',
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
                                     animation: `twinkle 4s infinite alternate ${star.style.animationDelay}`
                                 }}
                                 // Mouse hover only applies on non-touch devices to avoid ghost events
