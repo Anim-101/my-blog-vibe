@@ -35,7 +35,17 @@ const resources = {
                 "focusAreas": "Focus Areas",
                 "githubTitle": "GitHub",
                 "githubActivity": "Activity",
-                "githubSubtitle": "Days I code"
+                "githubSubtitle": "Days I code",
+                "github": {
+                    "total": "Total Contributions",
+                    "currentStreak": "Current Streak",
+                    "longestStreak": "Longest Streak",
+                    "activeDays": "Active Days",
+                    "loading": "Loading GitHub Stats...",
+                    "error": "Failed to load GitHub activity.",
+                    "days": "days",
+                    "commits": "commits"
+                }
             },
             "experience": {
                 "title": "My",
@@ -117,7 +127,17 @@ const resources = {
                 "focusAreas": "専門分野",
                 "githubTitle": "GitHub",
                 "githubActivity": "アクティビティ",
-                "githubSubtitle": "コーディングの日々"
+                "githubSubtitle": "コーディングの日々",
+                "github": {
+                    "total": "合計アクティビティ",
+                    "currentStreak": "現在の継続日数",
+                    "longestStreak": "最長継続日数",
+                    "activeDays": "アクティブ日数",
+                    "loading": "GitHubデータを読み込み中...",
+                    "error": "GitHubデータの読み込みに失敗しました。",
+                    "days": "日",
+                    "commits": "回"
+                }
             },
             "experience": {
                 "title": "これまでの",

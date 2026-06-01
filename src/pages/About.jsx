@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GitHubCalendar } from 'react-github-calendar';
 import { personalInfo } from '../data/personal';
@@ -9,6 +9,74 @@ const About = () => {
     // Extract username from github URL
     const githubUrlParts = personalInfo.socialLinks.github.split('/');
     const githubUsername = githubUrlParts[githubUrlParts.length - 1] || 'Anim-101';
+
+    const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        let isMounted = true;
+        const fetchContributions = async () => {
+            try {
+                const response = await fetch(`https://github-contributions-api.deno.dev/${githubUsername}.json`);
+                if (!response.ok) throw new Error('Failed to fetch contributions');
+                const data = await response.json();
+                
+                if (isMounted) {
+                    const days = data.contributions ? data.contributions.flat() : [];
+                    const totalContributions = data.totalContributions || 0;
+                    
+                    let currentStreak = 0;
+                    let longestStreak = 0;
+                    let tempStreak = 0;
+                    
+                    for (let i = 0; i < days.length; i++) {
+                        const count = days[i].contributionCount;
+                        if (count > 0) {
+                            tempStreak++;
+                            if (tempStreak > longestStreak) {
+                                longestStreak = tempStreak;
+                            }
+                        } else {
+                            tempStreak = 0;
+                        }
+                    }
+                    
+                    for (let i = days.length - 1; i >= 0; i--) {
+                        if (days[i].contributionCount > 0) {
+                            currentStreak++;
+                        } else {
+                            // If today (last item) is 0, check if yesterday was active to keep streak alive
+                            if (i === days.length - 1 && days[days.length - 2] && days[days.length - 2].contributionCount > 0) {
+                                continue;
+                            }
+                            break;
+                        }
+                    }
+                    
+                    const activeDays = days.filter(d => d.contributionCount > 0).length;
+                    
+                    setStats({
+                        totalContributions,
+                        currentStreak,
+                        longestStreak,
+                        activeDays
+                    });
+                    setLoading(false);
+                }
+            } catch (err) {
+                console.error(err);
+                if (isMounted) {
+                    setError(true);
+                    setLoading(false);
+                }
+            }
+        };
+        fetchContributions();
+        return () => {
+            isMounted = false;
+        };
+    }, [githubUsername]);
 
     return (
         <div className="about-page animate-in">
@@ -64,6 +132,39 @@ const About = () => {
             <section className="github-activity-section">
                 <h3 className="section-title">{t('about.githubTitle')} <span className="text-gradient">{t('about.githubActivity')}</span></h3>
                 <p className="section-subtitle">{t('about.githubSubtitle')}</p>
+                
+                <div className="github-stats-container">
+                    {loading ? (
+                        <div className="github-stats-loading">
+                            <div className="loading-spinner"></div>
+                            <p>{t('about.github.loading')}</p>
+                        </div>
+                    ) : error ? (
+                        <div className="github-stats-error">
+                            <p>{t('about.github.error')}</p>
+                        </div>
+                    ) : (
+                        <div className="github-stats-grid">
+                            <div className="github-stat-card glass-card">
+                                <span className="stat-value text-gradient">{stats.totalContributions}</span>
+                                <span className="stat-label">{t('about.github.total')}</span>
+                            </div>
+                            <div className="github-stat-card glass-card">
+                                <span className="stat-value text-gradient">{stats.currentStreak} {t('about.github.days')}</span>
+                                <span className="stat-label">{t('about.github.currentStreak')}</span>
+                            </div>
+                            <div className="github-stat-card glass-card">
+                                <span className="stat-value text-gradient">{stats.longestStreak} {t('about.github.days')}</span>
+                                <span className="stat-label">{t('about.github.longestStreak')}</span>
+                            </div>
+                            <div className="github-stat-card glass-card">
+                                <span className="stat-value text-gradient">{stats.activeDays} {t('about.github.days')}</span>
+                                <span className="stat-label">{t('about.github.activeDays')}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
                 <div className="github-calendar-container glass-card">
                     <GitHubCalendar
                         username={githubUsername}
