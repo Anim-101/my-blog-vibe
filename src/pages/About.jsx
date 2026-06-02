@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GitHubCalendar } from 'react-github-calendar';
 import { personalInfo } from '../data/personal';
+import SkillsConstellation from '../components/SkillsConstellation';
 import 'react-activity-calendar/tooltips.css';
 import './About.css';
 
@@ -110,7 +111,7 @@ const About = () => {
                         )) || <p>{t('about.bio')}</p>}
                     </div>
 
-                    <div className="about-stats">
+                    <div className="about-stats single-card">
                         <div className="stat-card glass-card">
                             <h4>{t('about.certifications')}</h4>
                             <ul className="stats-list">
@@ -119,17 +120,11 @@ const About = () => {
                                 ))}
                             </ul>
                         </div>
-                        <div className="stat-card glass-card">
-                            <h4>{t('about.focusAreas')}</h4>
-                            <ul className="stats-list">
-                                {personalInfo.expertise?.map((exp, index) => (
-                                    <li key={index}>{exp}</li>
-                                ))}
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </section>
+
+            <SkillsConstellation />
 
             <section className="github-activity-section">
                 <h3 className="section-title">{t('about.githubTitle')} <span className="text-gradient">{t('about.githubActivity')}</span></h3>
