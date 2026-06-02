@@ -3,6 +3,7 @@ import { experiences } from '../data/personal';
 import { getProjectPosts } from '../utils/content';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import PipelineSimulator from '../components/PipelineSimulator';
 import './Experience.css';
 
 const Experience = () => {
@@ -37,6 +38,10 @@ const Experience = () => {
                         </div>
                     ))}
                 </div>
+            </section>
+
+            <section className="pipeline-simulator-section">
+                <PipelineSimulator />
             </section>
 
             <section className="projects-section">

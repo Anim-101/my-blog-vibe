@@ -70,6 +70,110 @@ const resources = {
                     "2": { "role": "Freelance Software Engineer", "company": "Business Architects Inc.", "description": "Worked as the main backend and infrastructure engineer for an in-house SaaS system. Built custom admin and role-based interaction systems, and managed AWS deployments from initial requirement definitions through production." },
                     "3": { "role": "Trainee", "company": "Japan International Cooperation Agency (JICA)", "description": "Engaged in learning Japanese business manners and language through direct collaboration with experienced linguists." },
                     "4": { "role": "Teaching Assistant", "company": "American International University-Bangladesh", "description": "Assisted in teaching a computer graphics lab course strictly focused on OpenGL, actively enhancing participating students' fundamental technical skills." }
+                },
+                "pipeline": {
+                    "title": "Data Engineering",
+                    "subtitle": "Interactive Data Pipeline Simulator",
+                    "desc": "Simulate high-throughput cloud ingestion, validation, transformation, and storage systems modeled after Anim's enterprise architecture experience.",
+                    "controls": {
+                        "title": "Pipeline Controls",
+                        "start": "Resume Stream",
+                        "pause": "Pause Stream",
+                        "speed": "Ingestion Rate (msg/s)",
+                        "errorRate": "Error Rate (%)",
+                        "injectSchema": "Inject Schema Error",
+                        "injectTimeout": "Inject Timeout Error",
+                        "injectDedup": "Inject Dedup Spike",
+                        "clearTerminal": "Clear Console Logs"
+                    },
+                    "metrics": {
+                        "title": "Live Pipeline Metrics",
+                        "ingested": "Ingested",
+                        "processed": "Processed",
+                        "success": "Success Rate",
+                        "latency": "Avg Latency",
+                        "dlq": "DLQ Failures",
+                        "backpressure": "System Backpressure"
+                    },
+                    "nodeDetail": {
+                        "title": "Component Diagnostics",
+                        "selectNode": "Click any pipeline node to inspect technical specs, code highlights, and Anim's real-world implementation history.",
+                        "techSpecs": "Technical Diagnostics",
+                        "animExp": "Anim's Project Implementation"
+                    },
+                    "stages": {
+                        "ingestion": "Ingestion",
+                        "validation": "Validation",
+                        "transformation": "Transformation",
+                        "storage": "Storage"
+                    },
+                    "nodes": {
+                        "iot": {
+                            "name": "IoT Telemetry Stream",
+                            "tech": "Simulates high-velocity JSON event packets emitted from millions of edge power/energy devices.",
+                            "animExp": "At Avanade, Anim designed stream ingestion for major utility grids processing telemetry messages in real-time."
+                        },
+                        "api": {
+                            "name": "API Gateway",
+                            "tech": "Ingests HTTP Webhook payloads with token validation, rate-limiting, and client-level traffic management.",
+                            "animExp": "Developed RESTful webhook handlers at Business Architects Inc. for e-commerce and banking portals under high-stress periods."
+                        },
+                        "cdc": {
+                            "name": "Database CDC",
+                            "tech": "Log-based Change Data Capture parsing transactional commits from Postgres or SQL Server databases via Debezium.",
+                            "animExp": "Deployed transactional CDC streams to sync database records with low-latency search caches."
+                        },
+                        "schema": {
+                            "name": "Schema Registry",
+                            "tech": "Validates message payload schemas against strict Apache Avro declarations. Bad JSON is instantly flagged.",
+                            "animExp": "Configured registry validations in AWS EventBridge and Kafka environments to prevent schema drift."
+                        },
+                        "dedup": {
+                            "name": "Deduplicator",
+                            "tech": "Filters duplicate message IDs using a sliding-window cache in a high-speed Redis cluster.",
+                            "animExp": "Created Redis-based idempotency filters handling 10k+ requests/sec with a 10-minute sliding window."
+                        },
+                        "compliance": {
+                            "name": "Compliance Guard",
+                            "tech": "Inspects text fields for PII (Personally Identifiable Information) and masks values before cloud ingestion.",
+                            "animExp": "Built regulatory compliance filters for enterprise clients to comply with Japanese APPI regulations."
+                        },
+                        "joiner": {
+                            "name": "Streaming Joiner",
+                            "tech": "Enriches real-time transaction event streams by joining them with static dimensional database caches.",
+                            "animExp": "Optimized streaming memory footprints by implementing localized in-memory cache lookups."
+                        },
+                        "aggregator": {
+                            "name": "Aggregator",
+                            "tech": "Groups metrics into 1-minute tumbling windows to calculate rolling averages, sums, and traffic peaks.",
+                            "animExp": "Designed analytical aggregation pipelines that process trading volume reports."
+                        },
+                        "anomaly": {
+                            "name": "Anomaly Detector",
+                            "tech": "Uses statistical analysis (z-scores) on stream inputs to detect spikes or unexpected data drops.",
+                            "animExp": "Developed monitoring heuristics at Microsoft AI Lab to alert robotics systems of sensor faults."
+                        },
+                        "datalake": {
+                            "name": "S3 Data Lake",
+                            "tech": "Compacts raw messages into compressed Apache Parquet formats, saving them in AWS S3 partitions.",
+                            "animExp": "Maintained petabyte-scale data lakes with automated lifecycle policies and Athena integration."
+                        },
+                        "snowflake": {
+                            "name": "Snowflake DW",
+                            "tech": "Loads cleansed events into analytics tables for business intelligence, reporting, and dashboard querying.",
+                            "animExp": "Built Snowflake DBT models for energy trading reports at Avanade, speeding up query times by 40%."
+                        },
+                        "cache": {
+                            "name": "PostgreSQL Cache",
+                            "tech": "Hot database replica maintaining the latest system state, powering web app dashboards and real-time APIs.",
+                            "animExp": "Configured highly available Postgres read-replicas with pgpool load balancing at Business Architects Inc."
+                        },
+                        "dlq": {
+                            "name": "Dead Letter Queue",
+                            "tech": "Quarantines bad, malformed, or timed-out events. Holds them for manual inspection and re-driving.",
+                            "animExp": "Set up SQS Dead Letter Queues with CloudWatch alert triggers to notify teams of processing anomalies."
+                        }
+                    }
                 }
             },
             "devblog": {
@@ -170,11 +274,115 @@ const resources = {
                 "journey": "道のり",
                 "subtitle": "私がここに至るまでの歩み",
                 "roles": {
-                    "0": { "role": "コンサルタント (フルスタックデータ＆クラウド)", "company": "Avanade", "description": "LNGトレーディングシステムのためのデータパイプラインとメインの技術フローを設計。Microsoft AI Lab 神戸でロボティクスシステムのアプリケーション開発者として従事。大手電力・エネルギー会社のシステムにおける運用保守チームのサブセットを指揮。" },
+                    "0": { "role": "コンサルタント (フルスタックデータ＆クラウド)", "company": "Avanade", "description": "LNGトレーディングシステムのためのデータパイプラインとメインの技術フローを設計。Microsoft AI Lab 神尾でロボティクスシステムのアプリケーション開発者として従事。大手電力・エネルギー会社のシステムにおける運用保守チームのサブセットを指揮。" },
                     "1": { "role": "システムエンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "コンサルティングサービス、ショッピングモール、セキュリティサービス、金融・銀行プラットフォームなど、各種リニューアルにおけるインフラ・バックエンドエンジニアとして従事。負荷テスト、AWSカーネルのアップグレード、インフラ展開ロジック全般を担当。" },
                     "2": { "role": "フリーランス ソフトウェア エンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "社内SaaSシステムのメインバックエンドおよびインフラストラクチャー・エンジニアとして従事。カスタム管理システムおよびロールベースのインタラクションシステムを構築し、初期要件定義から本番環境までのAWSデプロイメントを管理。" },
                     "3": { "role": "研修生", "company": "独立行政法人国際協力機構（JICA）", "description": "熟練の言語専門家との直接的な協働を通じて、日本のビジネス・マナーと語学の学習に従事。" },
                     "4": { "role": "ティーチング・アシスタント", "company": "アメリカン・インターナショナル・ユニバーシティー・バングラデシュ", "description": "OpenGLに特化したコンピュータ・グラフィックス実験講座の教育補助を行い、参加学生の技術的基礎力の向上に積極的に貢献。" }
+                },
+                "pipeline": {
+                    "title": "データエンジニアリング",
+                    "subtitle": "インタラクティブ・データパイプライン・シミュレーター",
+                    "desc": "アニムのエンタープライズアーキテクチャ設計の経験をモデルにした、高速なデータ取り込み、検証、変換、ストレージシステムのシミュレーションです。",
+                    "controls": {
+                        "title": "パイプライン操作",
+                        "start": "ストリーム再開",
+                        "pause": "ストリーム一時停止",
+                        "speed": "データ入力速度 (msg/秒)",
+                        "errorRate": "エラー注入率 (%)",
+                        "injectSchema": "スキーマエラー注入",
+                        "injectTimeout": "タイムアウトエラー注入",
+                        "injectDedup": "重複排除スパイク注入",
+                        "clearTerminal": "ログクリア"
+                    },
+                    "metrics": {
+                        "title": "リアルタイム指標",
+                        "ingested": "取り込み済",
+                        "processed": "処理済",
+                        "success": "正常処理率",
+                        "latency": "平均レイテンシ",
+                        "dlq": "DLQエラー数",
+                        "backpressure": "バックプレッシャー"
+                    },
+                    "nodeDetail": {
+                        "title": "コンポーネント詳細",
+                        "selectNode": "パイプラインの各ノードをクリックすると、技術仕様やコードのハイライト、アニムの実際の実装経験が表示されます。",
+                        "techSpecs": "技術仕様・診断",
+                        "animExp": "アニムの実装実績"
+                    },
+                    "stages": {
+                        "ingestion": "インジェクション (取り込み)",
+                        "validation": "バリデーション (検証)",
+                        "transformation": "トランスフォーム (変換)",
+                        "storage": "ストレージ (保存)"
+                    },
+                    "nodes": {
+                        "iot": {
+                            "name": "IoT テレメトリ ストリーム",
+                            "tech": "数百万台のエッジ電力・エネルギーデバイスから送信される高速なJSONイベントパケットをシミュレートします。",
+                            "animExp": "アバナードにおいて、電力会社のグリッドシステム向けにテレメトリメッセージをリアルタイムで処理するストリームインジェクションを設計しました。"
+                        },
+                        "api": {
+                            "name": "API ゲートウェイ",
+                            "tech": "トークン検証、レート制限、クライアントレベルのトラフィック管理を備えたHTTPウェブフックのペイロードを処理します。",
+                            "animExp": "株式会社ビジネス・アーキテクツにて、高負荷時のECおよび金融ポータル向けのRESTfulウェブフックハンドラを開発しました。"
+                        },
+                        "cdc": {
+                            "name": "データベース CDC",
+                            "tech": "Debeziumを介してPostgresやSQL Serverデータベースからのトランザクションコミットをログベースで解析します。",
+                            "animExp": "データベースレコードを低遅延検索キャッシュと同期するためのトランザクションCDCストリームを展開しました。"
+                        },
+                        "schema": {
+                            "name": "スキーマレジストリ",
+                            "tech": "メッセージペイロードのスキーマを厳密なApache Avro定義に照らし合わせて検証します。無効なJSONは即座に除外されます。",
+                            "animExp": "スキーマの不一致を防ぐため、AWS EventBridgeおよびKafka環境でレジストリ検証を構成しました。"
+                        },
+                        "dedup": {
+                            "name": "重複排除デデュープ",
+                            "tech": "高速なRedisクラスター内のスライディングウィンドウキャッシュを使用して、重複するメッセージIDをフィルタリングします。",
+                            "animExp": "10分間のスライディングウィンドウで、毎秒1万件以上のリクエストを処理するRedisベースのべき等性フィルターを作成しました。"
+                        },
+                        "compliance": {
+                            "name": "コンプライアンスガード",
+                            "tech": "テキストフィールド内のPII（個人情報）を検査し、クラウドへ送信する前に機密データをマスクします。",
+                            "animExp": "日本の個人情報保護法（APPI）に準拠するため、エンタープライズ顧客向けのコンプライアンスフィルターを構築しました。"
+                        },
+                        "joiner": {
+                            "name": "ストリーミング結合",
+                            "tech": "トランザクションイベントストリームを静的なディメンションデータベースキャッシュと結合し、リアルタイムでデータを拡張します。",
+                            "animExp": "ローカライズされたインメモリキャッシュルックアップを実装することで、ストリーミング時のメモリフットプリントを最適化しました。"
+                        },
+                        "aggregator": {
+                            "name": "集計エンジン",
+                            "tech": "指標を1分間のタンブリングウィンドウにグループ化し、移動平均、合計値、トラフィックピークを計算します。",
+                            "animExp": "取引量レポートを処理する分析用の集計パイプラインを設計しました。"
+                        },
+                        "anomaly": {
+                            "name": "異常検知器",
+                            "tech": "ストリーム入力に対して統計分析（Zスコア）を使用し、スパイクや予期しないデータの切断を検出します。",
+                            "animExp": "Microsoft AI Labにて、ロボティクスシステムのセンサー障害を監視・警告する検出プログラムを開発しました。"
+                        },
+                        "datalake": {
+                            "name": "S3 データレイク",
+                            "tech": "生メッセージを圧縮されたApache Parquet形式に圧縮し、AWS S3パーティションに保存します。",
+                            "animExp": "自動ライフサイクルポリシーとAthena統合を備えたペタバイト規模のデータレイクを管理しました。"
+                        },
+                        "snowflake": {
+                            "name": "Snowflake DWH",
+                            "tech": "クレンジングされたイベントをビジネスインテリジェンス、レポート、ダッシュボードクエリ用の分析テーブルにロードします。",
+                            "animExp": "アバナードにてエネルギー取引レポート用のSnowflake DBTモデルを構築し、クエリ処理速度を40%向上させました。"
+                        },
+                        "cache": {
+                            "name": "PostgreSQL キャッシュ",
+                            "tech": "最新のシステム状態を維持するホットデータベースレプリカ。WebアプリのダッシュボードやリアルタイムAPIの基盤となります。",
+                            "animExp": "株式会社ビジネス・アーキテクツにて、pgpoolによる負荷分散を備えた高可用性Postgresリードレプリカを構成しました。"
+                        },
+                        "dlq": {
+                            "name": "デッドレターキュー (DLQ)",
+                            "tech": "破損、不正、またはタイムアウトしたイベントを隔離します。手動での検査や再試行に備えて保持されます。",
+                            "animExp": "SQSデッドレターキューを設定し、処理異常が発生した際にチームへ通知するCloudWatchアラートを構成しました。"
+                        }
+                    }
                 }
             },
             "devblog": {
