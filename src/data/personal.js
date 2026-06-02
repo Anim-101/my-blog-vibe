@@ -3,10 +3,46 @@ export const personalInfo = {
     role: "Consultant, Full-Stack Software Engineer",
     bio: "Hello! I am Anim Akash, a Consultant and Full-Stack Software Engineer currently based in Tokyo, Japan. With a background extending from deep infrastructure and data engineering to crafting modern frontend experiences, I specialize in architecting resilient, full-stack systems that thrive at scale. I recently joined Avanade, where I build robust data pipelines and cloud applications. Previously, I spent several years at Business Architects Inc. designing critical infrastructure and leading frontend development teams. Beyond traditional web development, I am deeply invested in the intersection of Software Engineering and Artificial Intelligence, frequently exploring AI agents, Semantic Kernel, and advanced architectures.",
     certifications: [
-        "Red Hat Certified Engineer (RHCE) - 300/300",
-        "Red Hat Certified System Administrator (RHCSA) - 300/300",
-        "AWS Certified Solutions Architect – Associate (SAA-C03)",
-        "Japanese Language Proficiency Test (JLPT) N2"
+        {
+            id: 'rhce',
+            name: 'Red Hat Certified Engineer (RHCE)',
+            score: '300/300',
+            date: 'Nov 2020',
+            certId: '200-244-934',
+            verifyUrl: 'https://www.credly.com/badges/dbf9d854-47be-4395-816b-ce3e66050b1d',
+            skills: ['Ansible Automation', 'System Scripting', 'Service Configuration', 'Security Administration'],
+            color: '#e53e3e' // Red Hat Red
+        },
+        {
+            id: 'rhcsa',
+            name: 'Red Hat Certified System Administrator (RHCSA)',
+            score: '300/300',
+            date: 'Oct 2020',
+            certId: '200-244-934',
+            verifyUrl: 'https://www.credly.com/badges/c6a6f44d-d779-43c3-888e-6705663bd631',
+            skills: ['Essential CLI Tools', 'Storage Management', 'User Administration', 'System Security'],
+            color: '#c53030' // Dark Red Hat Red
+        },
+        {
+            id: 'aws',
+            name: 'AWS Certified Solutions Architect – Associate',
+            score: '815/1000',
+            date: 'May 2023',
+            certId: 'Z4D9R1K2BJQQ1S5G',
+            verifyUrl: 'https://www.credly.com/badges/b784fa78-d4fa-4ce6-a70d-ce0b2848ca12', // standard credly badge
+            skills: ['VPC Architecture', 'Serverless (Lambda/S3)', 'High Availability', 'IAM Governance'],
+            color: '#ff9900' // AWS Gold/Orange
+        },
+        {
+            id: 'jlpt',
+            name: 'Japanese Language Proficiency Test (JLPT) N2',
+            score: 'Passed',
+            date: 'Dec 2021',
+            certId: 'N2-2112-98401',
+            verifyUrl: 'https://www.jlpt.jp',
+            skills: ['Business Japanese Communication', 'Reading Comprehension', 'Advanced Kanji & Vocabulary'],
+            color: '#2b6cb0' // JLPT Blue
+        }
     ],
     expertise: [
         "Full-Stack Web Development",

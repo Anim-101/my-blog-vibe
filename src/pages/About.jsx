@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { GitHubCalendar } from 'react-github-calendar';
 import { personalInfo } from '../data/personal';
 import SkillsConstellation from '../components/SkillsConstellation';
+import CertificationsVault from '../components/CertificationsVault';
 import 'react-activity-calendar/tooltips.css';
 import './About.css';
 
@@ -110,19 +111,10 @@ const About = () => {
                             <p key={index}>{sentence.trim()}</p>
                         )) || <p>{t('about.bio')}</p>}
                     </div>
-
-                    <div className="about-stats single-card">
-                        <div className="stat-card glass-card">
-                            <h4>{t('about.certifications')}</h4>
-                            <ul className="stats-list">
-                                {personalInfo.certifications?.map((cert, index) => (
-                                    <li key={index}>{cert}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </section>
+
+            <CertificationsVault />
 
             <SkillsConstellation />
 

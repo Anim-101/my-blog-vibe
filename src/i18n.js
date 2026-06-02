@@ -58,6 +58,58 @@ const resources = {
                     "error": "Failed to load GitHub activity.",
                     "days": "days",
                     "commits": "commits"
+                },
+                "certVault": {
+                    "title": "Professional Credentials",
+                    "subtitle": "Holographic Certification Vault",
+                    "desc": "Interact with 3D reflective certificates. Click a card to flip and verify credentials.",
+                    "cardFlipPrompt": "Click to flip",
+                    "certId": "Credential ID",
+                    "date": "Issue Date",
+                    "score": "Score",
+                    "skills": "Skills Verified",
+                    "verify": "Verify Badge"
+                },
+                "certificationsList": {
+                    "rhce": {
+                        "name": "Red Hat Certified Engineer (RHCE)",
+                        "score": "300/300 (Perfect Score)",
+                        "skills": {
+                            "0": "Ansible Automation",
+                            "1": "System Scripting",
+                            "2": "Service Configuration",
+                            "3": "Security Administration"
+                        }
+                    },
+                    "rhcsa": {
+                        "name": "Red Hat Certified System Administrator (RHCSA)",
+                        "score": "300/300 (Perfect Score)",
+                        "skills": {
+                            "0": "Essential CLI Tools",
+                            "1": "Storage Management",
+                            "2": "User Administration",
+                            "3": "System Security"
+                        }
+                    },
+                    "aws": {
+                        "name": "AWS Certified Solutions Architect – Associate",
+                        "score": "815/1000",
+                        "skills": {
+                            "0": "VPC Architecture",
+                            "1": "Serverless (Lambda/S3)",
+                            "2": "High Availability",
+                            "3": "IAM Governance"
+                        }
+                    },
+                    "jlpt": {
+                        "name": "Japanese Language Proficiency Test (JLPT) N2",
+                        "score": "Passed",
+                        "skills": {
+                            "0": "Business Japanese Communication",
+                            "1": "Reading Comprehension",
+                            "2": "Advanced Kanji & Vocabulary"
+                        }
+                    }
                 }
             },
             "experience": {
@@ -267,6 +319,58 @@ const resources = {
                     "error": "GitHubデータの読み込みに失敗しました。",
                     "days": "日",
                     "commits": "回"
+                },
+                "certVault": {
+                    "title": "保有資格",
+                    "subtitle": "ホログラフィック資格保管庫",
+                    "desc": "3Dの反射する証明書カードを操作できます。カードをクリックすると裏返り、詳細情報と確認用リンクが表示されます。",
+                    "cardFlipPrompt": "クリックして裏返す",
+                    "certId": "資格証明 ID",
+                    "date": "取得日",
+                    "score": "スコア",
+                    "skills": "検証されたスキル",
+                    "verify": "資格を検証する"
+                },
+                "certificationsList": {
+                    "rhce": {
+                        "name": "Red Hat 認定エンジニア (RHCE)",
+                        "score": "300/300 (満点)",
+                        "skills": {
+                            "0": "Ansible自動化構築",
+                            "1": "システムスクリプト",
+                            "2": "サービス設定",
+                            "3": "セキュリティ管理"
+                        }
+                    },
+                    "rhcsa": {
+                        "name": "Red Hat 認定システム管理者 (RHCSA)",
+                        "score": "300/300 (満点)",
+                        "skills": {
+                            "0": "基本的なCLIツール",
+                            "1": "ストレージ管理",
+                            "2": "ユーザー管理",
+                            "3": "システムセキュリティ"
+                        }
+                    },
+                    "aws": {
+                        "name": "AWS 認定ソリューションアーキテクト – アソシエイト",
+                        "score": "815/1000 (合格分数: 720)",
+                        "skills": {
+                            "0": "VPCインフラ設計",
+                            "1": "サーバーレス構成 (Lambda/S3)",
+                            "2": "高可用性・耐障害性設計",
+                            "3": "IAMセキュリティガバナンス"
+                        }
+                    },
+                    "jlpt": {
+                        "name": "日本語能力試験 (JLPT) N2",
+                        "score": "合格",
+                        "skills": {
+                            "0": "ビジネス日本語会話",
+                            "1": "読解・文章理解",
+                            "2": "高度な漢字と語彙力"
+                        }
+                    }
                 }
             },
             "experience": {
