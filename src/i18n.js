@@ -5,6 +5,19 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
     en: {
         translation: {
+            "copilot": {
+                "title": "Anim's AI Copilot",
+                "subtitle": "Interactive Recruiter Assistant",
+                "status": "Online",
+                "placeholder": "Ask about skills, work, certs...",
+                "greet": "Hi! I'm Anim's AI Copilot. Ask me about his experience, certifications, or projects!",
+                "suggested": {
+                    "certs": "What certs does he have?",
+                    "skills": "What are his core skills?",
+                    "experience": "Where does he work now?",
+                    "ai": "Tell me about his AI work."
+                }
+            },
             "nav": {
                 "home": "Home",
                 "about": "About",
@@ -97,6 +110,19 @@ const resources = {
     },
     ja: {
         translation: {
+            "copilot": {
+                "title": "Anim's AI コパイロット",
+                "subtitle": "インタラクティブ採用アシスタント",
+                "status": "オンライン",
+                "placeholder": "スキル、職歴、資格など...",
+                "greet": "こんにちは！アニムのAIコパイロットです。彼の経歴や資格、プロジェクトについて何でも聞いてください！",
+                "suggested": {
+                    "certs": "どんな資格を持っていますか？",
+                    "skills": "得意な技術は何ですか？",
+                    "experience": "現在はどこで働いていますか？",
+                    "ai": "AI開発について教えてください。"
+                }
+            },
             "nav": {
                 "home": "ホーム",
                 "about": "自己紹介",
