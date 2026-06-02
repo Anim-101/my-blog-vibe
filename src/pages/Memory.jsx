@@ -45,6 +45,18 @@ const Memory = () => {
     const containerRef = useRef(null);
     const spaceRef = useRef(null);
     const [activeStarId, setActiveStarId] = useState(null);
+    const [lightboxPhoto, setLightboxPhoto] = useState(null);
+
+    // Close lightbox on Escape key press
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setLightboxPhoto(null);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     // Generate random but EVENLY SPACED positions using a Jittered Grid layout
     const stars = useMemo(() => {
@@ -254,9 +266,12 @@ const Memory = () => {
 
     const handleStarClick = (e, id) => {
         e.stopPropagation();
-        // If clicking same star on mobile, might want to go to the page? 
-        // For now, toggle the preview window.
         setActiveStarId(activeStarId === id ? null : id);
+    };
+
+    const handlePreviewClick = (e, photo) => {
+        e.stopPropagation();
+        setLightboxPhoto(photo);
     };
 
     return (
@@ -330,7 +345,10 @@ const Memory = () => {
                                 onMouseLeave={!isTouchDevice ? () => setActiveStarId(null) : undefined}
                                 onClick={(e) => handleStarClick(e, star.id)}
                             >
-                                <div className="memory-preview">
+                                <div 
+                                    className="memory-preview"
+                                    onClick={(e) => handlePreviewClick(e, star)}
+                                >
                                     <div className="memory-preview-img-wrapper">
                                         {star.images && star.images[0] && (
                                             <img 
@@ -351,6 +369,32 @@ const Memory = () => {
                     );
                 })}
             </div>
+
+            {/* Fullscreen Lightbox Modal */}
+            {lightboxPhoto && (
+                <div className="memory-lightbox" onClick={() => setLightboxPhoto(null)}>
+                    <button 
+                        className="lightbox-close" 
+                        onClick={() => setLightboxPhoto(null)} 
+                        aria-label="Close lightbox"
+                    >
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="lightbox-image-wrapper">
+                            <img 
+                                src={lightboxPhoto.images[0]} 
+                                alt={lightboxPhoto.title}
+                                onContextMenu={(e) => e.preventDefault()}
+                                onDragStart={(e) => e.preventDefault()}
+                            />
+                        </div>
+                        <h2 className="lightbox-title">{lightboxPhoto.title}</h2>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

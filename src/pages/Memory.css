@@ -86,10 +86,12 @@
     /* Removed the pale blue background so the image doesn't get tinted weirdly */
 }
 
-/* Make preview click-through (pointer-events: none) at all times so it never blocks background clicks or neighboring star taps */
+/* Make preview click-through (pointer-events: none) at all times so it never blocks background clicks or neighboring star taps.
+   However, when hovered or active, make it clickable with zoom-in cursor. */
 .memory-star:hover .memory-preview, .memory-star.active .memory-preview {
     opacity: 1;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: zoom-in;
     /* Bounces into its precalculated random rotation! */
     transform: translate(-50%, 40px) scale(0.6) rotate(var(--rotation, 0deg));
 }
@@ -308,5 +310,125 @@
     .near-bottom.align-right .memory-star:hover .memory-preview,
     .near-bottom.align-right .memory-star.active .memory-preview {
         transform: translate(-85%, calc(-100% - 15px)) scale(0.95) rotate(var(--rotation, 0deg));
+    }
+}
+
+/* Fullscreen Lightbox Modal */
+.memory-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(3, 4, 6, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards ease-out;
+}
+
+.lightbox-content {
+    background: white;
+    padding: 1.5rem;
+    padding-bottom: 3.5rem; /* Standard polaroid bottom spacing */
+    border-radius: 8px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.5);
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: scale(0.9);
+    animation: zoomIn 0.35s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-sizing: border-box;
+}
+
+.lightbox-image-wrapper {
+    max-width: 100%;
+    max-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.lightbox-image-wrapper img {
+    max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    display: block;
+}
+
+.lightbox-title {
+    color: #0f172a;
+    font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+    font-weight: 800;
+    text-align: center;
+    margin: 1.5rem 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 210;
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.08) rotate(90deg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9) translateY(20px); }
+    to { transform: scale(1) translateY(0); }
+}
+
+/* Polaroid size adjustments for mobile in Lightbox */
+@media (max-width: 768px) {
+    .lightbox-content {
+        padding: 1rem;
+        padding-bottom: 2.5rem;
+        border-radius: 6px;
+    }
+
+    .lightbox-image-wrapper {
+        max-height: 50vh;
+    }
+
+    .lightbox-image-wrapper img {
+        max-height: 50vh;
+    }
+
+    .lightbox-close {
+        top: 1.25rem;
+        right: 1.25rem;
+        width: 40px;
+        height: 40px;
     }
 }
