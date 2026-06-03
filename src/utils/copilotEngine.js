@@ -20,6 +20,13 @@ const KNOWLEDGE_BASE = {
                 "• **AI Agents:** Microsoft Semantic Kernel, AutoGen, LLM integrations.\n" +
                 "• **Other:** OpenGL (3D graphics TA experience), blockchain development.\n\n" +
                 "Which area are you interested in?",
+        projects: "Anim has designed and built several key projects, highlighting both his backend/data systems and interactive frontend skills:\n\n" +
+                  "• **Interactive Data Engineering Pipeline Simulator:** A real-time data flow sandbox built on the Experience page that simulates high-throughput streaming, validation (Avro), deduplication (Redis), mask filters, and storage (S3 Data Lake, Snowflake).\n" +
+                  "• **3D Skills Constellation:** An interactive, physics-based 3D particle constellation sphere on the About page projecting his technical stack using HTML5 Canvas coordinate math.\n" +
+                  "• **Holographic Certification Vault:** A reflective 3D credentials showcase vault on the About page with realistic light glares and card-flipping interactions.\n" +
+                  "• **A Study on Data Compression:** A C-based dissertation project (available on GitHub) implementing, upgrading, and benchmarking standard compression encoders and decoders from scratch.\n" +
+                  "• **Conversational AI Copilot:** This recruiter assistant widget powered by client-side NLP intent matching.\n\n" +
+                  "Which project details would you like to explore?",
         experience: "Anim is currently working as a **Team Lead (Consultant) - Full-Stack Development** at **Avanade** in Tokyo, Japan (since March 2025). He:\n\n" +
                      "• Designs core data pipelines and data ingestion workflows for LNG trading systems.\n" +
                      "• Serves as Application Developer (Cloud) for robotics systems at **Microsoft AI Lab Kobe** and Kawasaki Heavy Industries.\n" +
@@ -40,7 +47,8 @@ const KNOWLEDGE_BASE = {
         blog: "Anim writes about modern software architectures, React 19 safety patterns, and web development on his **Dev Blog** section. Feel free to check out his articles there!",
         default: "I'm not quite sure about that specific detail. But I can tell you all about Anim's:\n\n" +
                  "• Current work at **Avanade**\n" +
-                 "• Perfect 300/300 **Red Hat Certifications**\n" +
+                 "• **Microsoft Azure & AWS Certifications**\n" +
+                 "• Core **projects** (like the Pipeline Simulator or 3D Constellation)\n" +
                  "• **AI Agent** experiments (Semantic Kernel, AutoGen)\n" +
                  "• Core **technical stack** or **contact details**\n\n" +
                  "What would you like to explore?"
@@ -66,6 +74,13 @@ const KNOWLEDGE_BASE = {
                 "• **AIエージェント:** Microsoft Semantic Kernel, AutoGen, LLM統合開発。\n" +
                 "• **その他:** OpenGL (3DグラフィックスTA経験), ブロックチェーン開発。\n\n" +
                 "どの分野に興味がありますか？",
+        projects: "アニムは、バックエンド/データシステムやインタラクティブなフロントエンド開発の実績を示す以下の主要プロジェクトを設計・構築しています：\n\n" +
+                  "• **データパイプライン・シミュレーター:** 経歴（Experience）ページに構築されたリアルタイムのデータ処理サンドボックス。高速ストリーミング、Avroスキーマ検証、Redis重複排除、個人情報マスク、S3データレイク/Snowflakeへの保存を模擬的に可視化します。\n" +
+                  "• **3D技術スタック星座:** 自己紹介（About）ページに搭載された、物理演算ベースのインタラクション3D星座。HTML5 Canvasの座標変換数学を使用して回転やノード選択を実現しています。\n" +
+                  "• **ホログラフィック資格保管庫:** 自己紹介（About）ページにある、3Dの反射する証明書保管庫。現実的な光沢の反射効果とカードめくりのインタラクションを備えています。\n" +
+                  "• **データ圧縮に関する研究:** C言語で書かれた論文プロジェクト（GitHubで公開中）。標準的な圧縮エンコーダーとデコーダーをゼロから実装・拡張・ベンチマーク測定しました。\n" +
+                  "• **AI採用アシスタント・コパイロット:** 現在あなたがチャットしている、ブラウザ上で動作する日英バイリンガル対応のチャットアシスタントです。\n\n" +
+                  "どのプロジェクトの詳細について知りたいですか？",
         experience: "アニムは現在、東京の**アバナード株式会社**にて**チームリード（コンサルタント）- フルスタック開発**として勤務しています（2025年3月〜現在）。\n\n" +
                      "• 大手ガス生産会社におけるLNG取引システムのデータパイプラインおよびデータ取り込みフロー設計。\n" +
                      "• **Microsoft AI Lab 神戸**および川崎重工業のロボティクスシステムのアプリケーション開発（クラウド）。\n" +
@@ -89,7 +104,8 @@ const KNOWLEDGE_BASE = {
         blog: "アニムはReact 19の設計パターン、モダンWebアーキテクチャについて**開発ブログ (Dev Blog)**で発信しています。ぜひ記事を読んでみてください！",
         default: "ご質問の内容について十分な情報を検索できませんでした。ですが、以下の情報についてお答えできます：\n\n" +
                  "• 現在の**アバナード**での仕事内容\n" +
-                 "• 満点合格した**Red Hat認定資格 (RHCE/RHCSA)**\n" +
+                 "• **Azure・AWS・Red Hat認定資格**\n" +
+                 "• 開発した主要**プロジェクト**（データパイプライン、3D技術星座等）\n" +
                  "• **AIエージェント**開発実績 (Semantic Kernel, AutoGen)\n" +
                  "• 主な**技術スタック**や**連絡先**\n\n" +
                  "何について聞きたいですか？"
@@ -100,36 +116,53 @@ export const getAIResponse = (query, lang = 'en') => {
     const q = query.toLowerCase().trim();
     const db = KNOWLEDGE_BASE[lang] || KNOWLEDGE_BASE['en'];
     
-    // Intent mapping
-    if (q.includes('hi') || q.includes('hello') || q.includes('hey') || q.includes('greetings') || q.includes('こんにちは') || q.includes('はじめまして') || q.includes('yo') || q.includes('test') || q.includes('greet')) {
+    // 1. Greetings
+    const isGreeting = /\b(hi|hello|hey|greetings|yo|test|greet)\b/i.test(q) || 
+                       q.includes('こんにちは') || 
+                       q.includes('はじめまして');
+    if (isGreeting) {
         const idx = Math.floor(Math.random() * db.greetings.length);
         return db.greetings[idx];
     }
     
+    // 2. Projects (very specific)
+    if (q.includes('project') || q.includes('portfolio') || q.includes('simulator') || q.includes('constellation') || q.includes('vault') || q.includes('compression') || q.includes('プロジェクト') || q.includes('作品') || q.includes('ポートフォリオ') || q.includes('シミュレータ') || q.includes('星座') || q.includes('圧縮') || q.includes('保管庫')) {
+        return db.projects;
+    }
+    
+    // 3. AI Agent (very specific)
+    const isAI = /\bai\b/i.test(q) || q.includes('agent') || q.includes('semantickernel') || q.includes('autogen') || q.includes('llm') || q.includes('gpt') || q.includes('openai') || q.includes('gemini') || q.includes('エージェント') || q.includes('人工知能');
+    if (isAI) {
+        return db.ai;
+    }
+    
+    // 4. Certifications
     if (q.includes('cert') || q.includes('qualification') || q.includes('rhce') || q.includes('rhcsa') || q.includes('aws') || q.includes('jlpt') || q.includes('n2') || q.includes('azure') || q.includes('microsoft') || q.includes('資格') || q.includes('認定')) {
         return db.certs;
     }
     
+    // 5. Skills
     if (q.includes('skill') || q.includes('tech') || q.includes('stack') || q.includes('expert') || q.includes('program') || q.includes('backend') || q.includes('frontend') || q.includes('開発') || q.includes('技術') || q.includes('言語') || q.includes('得意')) {
         return db.skills;
     }
     
+    // 6. Experience / Work (general, contains "work")
     if (q.includes('work') || q.includes('job') || q.includes('experience') || q.includes('company') || q.includes('avanade') || q.includes('business architect') || q.includes('経歴') || q.includes('職歴') || q.includes('会社') || q.includes('仕事') || q.includes('アバナード')) {
         return db.experience;
     }
     
-    if (q.includes('ai') || q.includes('agent') || q.includes('semantickernel') || q.includes('autogen') || q.includes('llm') || q.includes('gpt') || q.includes('openai') || q.includes('gemini') || q.includes('エージェント') || q.includes('人工知能')) {
-        return db.ai;
-    }
-    
-    if (q.includes('contact') || q.includes('email') || q.includes('hire') || q.includes('github') || q.includes('linkedin') || q.includes('resume') || q.includes('cv') || q.includes('連絡') || q.includes('メール') || q.includes('採用')) {
+    // 7. Contact
+    const isContact = q.includes('contact') || q.includes('email') || q.includes('hire') || q.includes('github') || q.includes('linkedin') || q.includes('resume') || /\bcv\b/i.test(q) || q.includes('連絡') || q.includes('メール') || q.includes('採用');
+    if (isContact) {
         return db.contact;
     }
     
+    // 8. Hobbies
     if (q.includes('hobby') || q.includes('interest') || q.includes('photo') || q.includes('camera') || q.includes('opengl') || q.includes('taekwondo') || q.includes('graphics') || q.includes('趣味') || q.includes('写真') || q.includes('テコンドー') || q.includes('グラフィックス')) {
         return db.hobbies;
     }
     
+    // 9. Blog
     if (q.includes('blog') || q.includes('article') || q.includes('post') || q.includes('ブログ') || q.includes('記事')) {
         return db.blog;
     }
