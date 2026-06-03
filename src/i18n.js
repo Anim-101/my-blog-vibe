@@ -43,7 +43,7 @@ const resources = {
                 "me": "Me",
                 "subtitle": "Get to know the person behind the code.",
                 "bio": "Hello! I am Anim Akash, a Consultant and Full-Stack Software Engineer currently based in Tokyo, Japan. With a background extending from deep infrastructure and data engineering to crafting modern frontend experiences, I specialize in architecting resilient, full-stack systems that thrive at scale. I recently joined Avanade, where I build robust data pipelines and cloud applications. Previously, I spent several years at Business Architects Inc. designing critical infrastructure and leading frontend development teams. Beyond traditional web development, I am deeply invested in the intersection of Software Engineering and Artificial Intelligence, frequently exploring AI agents, Semantic Kernel, and advanced architectures.",
-                "role": "Consultant, Full-Stack Software Engineer",
+                "role": "Team Lead (Consultant) - Full-Stack Development",
                 "certifications": "Certifications",
                 "focusAreas": "Focus Areas",
                 "githubTitle": "GitHub",
@@ -117,11 +117,11 @@ const resources = {
                 "journey": "Journey",
                 "subtitle": "The path that brought me here.",
                 "roles": {
-                    "0": { "role": "Consultant (Full-Stack Data & Cloud)", "company": "Avanade", "description": "Designing data pipelines and main technical flow for an LNG trading system. Serving as Application Developer for robotics systems at Microsoft AI Lab Kobe. Leading subsets of operation & maintenance teams for major electricity & energy company systems." },
-                    "1": { "role": "System Engineer", "company": "Business Architects Inc.", "description": "Served as Infrastructure & Backend engineer on various renewals including a consulting service, a shopping mall, a security service, and a financial/banking platform. Handled stress testing, AWS kernel upgrades, and overall infrastructure deployment logic." },
-                    "2": { "role": "Freelance Software Engineer", "company": "Business Architects Inc.", "description": "Worked as the main backend and infrastructure engineer for an in-house SaaS system. Built custom admin and role-based interaction systems, and managed AWS deployments from initial requirement definitions through production." },
-                    "3": { "role": "Trainee", "company": "Japan International Cooperation Agency (JICA)", "description": "Engaged in learning Japanese business manners and language through direct collaboration with experienced linguists." },
-                    "4": { "role": "Teaching Assistant", "company": "American International University-Bangladesh", "description": "Assisted in teaching a computer graphics lab course strictly focused on OpenGL, actively enhancing participating students' fundamental technical skills." }
+                    "0": { "role": "Team Lead (Consultant) - Full-Stack Development", "company": "Avanade", "description": "Full Stack Engineer for an LNG-related trading system at a major gas production company. Responsible for designing core data pipelines and data ingestion workflows. Led the design and implementation of integration, system, and regression testing to ensure high-quality and reliable application performance. Application Developer (Cloud) for a system related to Microsoft AI Lab Kobe and Kawasaki Heavy Industries' robotic arms. Led the migration and transfer of the entire system from one Azure tenant to another. Served as a sub-team lead, leading a team in daily and monthly operations and maintenance for a supply chain system at an electricity and energy company." },
+                    "1": { "role": "System Engineer", "company": "Business Architects Inc.", "description": "Infrastructure & Backend Engineer contributing to the renewal of the main website for multiple customers. Designed and led infrastructure renewal for a shopping mall system, including stress testing to ensure system reliability. Served as Team Lead for frontend engineers on the renewal of a security service website. Acted as Sub-Team Lead for frontend engineers on the renewal of a financial service website. Contributed as a Frontend Engineer to the renewal of a banking service website. Provided operations and maintenance support for an advertising platform of a Japanese railway system, including upgrading the kernel from Amazon Linux 2 to Amazon Linux 3, and managed monthly maintenance and system monitoring." },
+                    "2": { "role": "Freelance Software Engineer", "company": "Business Architects Inc.", "description": "Backend and Infrastructure Engineer. Served as the primary backend engineer for an in-house SaaS system. Developed a custom admin interaction system and a custom comment and role-based interaction system. Deployed, managed, and maintained infrastructure on AWS. Participated in the full lifecycle, from requirements definition through development, and continued to manage and maintain the system post-production." },
+                    "3": { "role": "Trainee", "company": "Japan International Cooperation Agency (JICA)", "description": "Engaged in learning Japanese business manners and language through collaboration with experienced linguists." },
+                    "4": { "role": "Teaching Assistant", "company": "American International University-Bangladesh", "description": "Assisted in teaching a computer graphics lab course focused on OpenGL, enhancing students' technical skills." }
                 },
                 "pipeline": {
                     "title": "Data Engineering",
@@ -304,7 +304,7 @@ const resources = {
                 "me": "ついて",
                 "subtitle": "私の人物像について",
                 "bio": "こんにちは！ Anim Akash です。現在、東京を拠点とするコンサルタントおよびフルスタックソフトウェアエンジニアです。深いインフラストラクチャやデータエンジニアリングから、モダンなフロントエンドエクスペリエンスの構築に至るまでのバックグラウンドを持ち、大規模な環境で機能する回復力のあるフルスタックシステムの設計を専門としています。最近アバナードに入社し、強力なデータパイプラインとクラウド アプリケーションを構築しています。それ以前は、Business Architects Inc. に数年間勤務し、重要なインフラストラクチャの設計とフロントエンド開発チームの指揮に携わりました。従来のWeb開発にとどまらず、ソフトウェアエンジニアリングとAIの交差点に深い関心を持ち、AIエージェント、セマンティックカーネル、先進的なアーキテクチャなどを探求しています。",
-                "role": "コンサルタント、フルスタックソフトウェアエンジニア",
+                "role": "チームリード（コンサルタント）- フルスタック開発",
                 "certifications": "資格",
                 "focusAreas": "専門分野",
                 "githubTitle": "GitHub",
@@ -378,9 +378,9 @@ const resources = {
                 "journey": "道のり",
                 "subtitle": "私がここに至るまでの歩み",
                 "roles": {
-                    "0": { "role": "コンサルタント (フルスタックデータ＆クラウド)", "company": "Avanade", "description": "LNGトレーディングシステムのためのデータパイプラインとメインの技術フローを設計。Microsoft AI Lab 神尾でロボティクスシステムのアプリケーション開発者として従事。大手電力・エネルギー会社のシステムにおける運用保守チームのサブセットを指揮。" },
-                    "1": { "role": "システムエンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "コンサルティングサービス、ショッピングモール、セキュリティサービス、金融・銀行プラットフォームなど、各種リニューアルにおけるインフラ・バックエンドエンジニアとして従事。負荷テスト、AWSカーネルのアップグレード、インフラ展開ロジック全般を担当。" },
-                    "2": { "role": "フリーランス ソフトウェア エンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "社内SaaSシステムのメインバックエンドおよびインフラストラクチャー・エンジニアとして従事。カスタム管理システムおよびロールベースのインタラクションシステムを構築し、初期要件定義から本番環境までのAWSデプロイメントを管理。" },
+                    "0": { "role": "チームリード（コンサルタント）- フルスタック開発", "company": "Avanade", "description": "大手ガス生産会社におけるLNG関連トレーディングシステムのフルスタックエンジニア。コアデータパイプラインおよびデータ取り込みワークフローの設計を担当。高品質で信頼性の高いアプリケーションパフォーマンスを保証するため、統合・システム・回帰テストの設計と実装を主導。Microsoft AI Lab神戸および川崎重工業のロボットアーム関連システムのアプリケーションデベロッパー（クラウド）。システム全体をあるAzureテナントから別のテナントへ移行・転送する作業を主導。電力・エネルギー会社のサプライチェーンシステムにおける日次・月次の運用保守チームのサブチームリードとして従事。" },
+                    "1": { "role": "システムエンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "複数顧客向けの本サイトリニューアルにおけるインフラおよびバックエンドエンジニア。ショッピングモールシステムのインフラリニューアルの設計およびシステム信頼性確保のための負荷テストを主導。セキュリティサービスサイトリニューアルにおけるフロントエンドエンジニアのチームリードを担当。金融サービスサイトリニューアルにおけるフロントエンドエンジニアのサブチームリードとして従事。銀行サービスサイトリニューアルにフロントエンドエンジニアとして貢献。日本の鉄道会社の広告プラットフォームの運用保守サポートを担当し、Amazon Linux 2からAmazon Linux 3へのカーネルアップグレード、月次メンテナンス、およびシステム監視を管理。" },
+                    "2": { "role": "フリーランス ソフトウェア エンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "バックエンドおよびインフラエンジニア。社内SaaSシステムのメインバックエンドエンジニアとして従事。カスタム管理画面連携システムやコメント・ロールベースの連携システムを開発。AWS上のインフラストラクチャのデプロイ、管理、保守。要件定義から開発までのフルライフサイクルに参画し、本番移行後のシステム管理・保守を継続。" },
                     "3": { "role": "研修生", "company": "独立行政法人国際協力機構（JICA）", "description": "熟練の言語専門家との直接的な協働を通じて、日本のビジネス・マナーと語学の学習に従事。" },
                     "4": { "role": "ティーチング・アシスタント", "company": "アメリカン・インターナショナル・ユニバーシティー・バングラデシュ", "description": "OpenGLに特化したコンピュータ・グラフィックス実験講座の教育補助を行い、参加学生の技術的基礎力の向上に積極的に貢献。" }
                 },

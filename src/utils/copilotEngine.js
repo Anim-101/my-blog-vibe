@@ -18,11 +18,11 @@ const KNOWLEDGE_BASE = {
                 "• **AI Agents:** Microsoft Semantic Kernel, AutoGen, LLM integrations.\n" +
                 "• **Other:** OpenGL (3D graphics TA experience), blockchain development.\n\n" +
                 "Which area are you interested in?",
-        experience: "Anim is currently working as a **Consultant (Full-Stack Data & Cloud)** at **Avanade** in Tokyo, Japan (since March 2025). He:\n\n" +
-                     "• Designs data pipelines and logic for LNG trading systems.\n" +
-                     "• Serves as Application Developer for robotics systems at **Microsoft AI Lab Kobe**.\n" +
-                     "• Leads O&M engineering teams for major energy companies.\n\n" +
-                     "Previously, he spent 3 years at **Business Architects Inc.** as a System Engineer upgrading AWS kernels and managing infrastructure. Would you like his contact details?",
+        experience: "Anim is currently working as a **Team Lead (Consultant) - Full-Stack Development** at **Avanade** in Tokyo, Japan (since March 2025). He:\n\n" +
+                     "• Designs core data pipelines and data ingestion workflows for LNG trading systems.\n" +
+                     "• Serves as Application Developer (Cloud) for robotics systems at **Microsoft AI Lab Kobe** and Kawasaki Heavy Industries.\n" +
+                     "• Leads O&M engineering and daily/monthly operations for supply chain systems at power/energy companies.\n\n" +
+                     "Previously, he spent 3 years at **Business Architects Inc.** as a System Engineer upgrading AWS/Linux kernels, designing infrastructure renewals, and leading frontend teams. Would you like his contact details?",
         ai: "Anim is deeply interested in the intersection of Software Engineering and Artificial Intelligence. His AI credentials include:\n\n" +
             "• Developing robotics applications at **Microsoft AI Lab Kobe**.\n" +
             "• Active exploration of agentic AI frameworks: **Semantic Kernel** (Microsoft) and **AutoGen** (Microsoft/pydantic).\n" +
@@ -62,11 +62,11 @@ const KNOWLEDGE_BASE = {
                 "• **AIエージェント:** Microsoft Semantic Kernel, AutoGen, LLM統合開発。\n" +
                 "• **その他:** OpenGL (3DグラフィックスTA経験), ブロックチェーン開発。\n\n" +
                 "どの分野に興味がありますか？",
-        experience: "アニムは現在、東京の**アバナード株式会社**にて**コンサルタント (フルスタックデータ＆クラウド)**として勤務しています（2025年3月〜現在）。\n\n" +
-                     "• LNG取引システムのデータパイプライン構築とロジック設計。\n" +
-                     "• **Microsoft AI Lab 神戸**でのロボティクスシステムのアプリケーション開発。\n" +
-                     "• 大手電力・エネルギー会社向けシステムの運用保守チームのサブセット指揮。\n\n" +
-                     "それ以前は、**株式会社ビジネス・アーキテクツ**に3年間在籍し、インフラ・バックエンド・AWSアップグレードなどを担当しました。連絡先を表示しますか？",
+        experience: "アニムは現在、東京の**アバナード株式会社**にて**チームリード（コンサルタント）- フルスタック開発**として勤務しています（2025年3月〜現在）。\n\n" +
+                     "• 大手ガス生産会社におけるLNG取引システムのデータパイプラインおよびデータ取り込みフロー設計。\n" +
+                     "• **Microsoft AI Lab 神戸**および川崎重工業のロボティクスシステムのアプリケーション開発（クラウド）。\n" +
+                     "• 大手電力・エネルギー会社のサプライチェーンシステムにおける日次・月次の運用保守サブチームリード。\n\n" +
+                     "それ以前は、**株式会社ビジネス・アーキテクツ**に3年間在籍し、インフラ構築、ショッピングモールシステムの負荷テスト、セキュリティ・金融サービスのフロントエンドチームリード、AWS/Linuxカーネルアップグレードやシステム監視などを担当しました。連絡先を表示しますか？",
         ai: "アニムはソフトウェアエンジニアリングと人工知能 (AI) の融合に強い関心を持っています。彼のAI実績は以下の通りです：\n\n" +
             "• **Microsoft AI Lab 神戸**でのロボティクスAI・アプリケーション開発。\n" +
             "• エージェントAIフレームワーク（**Semantic Kernel**, **AutoGen**）の活用。\n" +

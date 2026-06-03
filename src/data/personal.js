@@ -1,6 +1,6 @@
 export const personalInfo = {
     name: "Anim Akash",
-    role: "Consultant, Full-Stack Software Engineer",
+    role: "Team Lead (Consultant) - Full-Stack Development",
     bio: "Hello! I am Anim Akash, a Consultant and Full-Stack Software Engineer currently based in Tokyo, Japan. With a background extending from deep infrastructure and data engineering to crafting modern frontend experiences, I specialize in architecting resilient, full-stack systems that thrive at scale. I recently joined Avanade, where I build robust data pipelines and cloud applications. Previously, I spent several years at Business Architects Inc. designing critical infrastructure and leading frontend development teams. Beyond traditional web development, I am deeply invested in the intersection of Software Engineering and Artificial Intelligence, frequently exploring AI agents, Semantic Kernel, and advanced architectures.",
     certifications: [
         {
@@ -61,10 +61,10 @@ export const personalInfo = {
 export const experiences = [
     {
         id: 0,
-        role: "Consultant (Full-Stack Data & Cloud)",
+        role: "Team Lead (Consultant) - Full-Stack Development",
         company: "Avanade",
         period: "Mar 2025 - Present",
-        description: "Designing data pipelines and main technical flow for an LNG trading system. Serving as Application Developer for robotics systems at Microsoft AI Lab Kobe. Leading subsets of operation & maintenance teams for major electricity & energy company systems.",
+        description: "Full Stack Engineer for an LNG-related trading system at a major gas production company. Responsible for designing core data pipelines and data ingestion workflows. Led the design and implementation of integration, system, and regression testing to ensure high-quality and reliable application performance. Application Developer (Cloud) for a system related to Microsoft AI Lab Kobe and Kawasaki Heavy Industries' robotic arms. Led the migration and transfer of the entire system from one Azure tenant to another. Served as a sub-team lead, leading a team in daily and monthly operations and maintenance for a supply chain system at an electricity and energy company.",
         technologies: ["Data Engineering", "Cloud Systems", "Microservices"]
     },
     {
@@ -72,7 +72,7 @@ export const experiences = [
         role: "System Engineer",
         company: "Business Architects Inc.",
         period: "Apr 2022 - Feb 2025",
-        description: "Served as Infrastructure & Backend engineer on various renewals including a consulting service, a shopping mall, a security service, and a financial/banking platform. Handled stress testing, AWS kernel upgrades, and overall infrastructure deployment logic.",
+        description: "Infrastructure & Backend Engineer contributing to the renewal of the main website for multiple customers. Designed and led infrastructure renewal for a shopping mall system, including stress testing to ensure system reliability. Served as Team Lead for frontend engineers on the renewal of a security service website. Acted as Sub-Team Lead for frontend engineers on the renewal of a financial service website. Contributed as a Frontend Engineer to the renewal of a banking service website. Provided operations and maintenance support for an advertising platform of a Japanese railway system, including upgrading the kernel from Amazon Linux 2 to Amazon Linux 3, and managed monthly maintenance and system monitoring.",
         technologies: ["AWS", "Infrastructure", "Backend", "Frontend", "Linux"]
     },
     {
@@ -80,7 +80,7 @@ export const experiences = [
         role: "Freelance Software Engineer",
         company: "Business Architects Inc.",
         period: "Oct 2020 - Mar 2022",
-        description: "Worked as the main backend and infrastructure engineer for an in-house SaaS system. Built custom admin and role-based interaction systems, and managed AWS deployments from initial requirement definitions through production.",
+        description: "Backend and Infrastructure Engineer. Served as the primary backend engineer for an in-house SaaS system. Developed a custom admin interaction system and a custom comment and role-based interaction system. Deployed, managed, and maintained infrastructure on AWS. Participated in the full lifecycle, from requirements definition through development, and continued to manage and maintain the system post-production.",
         technologies: ["Node.js", "SaaS Architecture", "AWS", "Backend Design"]
     },
     {
@@ -88,7 +88,7 @@ export const experiences = [
         role: "Trainee",
         company: "Japan International Cooperation Agency (JICA)",
         period: "Feb 2020 - Aug 2020",
-        description: "Engaged in learning Japanese business manners and language through direct collaboration with experienced linguists.",
+        description: "Engaged in learning Japanese business manners and language through collaboration with experienced linguists.",
         technologies: ["Japanese Language", "Business Culture Adaptation"]
     },
     {
@@ -96,7 +96,7 @@ export const experiences = [
         role: "Teaching Assistant",
         company: "American International University-Bangladesh",
         period: "Mar 2018 - Apr 2018",
-        description: "Assisted in teaching a computer graphics lab course strictly focused on OpenGL, actively enhancing participating students' fundamental technical skills.",
+        description: "Assisted in teaching a computer graphics lab course focused on OpenGL, enhancing students' technical skills.",
         technologies: ["OpenGL", "Computer Graphics", "Mentoring"]
     }
 ];
