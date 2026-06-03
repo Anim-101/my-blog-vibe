@@ -91,6 +91,24 @@ const resources = {
                             "3": "System Security"
                         }
                     },
+                    "azure_fund": {
+                        "name": "Microsoft Certified: Azure Fundamentals",
+                        "score": "Passed",
+                        "skills": {
+                            "0": "Cloud Computing Concepts",
+                            "1": "Azure Architecture & Services",
+                            "2": "Azure Security & Governance"
+                        }
+                    },
+                    "azure_ai": {
+                        "name": "Microsoft Certified: Azure AI Fundamentals",
+                        "score": "Passed",
+                        "skills": {
+                            "0": "AI & Machine Learning Workloads",
+                            "1": "Azure OpenAI & Cognitive Services",
+                            "2": "Responsible AI Principles"
+                        }
+                    },
                     "aws": {
                         "name": "AWS Certified Solutions Architect – Associate",
                         "score": "815/1000",
@@ -350,6 +368,24 @@ const resources = {
                             "1": "ストレージ管理",
                             "2": "ユーザー管理",
                             "3": "システムセキュリティ"
+                        }
+                    },
+                    "azure_fund": {
+                        "name": "Microsoft Certified: Azure Fundamentals",
+                        "score": "合格",
+                        "skills": {
+                            "0": "クラウドコンピューティングの概念",
+                            "1": "Azureのアーキテクチャとサービス",
+                            "2": "Azureのセキュリティとガバナンス"
+                        }
+                    },
+                    "azure_ai": {
+                        "name": "Microsoft Certified: Azure AI Fundamentals",
+                        "score": "合格",
+                        "skills": {
+                            "0": "AIおよび機械学習のワークロード",
+                            "1": "Azure OpenAIとコグニティブサービス",
+                            "2": "責任あるAIの原則"
                         }
                     },
                     "aws": {

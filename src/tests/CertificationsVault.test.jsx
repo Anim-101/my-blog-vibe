@@ -114,19 +114,4 @@ describe('CertificationsVault Component', () => {
         expect(getByText('815/1000')).toBeDefined(); // AWS Score
     });
 
-    it('does not flip the card when clicking the verify credential button/link', () => {
-        const { container } = render(<CertificationsVault />);
-        const cardWrapper = container.querySelector('#cert-card-wrapper-rhce');
-        const innerCard = cardWrapper.querySelector('.cert-card');
-        const verifyBtn = cardWrapper.querySelector('.cert-verify-btn');
-
-        // Initial state
-        expect(innerCard.classList.contains('is-flipped')).toBe(false);
-
-        // Click the verify button
-        fireEvent.click(verifyBtn);
-
-        // Should NOT be flipped because click event propagation is stopped
-        expect(innerCard.classList.contains('is-flipped')).toBe(false);
-    });
 });

@@ -12,6 +12,13 @@ const getBrandIcon = (id) => {
                     <path d="M12 2C9.5 2 7 3.5 6.5 5.5c-.3 1.2.2 2.5.8 3.5C5.1 9.5 2 10.5 2 12c0 2 5.5 3 10 3s10-1 10-3c0-1.5-3.1-2.5-5.3-3 .6-1 1.1-2.3.8-3.5C17 3.5 14.5 2 12 2zm0 1.5c1.8 0 3.7 1.1 4 2.5.2.8-.2 1.8-.6 2.5H8.6c-.4-.7-.8-1.7-.6-2.5.3-1.4 2.2-2.5 4-2.5z" />
                 </svg>
             );
+        case 'azure_fund':
+        case 'azure_ai':
+            return (
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true">
+                    <path d="M11.5 2.1C11.8 1.6 12.2 1.6 12.5 2.1L21.7 18C22 18.5 21.8 19.1 21.2 19.3L15.3 21C15 21.1 14.7 21 14.5 20.8L12.5 18.5C12.2 18.2 11.8 18.2 11.5 18.5L9.5 20.8C9.3 21 9 21.1 8.7 21L2.8 19.3C2.2 19.1 2 18.5 2.3 18L11.5 2.1Z" />
+                </svg>
+            );
         case 'aws':
             return (
                 <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true">
@@ -138,7 +145,7 @@ const CertificationsVault = () => {
                                     </div>
                                     <div className="cert-title-container">
                                         <span className="cert-issuer">
-                                            {cert.id === 'aws' ? 'AWS' : cert.id.startsWith('rh') ? 'Red Hat' : 'JLPT'}
+                                            {cert.id.startsWith('azure') ? 'Microsoft' : cert.id === 'aws' ? 'AWS' : cert.id.startsWith('rh') ? 'Red Hat' : 'JLPT'}
                                         </span>
                                         <h4 className="cert-name">{certName}</h4>
                                     </div>
@@ -155,7 +162,7 @@ const CertificationsVault = () => {
                                     <div className="cert-back-header">
                                         <h4 className="cert-back-title">{certName}</h4>
                                         <span className="cert-back-issuer">
-                                            {cert.id === 'aws' ? 'AWS' : cert.id.startsWith('rh') ? 'Red Hat' : 'JLPT'}
+                                            {cert.id.startsWith('azure') ? 'Microsoft' : cert.id === 'aws' ? 'AWS' : cert.id.startsWith('rh') ? 'Red Hat' : 'JLPT'}
                                         </span>
                                     </div>
 
@@ -172,7 +179,7 @@ const CertificationsVault = () => {
                                             <span className="detail-label">{t('about.certVault.score')}</span>
                                             <span className="detail-value">{certScore}</span>
                                         </div>
-                                        <div className="cert-detail-item">
+                                        <div className="cert-detail-item skills-item">
                                             <span className="detail-label">{t('about.certVault.skills')}</span>
                                             <div className="cert-skills-tags">
                                                 {cert.skills.map((_, index) => {
@@ -186,22 +193,6 @@ const CertificationsVault = () => {
                                             </div>
                                         </div>
                                     </div>
-
-                                    <a
-                                        href={cert.verifyUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="cert-verify-btn"
-                                        onClick={(e) => {
-                                            // Prevent card flipping when clicking verification button
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        <span>{t('about.certVault.verify')}</span>
-                                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                        </svg>
-                                    </a>
                                 </div>
                             </div>
                         </div>

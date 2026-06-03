@@ -5,12 +5,14 @@ const KNOWLEDGE_BASE = {
             "Hello! I am Anim's digital assistant. How can I help you today? I can tell you about his work at Avanade, Red Hat certifications, or AI agent development.",
             "Hey! Glad you're here. Ask me anything about Anim's software engineering background."
         ],
-        certs: "Anim holds several highly-regarded certifications:\n\n" +
-               "• **RHCE (Red Hat Certified Engineer)** — scored a perfect **300/300**!\n" +
-               "• **RHCSA (Red Hat Certified System Administrator)** — scored a perfect **300/300**!\n" +
+        certs: "Anim holds several professional credentials and certifications:\n\n" +
+               "• **Microsoft Certified: Azure AI Fundamentals**\n" +
+               "• **Microsoft Certified: Azure Fundamentals**\n" +
                "• **AWS Certified Solutions Architect – Associate** (SAA-C03)\n" +
-               "• **JLPT N2 (Japanese Language Proficiency Test)** — verifying his professional Japanese skills.\n\n" +
-               "Would you like to know more about his infrastructure background?",
+               "• **RHCE (Red Hat Certified Engineer)**\n" +
+               "• **RHCSA (Red Hat Certified System Administrator)**\n" +
+               "• **JLPT N2 (Japanese Language Proficiency Test)**\n\n" +
+               "Would you like to know more about his cloud or infrastructure background?",
         skills: "Anim's core expertise spans multiple domains:\n\n" +
                 "• **Frontend:** React, JavaScript, CSS/HTML, responsive layout design.\n" +
                 "• **Backend/OS:** Node.js, Linux administration, Linux Kernel upgrades, Red Hat configurations.\n" +
@@ -49,12 +51,14 @@ const KNOWLEDGE_BASE = {
             "はじめまして！デジタルアシスタントです。アバナードでの経歴、Red Hatの満点資格、AIエージェント開発などについてお答えできます。どのような情報をお探しですか？",
             "こんにちは！アニムのソフトウェアエンジニアとしての背景について何でもお尋ねください。"
         ],
-        certs: "アニムは以下の強力なIT資格を保有しています：\n\n" +
-               "• **RHCE (Red Hat 認定エンジニア)** — 満点（**300/300**）で合格！\n" +
-               "• **RHCSA (Red Hat 認定システム管理者)** — 満点（**300/300**）で合格！\n" +
+        certs: "アニムは以下の認定資格を保有しています：\n\n" +
+               "• **Microsoft Certified: Azure AI Fundamentals**\n" +
+               "• **Microsoft Certified: Azure Fundamentals**\n" +
                "• **AWS 認定ソリューションアーキテクト – アソシエイト** (SAA-C03)\n" +
-               "• **日本語能力試験 (JLPT) N2** — ビジネスレベルの日本語力を有しています。\n\n" +
-               "インフラやLinuxカーネルの運用経験について詳しくお知りになりたいですか？",
+               "• **RHCE (Red Hat 認定エンジニア)**\n" +
+               "• **RHCSA (Red Hat 認定システム管理者)**\n" +
+               "• **日本語能力試験 (JLPT) N2**\n\n" +
+               "クラウドやインフラの運用経験について詳しくお知りになりたいですか？",
         skills: "アニムの主な専門分野は以下の通りです：\n\n" +
                 "• **フロントエンド:** React, JavaScript, CSS/HTML, レスポンシブUIデザイン。\n" +
                 "• **バックエンド/OS:** Node.js, Linuxシステム管理, カーネルアップグレード, Red Hatシステム設定。\n" +
@@ -102,7 +106,7 @@ export const getAIResponse = (query, lang = 'en') => {
         return db.greetings[idx];
     }
     
-    if (q.includes('cert') || q.includes('qualification') || q.includes('rhce') || q.includes('rhcsa') || q.includes('aws') || q.includes('jlpt') || q.includes('n2') || q.includes('資格') || q.includes('認定')) {
+    if (q.includes('cert') || q.includes('qualification') || q.includes('rhce') || q.includes('rhcsa') || q.includes('aws') || q.includes('jlpt') || q.includes('n2') || q.includes('azure') || q.includes('microsoft') || q.includes('資格') || q.includes('認定')) {
         return db.certs;
     }
     
