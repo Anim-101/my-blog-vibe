@@ -118,6 +118,29 @@
     will-change: transform, opacity;
 }
 
+/* Invisible hover bridge to keep hover active as the mouse moves from the star to the preview */
+.memory-preview::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    right: -20px;
+    background: transparent;
+    z-index: -1;
+    pointer-events: auto; /* Ensure it captures hover pointer events */
+}
+
+/* For top-aligned previews (preview displays below the star) */
+.near-top .memory-preview::before {
+    top: -80px;
+    height: 100px;
+}
+
+/* For bottom-aligned previews (preview displays above the star) */
+.near-bottom .memory-preview::before {
+    bottom: -80px;
+    height: 100px;
+}
+
 /* Custom transform origins and starting states based on alignment classes */
 .align-left .memory-preview {
     transform: translate(-15%, 0) scale(0) rotate(-30deg);

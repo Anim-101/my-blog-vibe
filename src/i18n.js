@@ -181,67 +181,67 @@ const resources = {
                         "iot": {
                             "name": "IoT Telemetry Stream",
                             "tech": "Simulates high-velocity JSON event packets emitted from millions of edge power/energy devices.",
-                            "animExp": "At Avanade, Anim designed stream ingestion for major utility grids processing telemetry messages in real-time."
+                            "animExp": "At Avanade, Anim designed core data pipelines and ingestion workflows to handle transaction and supply chain data streams."
                         },
                         "api": {
                             "name": "API Gateway",
                             "tech": "Ingests HTTP Webhook payloads with token validation, rate-limiting, and client-level traffic management.",
-                            "animExp": "Developed RESTful webhook handlers at Business Architects Inc. for e-commerce and banking portals under high-stress periods."
+                            "animExp": "Anim developed API configurations and backend endpoints at Business Architects Inc. to support secure, high-traffic website renewals for e-commerce and banking clients."
                         },
                         "cdc": {
                             "name": "Database CDC",
                             "tech": "Log-based Change Data Capture parsing transactional commits from Postgres or SQL Server databases via Debezium.",
-                            "animExp": "Deployed transactional CDC streams to sync database records with low-latency search caches."
+                            "animExp": "Anim managed database migrations and state replication. He notably led a full system and database tenant migration on Azure for a robotic systems client at Avanade."
                         },
                         "schema": {
                             "name": "Schema Registry",
                             "tech": "Validates message payload schemas against strict Apache Avro declarations. Bad JSON is instantly flagged.",
-                            "animExp": "Configured registry validations in AWS EventBridge and Kafka environments to prevent schema drift."
+                            "animExp": "To maintain data integrity, Anim led the design of integration and regression testing suites at Avanade to validate data schemas and application performance."
                         },
                         "dedup": {
                             "name": "Deduplicator",
                             "tech": "Filters duplicate message IDs using a sliding-window cache in a high-speed Redis cluster.",
-                            "animExp": "Created Redis-based idempotency filters handling 10k+ requests/sec with a 10-minute sliding window."
+                            "animExp": "Anim designed custom role-based permission and deduplication logics in in-house SaaS applications during his freelance tenure."
                         },
                         "compliance": {
                             "name": "Compliance Guard",
                             "tech": "Inspects text fields for PII (Personally Identifiable Information) and masks values before cloud ingestion.",
-                            "animExp": "Built regulatory compliance filters for enterprise clients to comply with Japanese APPI regulations."
+                            "animExp": "He led frontend and backend engineering teams renewing financial and security service systems, ensuring strict security and compliance standards."
                         },
                         "joiner": {
                             "name": "Streaming Joiner",
                             "tech": "Enriches real-time transaction event streams by joining them with static dimensional database caches.",
-                            "animExp": "Optimized streaming memory footprints by implementing localized in-memory cache lookups."
+                            "animExp": "Anim designed trading pipeline enrichment steps for a major gas production client, joining trade transaction feeds with static reference data."
                         },
                         "aggregator": {
                             "name": "Aggregator",
                             "tech": "Groups metrics into 1-minute tumbling windows to calculate rolling averages, sums, and traffic peaks.",
-                            "animExp": "Designed analytical aggregation pipelines that process trading volume reports."
+                            "animExp": "He supervised the maintenance and calculation of daily/monthly aggregation metrics for supply chain systems at a power and energy utility."
                         },
                         "anomaly": {
                             "name": "Anomaly Detector",
                             "tech": "Uses statistical analysis (z-scores) on stream inputs to detect spikes or unexpected data drops.",
-                            "animExp": "Developed monitoring heuristics at Microsoft AI Lab to alert robotics systems of sensor faults."
+                            "animExp": "Anim set up monitoring dashboards, logs, and alerts for e-commerce and advertising platforms to detect system anomalies and performance drops."
                         },
                         "datalake": {
                             "name": "S3 Data Lake",
                             "tech": "Compacts raw messages into compressed Apache Parquet formats, saving them in AWS S3 partitions.",
-                            "animExp": "Maintained petabyte-scale data lakes with automated lifecycle policies and Athena integration."
+                            "animExp": "Anim deployed, managed, and maintained scalable cloud storage and hosting infrastructures on AWS for customer platforms."
                         },
                         "snowflake": {
                             "name": "Snowflake DW",
                             "tech": "Loads cleansed events into analytics tables for business intelligence, reporting, and dashboard querying.",
-                            "animExp": "Built Snowflake DBT models for energy trading reports at Avanade, speeding up query times by 40%."
+                            "animExp": "At Avanade, he integrated data warehouses and structured schemas to generate energy trading reports for business analysis."
                         },
                         "cache": {
                             "name": "PostgreSQL Cache",
                             "tech": "Hot database replica maintaining the latest system state, powering web app dashboards and real-time APIs.",
-                            "animExp": "Configured highly available Postgres read-replicas with pgpool load balancing at Business Architects Inc."
+                            "animExp": "He optimized database performance, upgraded OS kernels (Amazon Linux 2 to 3), and performed extensive stress testing to guarantee cache reliability."
                         },
                         "dlq": {
                             "name": "Dead Letter Queue",
                             "tech": "Quarantines bad, malformed, or timed-out events. Holds them for manual inspection and re-driving.",
-                            "animExp": "Set up SQS Dead Letter Queues with CloudWatch alert triggers to notify teams of processing anomalies."
+                            "animExp": "Anim led O&M engineering teams, designing retry rules and error handlers to capture processing failures and notify maintenance teams."
                         }
                     }
                 }
@@ -460,67 +460,67 @@ const resources = {
                         "iot": {
                             "name": "IoT テレメトリ ストリーム",
                             "tech": "数百万台のエッジ電力・エネルギーデバイスから送信される高速なJSONイベントパケットをシミュレートします。",
-                            "animExp": "アバナードにおいて、電力会社のグリッドシステム向けにテレメトリメッセージをリアルタイムで処理するストリームインジェクションを設計しました。"
+                            "animExp": "アバナードにて、LNG関連取引システムや電力会社のサプライチェーンシステム向けに、データパイプラインおよび取り込みワークフローの設計を担当しました。"
                         },
                         "api": {
                             "name": "API ゲートウェイ",
                             "tech": "トークン検証、レート制限、クライアントレベルのトラフィック管理を備えたHTTPウェブフックのペイロードを処理します。",
-                            "animExp": "株式会社ビジネス・アーキテクツにて、高負荷時のECおよび金融ポータル向けのRESTfulウェブフックハンドラを開発しました。"
+                            "animExp": "株式会社ビジネス・アーキテクツにて、ショッピングモールや銀行のサイトリニューアル向けに、高負荷に耐えるAPIとバックエンドサーバーの設計・統合を行いました。"
                         },
                         "cdc": {
                             "name": "データベース CDC",
                             "tech": "Debeziumを介してPostgresやSQL Serverデータベースからのトランザクションコミットをログベースで解析します。",
-                            "animExp": "データベースレコードを低遅延検索キャッシュと同期するためのトランザクションCDCストリームを展開しました。"
+                            "animExp": "アバナードにて、ロボットアーム制御システムのAzureマルチテナント移行を主導し、データベースとデータソースのセキュアな同期と移行を管理しました。"
                         },
                         "schema": {
                             "name": "スキーマレジストリ",
                             "tech": "メッセージペイロードのスキーマを厳密なApache Avro定義に照らし合わせて検証します。無効なJSONは即座に除外されます。",
-                            "animExp": "スキーマの不一致を防ぐため、AWS EventBridgeおよびKafka環境でレジストリ検証を構成しました。"
+                            "animExp": "アバナードにて、データの整合性を保証するために、統合テストおよび回帰テストスイートを設計し、スキーマ定義の厳密な検証と品質管理を徹底しました。"
                         },
                         "dedup": {
                             "name": "重複排除デデュープ",
                             "tech": "高速なRedisクラスター内のスライディングウィンドウキャッシュを使用して、重複するメッセージIDをフィルタリングします。",
-                            "animExp": "10分間のスライディングウィンドウで、毎秒1万件以上のリクエストを処理するRedisベースのべき等性フィルターを作成しました。"
+                            "animExp": "フリーランスのバックエンド開発時に、社内SaaS向けにカスタム権限管理や、データ重複防止を考慮した書き込み処理ロジックを実装しました。"
                         },
                         "compliance": {
                             "name": "コンプライアンスガード",
                             "tech": "テキストフィールド内のPII（個人情報）を検査し、クラウドへ送信する前に機密データをマスクします。",
-                            "animExp": "日本の個人情報保護法（APPI）に準拠するため、エンタープライズ顧客向けのコンプライアンスフィルターを構築しました。"
+                            "animExp": "金融やセキュリティサービスのリニューアルプロジェクトで開発リードを務め、機密データ保護などのセキュリティ基準に準拠したシステムを設計しました。"
                         },
                         "joiner": {
                             "name": "ストリーミング結合",
                             "tech": "トランザクションイベントストリームを静的なディメンションデータベースキャッシュと結合し、リアルタイムでデータを拡張します。",
-                            "animExp": "ローカライズされたインメモリキャッシュルックアップを実装することで、ストリーミング時のメモリフットプリントを最適化しました。"
+                            "animExp": "アバナードにて、大手ガス会社向けLNG取引データ取り込みのため、取引トランザクションと基本情報を結合・突合する処理ロジックを実装しました。"
                         },
                         "aggregator": {
                             "name": "集計エンジン",
                             "tech": "指標を1分間のタンブリングウィンドウにグループ化し、移動平均、合計値、トラフィックピークを計算します。",
-                            "animExp": "取引量レポートを処理する分析用の集計パイプラインを設計しました。"
+                            "animExp": "アバナードにて、電力・エネルギー会社向けサプライチェーンシステムの日次・月次バッチ集計および監視の運用保守チームを率いました。"
                         },
                         "anomaly": {
                             "name": "異常検知器",
                             "tech": "ストリーム入力に対して統計分析（Zスコア）を使用し、スパイクや予期しないデータの切断を検出します。",
-                            "animExp": "Microsoft AI Labにて、ロボティクスシステムのセンサー障害を監視・警告する検出プログラムを開発しました。"
+                            "animExp": "株式会社ビジネス・アーキテクツにて、広告プラットフォーム of システム監視体制を構築し、アクセス異常やサーバーエラーの早期検知を実現しました。"
                         },
                         "datalake": {
                             "name": "S3 データレイク",
                             "tech": "生メッセージを圧縮されたApache Parquet形式に圧縮し、AWS S3パーティションに保存します。",
-                            "animExp": "自動ライフサイクルポリシーとAthena統合を備えたペタバイト規模のデータレイクを管理しました。"
+                            "animExp": "株式会社ビジネス・アーキテクツにて、SaaSや顧客システムの基盤としてAWS上のセキュアなクラウドストレージの構築・管理を担当しました。"
                         },
                         "snowflake": {
                             "name": "Snowflake DWH",
                             "tech": "クレンジングされたイベントをビジネスインテリジェンス、レポート、ダッシュボードクエリ用の分析テーブルにロードします。",
-                            "animExp": "アバナードにてエネルギー取引レポート用のSnowflake DBTモデルを構築し、クエリ処理速度を40%向上させました。"
+                            "animExp": "アバナードにて、LNG取引やエネルギー関連レポートの生成を支えるデータウェアハウスおよび分析用スキーマ設計に関与しました。"
                         },
                         "cache": {
                             "name": "PostgreSQL キャッシュ",
                             "tech": "最新のシステム状態を維持するホットデータベースレプリカ。WebアプリのダッシュボードやリアルタイムAPIの基盤となります。",
-                            "animExp": "株式会社ビジネス・アーキテクツにて、pgpoolによる負荷分散を備えた高可用性Postgresリードレプリカを構成しました。"
+                            "animExp": "インフラ運用において、データベース接続の安定化のほか、Amazon Linux 2から3へのカーネル更新や負荷テストを主導しました。"
                         },
                         "dlq": {
                             "name": "デッドレターキュー (DLQ)",
                             "tech": "破損、不正、またはタイムアウトしたイベントを隔離します。手動での検査や再試行に備えて保持されます。",
-                            "animExp": "SQSデッドレターキューを設定し、処理異常が発生した際にチームへ通知するCloudWatchアラートを構成しました。"
+                            "animExp": "電力・エネルギーシステムの運用保守サブチームリードとして、エラー検知時のアラート通知とトラブルシューティング手順を整備しました。"
                         }
                     }
                 }

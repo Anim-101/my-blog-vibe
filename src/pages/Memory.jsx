@@ -340,9 +340,7 @@ const Memory = () => {
                                     backgroundPosition: 'center',
                                     animation: `twinkle 4s infinite alternate ${star.style.animationDelay}`
                                 }}
-                                // Mouse hover only applies on non-touch devices to avoid ghost events
-                                onMouseEnter={!isTouchDevice ? () => setActiveStarId(star.id) : undefined}
-                                onMouseLeave={!isTouchDevice ? () => setActiveStarId(null) : undefined}
+                                // Rely on pure CSS :hover on desktop to prevent heavy React re-renders and lag, onClick is for mobile/touch
                                 onClick={(e) => handleStarClick(e, star.id)}
                             >
                                 <div 
