@@ -91,14 +91,32 @@ const SkillsConstellation = () => {
         let animationFrameId;
         
         // Rotation angles velocities
-        let rotX = 0.001; // auto-rotation speed
-        let rotY = 0.002;
-        let targetRotX = 0.001;
-        let targetRotY = 0.002;
+        let rotX = 0.001; // current frame rotation velocity X
+        let rotY = 0.002; // current frame rotation velocity Y
+        let targetRotX = 0.001; // target rotation velocity X (auto-rotation or hover-tilt)
+        let targetRotY = 0.002; // target rotation velocity Y (auto-rotation or hover-tilt)
 
         let mouseX = 0;
         let mouseY = 0;
         let isMouseOver = false;
+
+        // Dragging and Momentum physics variables
+        let isDragging = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let vx = 0;
+        let vy = 0;
+
+        const handleMouseDown = (e) => {
+            isDragging = true;
+            const rect = canvas.getBoundingClientRect();
+            lastMouseX = e.clientX - rect.left;
+            lastMouseY = e.clientY - rect.top;
+            dragStartX = lastMouseX;
+            dragStartY = lastMouseY;
+        };
 
         const handleMouseMove = (e) => {
             const rect = canvas.getBoundingClientRect();
@@ -106,28 +124,113 @@ const SkillsConstellation = () => {
             mouseY = e.clientY - rect.top;
             isMouseOver = true;
 
-            const centerX = canvasWidth / 2;
-            const centerY = canvasWidth / 2;
-            targetRotX = (mouseY - centerY) * 0.00015;
-            targetRotY = (mouseX - centerX) * 0.00015;
+            if (isDragging) {
+                const dx = mouseX - lastMouseX;
+                const dy = mouseY - lastMouseY;
+
+                // Instantaneous velocities proportional to drag displacement
+                vy = dx * 0.008;
+                vx = -dy * 0.008;
+
+                rotY = vy;
+                rotX = vx;
+
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+            } else {
+                // Mild tilt/auto-rotate when hovering
+                const centerX = canvasWidth / 2;
+                const centerY = canvasWidth / 2;
+                targetRotX = (mouseY - centerY) * 0.00015;
+                targetRotY = (mouseX - centerX) * 0.00015;
+            }
+        };
+
+        const handleMouseUp = (e) => {
+            if (isDragging) {
+                isDragging = false;
+                const rect = canvas.getBoundingClientRect();
+                const mouseUpX = e.clientX - rect.left;
+                const mouseUpY = e.clientY - rect.top;
+
+                const dragDist = Math.sqrt((mouseUpX - dragStartX) ** 2 + (mouseUpY - dragStartY) ** 2);
+                if (dragDist < 6) {
+                    if (hoveredSkill) {
+                        setSelectedSkillId(hoveredSkill.id);
+                    }
+                }
+            }
         };
 
         const handleMouseLeave = () => {
+            if (isDragging) {
+                isDragging = false;
+            }
             isMouseOver = false;
             targetRotX = 0.001;
             targetRotY = 0.002;
             setHoveredSkill(null);
         };
 
-        const handleCanvasClick = () => {
-            if (hoveredSkill) {
-                setSelectedSkillId(hoveredSkill.id);
+        // Touch support for mobile devices
+        const handleTouchStart = (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                const rect = canvas.getBoundingClientRect();
+                lastMouseX = e.touches[0].clientX - rect.left;
+                lastMouseY = e.touches[0].clientY - rect.top;
+                dragStartX = lastMouseX;
+                dragStartY = lastMouseY;
+                isMouseOver = true;
+                mouseX = lastMouseX;
+                mouseY = lastMouseY;
             }
         };
 
+        const handleTouchMove = (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.touches[0].clientX - rect.left;
+            mouseY = e.touches[0].clientY - rect.top;
+
+            const dx = mouseX - lastMouseX;
+            const dy = mouseY - lastMouseY;
+
+            vy = dx * 0.008;
+            vx = -dy * 0.008;
+
+            rotY = vy;
+            rotX = vx;
+
+            lastMouseX = mouseX;
+            lastMouseY = mouseY;
+
+            // Prevent default touch behaviors (like page scrolling) while actively dragging the 3D sphere
+            e.preventDefault();
+        };
+
+        const handleTouchEnd = () => {
+            if (isDragging) {
+                isDragging = false;
+                const dragDist = Math.sqrt((mouseX - dragStartX) ** 2 + (mouseY - dragStartY) ** 2);
+                if (dragDist < 8) {
+                    if (hoveredSkill) {
+                        setSelectedSkillId(hoveredSkill.id);
+                    }
+                }
+                isMouseOver = false;
+                setHoveredSkill(null);
+            }
+        };
+
+        canvas.addEventListener('mousedown', handleMouseDown);
         canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseup', handleMouseUp);
         canvas.addEventListener('mouseleave', handleMouseLeave);
-        canvas.addEventListener('click', handleCanvasClick);
+
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchend', handleTouchEnd);
 
         const render = () => {
             ctx.clearRect(0, 0, canvasWidth, canvasWidth);
@@ -138,8 +241,10 @@ const SkillsConstellation = () => {
             const radius = 160;
 
             // Interpolate velocities smoothly (linear interpolation)
-            rotX += (targetRotX - rotX) * 0.1;
-            rotY += (targetRotY - rotY) * 0.1;
+            if (!isDragging) {
+                rotX += (targetRotX - rotX) * 0.05;
+                rotY += (targetRotY - rotY) * 0.05;
+            }
 
             const cosX = Math.cos(rotX);
             const sinX = Math.sin(rotX);
@@ -263,9 +368,14 @@ const SkillsConstellation = () => {
         render();
 
         return () => {
+            canvas.removeEventListener('mousedown', handleMouseDown);
             canvas.removeEventListener('mousemove', handleMouseMove);
+            canvas.removeEventListener('mouseup', handleMouseUp);
             canvas.removeEventListener('mouseleave', handleMouseLeave);
-            canvas.removeEventListener('click', handleCanvasClick);
+
+            canvas.removeEventListener('touchstart', handleTouchStart);
+            canvas.removeEventListener('touchmove', handleTouchMove);
+            canvas.removeEventListener('touchend', handleTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
     }, [canvasWidth, selectedSkill, hoveredSkill]);
