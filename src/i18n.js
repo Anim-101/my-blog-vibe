@@ -179,18 +179,18 @@ const resources = {
                     },
                     "nodes": {
                         "iot": {
-                            "name": "IoT Telemetry Stream",
-                            "tech": "Simulates high-velocity JSON event packets emitted from millions of edge power/energy devices.",
-                            "animExp": "At Avanade, Anim designed core data pipelines and ingestion workflows to handle transaction and supply chain data streams."
+                            "name": "LNG Transaction Feed",
+                            "tech": "Simulates real-time ingestion of trade deal bookings, cargo schedules, and financial transactions from global trading desks.",
+                            "animExp": "At Avanade, Anim designed core data pipelines and ingestion workflows to handle transaction and supply chain data streams for an LNG trading system."
                         },
                         "api": {
-                            "name": "API Gateway",
-                            "tech": "Ingests HTTP Webhook payloads with token validation, rate-limiting, and client-level traffic management.",
+                            "name": "Supply Chain API Gateway",
+                            "tech": "Ingests secure HTTP Webhook payloads containing logistics, scheduling, and power grid status updates for utility supply chains.",
                             "animExp": "Anim developed API configurations and backend endpoints at Business Architects Inc. to support secure, high-traffic website renewals for e-commerce and banking clients."
                         },
                         "cdc": {
-                            "name": "Database CDC",
-                            "tech": "Log-based Change Data Capture parsing transactional commits from Postgres or SQL Server databases via Debezium.",
+                            "name": "Transactional DB CDC",
+                            "tech": "Log-based Change Data Capture parsing transactional commits from Postgres or SQL Server database logs to sync trading registries.",
                             "animExp": "Anim managed database migrations and state replication. He notably led a full system and database tenant migration on Azure for a robotic systems client at Avanade."
                         },
                         "schema": {
@@ -458,18 +458,18 @@ const resources = {
                     },
                     "nodes": {
                         "iot": {
-                            "name": "IoT テレメトリ ストリーム",
-                            "tech": "数百万台のエッジ電力・エネルギーデバイスから送信される高速なJSONイベントパケットをシミュレートします。",
-                            "animExp": "アバナードにて、LNG関連取引システムや電力会社のサプライチェーンシステム向けに、データパイプラインおよび取り込みワークフローの設計を担当しました。"
+                            "name": "LNG取引トランザクション",
+                            "tech": "世界各地の取引システムから送られる、取引の約定、貨物の配送スケジュール、財務取引などのトランザクション情報をリアルタイムにシミュレートします。",
+                            "animExp": "アバナードにて、大手ガス会社向けLNG取引データ取り込みのため、取引トランザクションと基本情報を結合・突合する処理ロジックを実装しました。"
                         },
                         "api": {
-                            "name": "API ゲートウェイ",
-                            "tech": "トークン検証、レート制限、クライアントレベルのトラフィック管理を備えたHTTPウェブフックのペイロードを処理します。",
-                            "animExp": "株式会社ビジネス・アーキテクツにて、ショッピングモールや銀行のサイトリニューアル向けに、高負荷に耐えるAPIとバックエンドサーバーの設計・統合を行いました。"
+                            "name": "サプライチェーン APIゲートウェイ",
+                            "tech": "電力・エネルギーサプライチェーンの物流データや在庫状況、稼働状況などを、トークン検証や流量制御付きのHTTP Webhookで安全に取り込みます。",
+                            "animExp": "株式会社ビジネス・アーキテクツにて、高負荷に耐える安全なWebフックハンドラやAPIゲートウェイ、EC・金融ポータル向けのバックエンドシステム設計を担当しました。"
                         },
                         "cdc": {
-                            "name": "データベース CDC",
-                            "tech": "Debeziumを介してPostgresやSQL Serverデータベースからのトランザクションコミットをログベースで解析します。",
+                            "name": "トランザクションDB CDC",
+                            "tech": "Debeziumを介してPostgresやSQL Serverデータベースのコミットログを解析し、取引記録の変更（CDC）を低遅延で同期します。",
                             "animExp": "アバナードにて、ロボットアーム制御システムのAzureマルチテナント移行を主導し、データベースとデータソースのセキュアな同期と移行を管理しました。"
                         },
                         "schema": {

@@ -97,8 +97,8 @@ const PipelineSimulator = () => {
     const time = new Date().toLocaleTimeString();
     const jaMsg1 = 'データパイプラインシミュレーターを開始しました。';
     const enMsg1 = 'Data pipeline simulation workspace initialized.';
-    const jaMsg2 = 'データインジェクションストリームの受信準備完了。';
-    const enMsg2 = 'Listening on webhook endpoints for telemetry events.';
+    const jaMsg2 = '取引およびサプライチェーンのデータストリーム受信準備完了。';
+    const enMsg2 = 'Listening on webhook and trading system endpoints for transaction events.';
     return [
       { id: 'log-init-1', text: `[${time}] ${isJa ? jaMsg1 : enMsg1}`, type: 'system' },
       { id: 'log-init-2', text: `[${time}] ${isJa ? jaMsg2 : enMsg2}`, type: 'info' }
@@ -585,7 +585,7 @@ const PipelineSimulator = () => {
 
     if (clicked) {
       setSelectedNode(clicked);
-      addLog(isJa ? `[DIAGNOSTICS] ノード ${t(`experience.pipeline.nodes.${clicked.id}.name`)} を検証中...` : `[DIAGNOSTICS] Querying telemetry registers for node: ${t(`experience.pipeline.nodes.${clicked.id}.name`)}`, 'info');
+      addLog(isJa ? `[DIAGNOSTICS] ノード ${t(`experience.pipeline.nodes.${clicked.id}.name`)} を検証中...` : `[DIAGNOSTICS] Querying system registers for node: ${t(`experience.pipeline.nodes.${clicked.id}.name`)}`, 'info');
     }
   };
 
