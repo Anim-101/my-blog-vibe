@@ -185,6 +185,45 @@ const Memory = () => {
     const currentRef = useRef({ x: 0, y: 0 });
     const requestRef = useRef();
 
+    // Touch drag-to-pan fallback states/refs
+    const touchStartPos = useRef({ x: 0, y: 0 });
+    const isDragActive = useRef(false);
+    const lastTarget = useRef({ x: 0, y: 0 });
+
+    const handleTouchStart = (e) => {
+        if (e.touches.length === 1) {
+            touchStartPos.current = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+            isDragActive.current = false;
+            lastTarget.current = { ...targetRef.current };
+        }
+    };
+
+    const handleTouchMove = (e) => {
+        if (e.touches.length !== 1) return;
+        const deltaX = e.touches[0].clientX - touchStartPos.current.x;
+        const deltaY = e.touches[0].clientY - touchStartPos.current.y;
+        
+        // If moved more than 8 pixels, mark as drag to ignore tap trigger
+        if (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8) {
+            isDragActive.current = true;
+        }
+        
+        const speedMultiplier = 0.5;
+        let newX = lastTarget.current.x + deltaX * speedMultiplier;
+        let newY = lastTarget.current.y + deltaY * speedMultiplier;
+        
+        // Clamp bounds to prevent scrolling out of bounds
+        const limitX = 80;
+        const limitY = 40;
+        newX = Math.max(-limitX, Math.min(limitX, newX));
+        newY = Math.max(-limitY, Math.min(limitY, newY));
+        
+        targetRef.current = { x: newX, y: newY };
+    };
+
     // Detect touch device once at mount (using lazy state initialization to comply with React 19 safety)
     const [isTouchDevice] = useState(() => {
         return typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -259,6 +298,7 @@ const Memory = () => {
     }, [isTouchDevice]);
 
     const handleBackgroundClick = (e) => {
+        if (isDragActive.current) return;
         if (e.target.classList.contains('memory-space') || e.target.classList.contains('memory-container')) {
             setActiveStarId(null);
         }
@@ -266,11 +306,13 @@ const Memory = () => {
 
     const handleStarClick = (e, id) => {
         e.stopPropagation();
+        if (isDragActive.current) return;
         setActiveStarId(activeStarId === id ? null : id);
     };
 
     const handlePreviewClick = (e, photo) => {
         e.stopPropagation();
+        if (isDragActive.current) return;
         setLightboxPhoto(photo);
     };
 
@@ -278,6 +320,8 @@ const Memory = () => {
         <div 
             className="memory-container" 
             onClick={handleBackgroundClick}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             ref={containerRef}
         >
             <button className="memory-close" onClick={() => navigate(-1)} aria-label="Go back">

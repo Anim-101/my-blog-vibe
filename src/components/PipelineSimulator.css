@@ -131,8 +131,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   aspect-ratio: 16/9;
-  min-height: 320px;
+}
+
+@media (min-width: 768px) {
+  .pipeline-canvas-container {
+    min-height: 320px;
+  }
 }
 
 .pipeline-canvas {
@@ -454,3 +460,55 @@
 .log-line.log-error { color: #f87171; }
 .log-line.log-info { color: #60a5fa; }
 .log-line.log-system { color: #a78bfa; }
+
+@media (max-width: 767px) {
+  .pipeline-simulator-card {
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+  }
+  
+  .pipeline-title-area h2 {
+    font-size: 1.6rem;
+  }
+  
+  .pipeline-title-area p {
+    font-size: 0.9rem;
+  }
+  
+  .pipeline-canvas-container {
+    aspect-ratio: 1; /* Square aspect ratio works best for mobile top-to-bottom layout */
+    min-height: auto;
+  }
+  
+  .pipeline-metrics-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns fit nicely on mobile screens */
+    gap: 0.75rem;
+  }
+  
+  .pipeline-metric-tile {
+    padding: 0.8rem;
+  }
+  
+  .metric-number {
+    font-size: 1.3rem;
+  }
+  
+  .pipeline-info-drawer {
+    min-height: auto;
+    padding: 1rem;
+  }
+  
+  .pipeline-controls-card {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .btn-control {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .pipeline-terminal-card {
+    height: 220px; /* Shorter terminal saves vertical space on phone screens */
+  }
+}
