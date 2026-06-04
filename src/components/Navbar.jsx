@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Camera, Code, Briefcase, Home, Menu, X, User, Sun, Moon, Star } from 'lucide-react';
+import { Camera, Code, Briefcase, Home, Menu, X, User, Sun, Moon, Star, Cloud } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { personalInfo } from '../data/personal';
@@ -44,6 +44,7 @@ const Navbar = () => {
     { name: t('nav.experience'), path: '/experience', icon: <Briefcase size={18} /> },
     { name: t('nav.devBlog'), path: '/devblog', icon: <Code size={18} /> },
     { name: t('nav.photography'), path: '/photography', icon: <Camera size={18} /> },
+    { name: t('nav.designer'), path: '/designer', icon: <Cloud size={18} /> },
     { name: t('nav.memory'), path: '/memory', icon: <Star size={18} /> },
   ];
 

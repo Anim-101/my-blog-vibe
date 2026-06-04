@@ -12,6 +12,7 @@ import ProjectPost from './pages/ProjectPost';
 import Photography from './pages/Photography';
 import About from './pages/About';
 import Memory from './pages/Memory';
+import Infrastructure from './pages/Infrastructure';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/photography" element={<Photography />} />
           <Route path="/photography/:slug" element={<PhotoPost />} />
           <Route path="/memory" element={<Memory />} />
+          <Route path="/designer" element={<Infrastructure />} />
         </Routes>
       </main>
       <Footer />

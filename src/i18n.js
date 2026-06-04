@@ -24,7 +24,8 @@ const resources = {
                 "experience": "Experience",
                 "devBlog": "Dev Blog",
                 "photography": "Photography",
-                "memory": "Memory"
+                "memory": "Memory",
+                "designer": "Cloud Designer"
             },
             "home": {
                 "greeting": "Hi, I'm",
@@ -317,6 +318,36 @@ const resources = {
                 "backProjects": "Back to Projects",
                 "liveDemo": "Live Demo",
                 "viewSource": "View Source"
+            },
+            "designer": {
+                "title": "Cloud Infrastructure Designer",
+                "subtitle": "Interactive sandbox to architect AWS/Azure topologies, calculate costs, and generate Terraform/Ansible IaC configurations.",
+                "provider": "Cloud Provider",
+                "clear": "Clear Canvas",
+                "simulate": "Simulate Traffic",
+                "stopSimulate": "Stop Simulation",
+                "catalog": "Resource Catalog",
+                "canvas": "Architecture Canvas",
+                "emptyCanvas": "Click icons in the sidebar to add resources to your cloud topology.",
+                "costCalculator": "Real-time Cost Calculator",
+                "hourly": "Hourly Estimate",
+                "monthly": "Monthly Estimate",
+                "iacTitle": "Infrastructure as Code (IaC) Exporter",
+                "iacSubtitle": "Generated configurations based on your active canvas topology.",
+                "auditorTitle": "Architecture Security & Design Auditor",
+                "auditorEmpty": "No issues found! Your architecture looks well-designed.",
+                "download": "Download File",
+                "copied": "Copied to clipboard!",
+                "copy": "Copy to Clipboard",
+                "settings": "Resource Settings",
+                "close": "Close",
+                "delete": "Delete Resource",
+                "warnings": {
+                    "noDatabase": "Warning: Web servers have no database connection.",
+                    "noCompute": "Warning: Public Load Balancer has no target compute nodes to forward traffic.",
+                    "publicDatabase": "Caution: Database server has a public IP address. In production, keep it in a private subnet.",
+                    "openS3": "Caution: S3 storage bucket is set to public read-access."
+                }
             }
         }
     },
@@ -341,7 +372,8 @@ const resources = {
                 "experience": "経歴",
                 "devBlog": "開発ブログ",
                 "photography": "写真",
-                "memory": "メモリー"
+                "memory": "メモリー",
+                "designer": "クラウド設計"
             },
             "home": {
                 "greeting": "こんにちは、",
@@ -634,6 +666,36 @@ const resources = {
                 "backProjects": "プロジェクトに戻る",
                 "liveDemo": "デモを見る",
                 "viewSource": "ソースコード"
+            },
+            "designer": {
+                "title": "クラウド・インフラ・デザイナー",
+                "subtitle": "AWS/Azureのトポロジー設計、コスト計算、およびTerraform/Ansible IaC設定ファイルの自動生成ができるインタラクティブなサンドボックスです。",
+                "provider": "クラウドプロバイダー",
+                "clear": "キャンバスをクリア",
+                "simulate": "トラフィックをシミュレート",
+                "stopSimulate": "シミュレーション停止",
+                "catalog": "リソースカタログ",
+                "canvas": "設計キャンバス",
+                "emptyCanvas": "サイドバーのアイコンをクリックして、キャンバスにリソースを追加してください。",
+                "costCalculator": "リアルタイムコスト計算ツール",
+                "hourly": "時間単位見積もり",
+                "monthly": "月間単位見積もり",
+                "iacTitle": "Infrastructure as Code (IaC) エクスポート",
+                "iacSubtitle": "現在のトポロジーに基づいて自動生成された設定ファイルです。",
+                "auditorTitle": "セキュリティ＆設計監査",
+                "auditorEmpty": "問題は見つかりませんでした！優れたアーキテクチャ設計です。",
+                "download": "ファイルをダウンロード",
+                "copied": "クリップボードにコピーしました！",
+                "copy": "コピーする",
+                "settings": "リソース設定",
+                "close": "閉じる",
+                "delete": "リソース削除",
+                "warnings": {
+                    "noDatabase": "警告: Webサーバーがデータベースに接続されていません。",
+                    "noCompute": "警告: ロードバランサーに転送先のコンピューティングノードがありません。",
+                    "publicDatabase": "注意: データベースにパブリックIPが割り当てられています。本番環境ではプライベートサブネットに配置してください。",
+                    "openS3": "注意: ストレージバケットが一般公開読み取りに設定されています。"
+                }
             }
         }
     }
