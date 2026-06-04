@@ -36,7 +36,9 @@ const resources = {
                 "readBlog": "Read the Blog",
                 "photo": "Photography",
                 "photoDesc": "Explore my visual journey through landscapes, street photography, and portraits.",
-                "viewGallery": "View Gallery"
+                "viewGallery": "View Gallery",
+                "terminalTitle": "Interactive Developer Console",
+                "terminalSubtitle": "Explore my Red Hat certified background, skills, and playbooks via a retro shell interface"
             },
             "about": {
                 "title": "About",
@@ -260,6 +262,24 @@ const resources = {
                 "prev": "Previous",
                 "next": "Next"
             },
+            "terminal": {
+                "welcome": "Welcome to AnimOS v1.0.0 (zsh-sandbox)\nCertified: Red Hat Certified Engineer (RHCE) #200-244-934 (Perfect Score 300/300)\n\nType 'help' to see list of available commands.\nType 'theme [name]' to change colors (glass, matrix, cyberpunk, amber, classic).\n",
+                "prompt": "anim@animos:~ $ ",
+                "helpText": "Available commands:\n  ls                      List directory contents\n  cd [dir]                Change directory\n  cat [file]              Print file contents\n  neofetch                Display system information and credentials\n  ansible-playbook [file] Execute a simulated Ansible playbook\n  theme [theme-name]      Change terminal visual theme\n  sudo rhce               Run special command for Red Hat Certification details\n  clear                   Clear the screen\n  help                    Display this help message",
+                "cmdNotFound": "command not found: ",
+                "noSuchFile": "No such file or directory: ",
+                "isDir": "Is a directory: ",
+                "permissionDenied": "Permission denied. Anim is the only root user here. Try 'sudo rhce' for a surprise!",
+                "themeChanged": "Terminal theme changed to: ",
+                "invalidTheme": "Invalid theme. Available themes: glass, matrix, cyberpunk, amber, classic.",
+                "playbookSimulating": "Starting Ansible playbook simulation...",
+                "playbookSuccess": "Ansible playbook execution finished successfully.",
+                "usagePlaybook": "Usage: ansible-playbook playbooks/deploy_skills.yml",
+                "bioTitle": "=== Biography ===",
+                "contactTitle": "=== Contact Details ===",
+                "skillsTitle": "=== Skill Categories ===",
+                "certsTitle": "=== Professional Certifications ==="
+            },
             "photography": {
                 "title1": "Through the",
                 "title2": "Lens",
@@ -315,7 +335,9 @@ const resources = {
                 "readBlog": "ブログを読む",
                 "photo": "写真",
                 "photoDesc": "風景、スナップ、ポートレートなど、カメラを通した記録。",
-                "viewGallery": "ギャラリーを見る"
+                "viewGallery": "ギャラリーを見る",
+                "terminalTitle": "開発コンソール (インタラクティブ)",
+                "terminalSubtitle": "Red Hat 認定エンジニアのスキルや Ansible 設定をシミュレーション環境で探索"
             },
             "about": {
                 "title": "私に",
@@ -538,6 +560,24 @@ const resources = {
                 "of": " / ",
                 "prev": "前へ",
                 "next": "次へ"
+            },
+            "terminal": {
+                "welcome": "AnimOS v1.0.0 (zsh-sandbox) へようこそ\n認定資格: Red Hat 認定エンジニア (RHCE) #200-244-934 (満点 300/300)\n\n'help' と入力すると利用可能なコマンド一覧が表示されます。\n'theme [name]' でテーマを変更できます (glass, matrix, cyberpunk, amber, classic)。\n",
+                "prompt": "anim@animos:~ $ ",
+                "helpText": "利用可能なコマンド:\n  ls                      ディレクトリの内容を表示\n  cd [dir]                ディレクトリの移動\n  cat [file]              ファイル内容を表示\n  neofetch                システム情報と認定資格を表示\n  ansible-playbook [file] 模擬 Ansible プレイブックを実行\n  theme [theme-name]      ターミナルの配色テーマを変更\n  sudo rhce               Red Hat 認定の秘密情報を実行\n  clear                   画面をクリア\n  help                    このヘルプメッセージを表示",
+                "cmdNotFound": "コマンドが見つかりません: ",
+                "noSuchFile": "ファイルまたはディレクトリが見つかりません: ",
+                "isDir": "ディレクトリです: ",
+                "permissionDenied": "アクセス拒否。Anim のみが root 権限を持っています。'sudo rhce' を試してみてください！",
+                "themeChanged": "ターミナルのテーマを以下に変更しました: ",
+                "invalidTheme": "無効なテーマです。利用可能: glass, matrix, cyberpunk, amber, classic。",
+                "playbookSimulating": "Ansible プレイブックのシミュレーションを開始しています...",
+                "playbookSuccess": "Ansible プレイブックの実行が正常に終了しました。",
+                "usagePlaybook": "使用法: ansible-playbook playbooks/deploy_skills.yml",
+                "bioTitle": "=== 略歴 ===",
+                "contactTitle": "=== 連絡先 ===",
+                "skillsTitle": "=== スキルカテゴリ ===",
+                "certsTitle": "=== プロフェッショナル認定資格 ==="
             },
             "photography": {
                 "title1": "レンズ",

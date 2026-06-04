@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { personalInfo } from '../data/personal';
+import TerminalSandbox from '../components/TerminalSandbox';
 import './Home.css';
 
 const Home = () => {
@@ -55,6 +56,19 @@ const Home = () => {
                         <p>{t('home.exploringSub')}</p>
                     </div>
                 </div>
+            </section>
+
+            {/* Terminal Sandbox Section */}
+            <section className="terminal-section animate-in">
+                <div className="section-header text-center" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <h2 className="section-title" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', marginBottom: '0.75rem' }}>
+                        {t('home.terminalTitle')}
+                    </h2>
+                    <p className="section-subtitle" style={{ color: 'var(--text-secondary)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto' }}>
+                        {t('home.terminalSubtitle')}
+                    </p>
+                </div>
+                <TerminalSandbox />
             </section>
 
             {/* Quick Links Section */}
