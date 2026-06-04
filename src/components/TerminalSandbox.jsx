@@ -163,15 +163,240 @@ const TerminalSandbox = () => {
   const [theme, setTheme] = useState('glass');
   const [isExecutingPlaybook, setIsExecutingPlaybook] = useState(false);
 
+  const [interactiveMode, setInteractiveMode] = useState(null); // null | 'guestbook' | 'snake'
+  const [guestbookStep, setGuestbookStep] = useState(0); // 0: Name, 1: Company, 2: Message
+  const [tempSignature, setTempSignature] = useState({ name: '', company: '', message: '' });
+
+  // Snake Game State
+  const [snake, setSnake] = useState([]);
+  const [direction, setDirection] = useState('RIGHT');
+  const [food, setFood] = useState({ x: 0, y: 0 });
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+
   const screenRef = useRef(null);
   const inputRef = useRef(null);
   const playbookIntervalRef = useRef(null);
 
-  // Initialize with welcome message on mount
+  // Helper to spawn food for Snake game
+  const spawnFood = (currentSnake) => {
+    let newFood;
+    let attempts = 0;
+    while (attempts < 100) {
+      const x = Math.floor(Math.random() * 15);
+      const y = Math.floor(Math.random() * 10);
+      const onSnake = currentSnake.some(segment => segment.x === x && segment.y === y);
+      if (!onSnake) {
+        newFood = { x, y };
+        break;
+      }
+      attempts++;
+    }
+    if (!newFood) {
+      newFood = { x: 0, y: 0 };
+    }
+    return newFood;
+  };
+
+  // Helper to start the Snake game
+  const startSnakeGame = () => {
+    setInteractiveMode('snake');
+    const initialSnake = [
+      { x: 5, y: 5 },
+      { x: 4, y: 5 },
+      { x: 3, y: 5 }
+    ];
+    setSnake(initialSnake);
+    setDirection('RIGHT');
+    setScore(0);
+    setGameOver(false);
+    setFood(spawnFood(initialSnake));
+    
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const stored = window.localStorage.getItem('my_blog_vibe_snake_highscore');
+      setHighScore(stored ? parseInt(stored, 10) : 0);
+    }
+  };
+
+  // Helper to format and display guestbook list
+  const printGuestbookList = (entriesList) => {
+    const list = entriesList || [];
+    if (list.length === 0) {
+      setHistory(prev => [...prev, { type: 'output', text: t('terminal.guestbookNoEntries') }]);
+      return;
+    }
+    
+    let outputText = `\n${t('terminal.guestbookTitle')}\n\n`;
+    
+    // Monospace column layout
+    const colName = "NAME".padEnd(20);
+    const colCompany = "COMPANY / ROLE".padEnd(30);
+    const colDate = "DATE".padEnd(12);
+    const colMessage = "MESSAGE";
+    
+    outputText += `${colName} | ${colCompany} | ${colDate} | ${colMessage}\n`;
+    outputText += `${"-".repeat(20)}-+-${"-".repeat(30)}-+-${"-".repeat(12)}-+-${"-".repeat(20)}\n`;
+    
+    list.forEach(entry => {
+      const name = (entry.name || '').substring(0, 19).padEnd(20);
+      const company = (entry.company || '').substring(0, 29).padEnd(30);
+      const date = (entry.date || '').substring(0, 11).padEnd(12);
+      const message = entry.message || '';
+      outputText += `${name} | ${company} | ${date} | ${message}\n`;
+    });
+    
+    outputText += "\n";
+    setHistory(prev => [...prev, { type: 'output', text: outputText }]);
+  };
+
+  // Initialize with welcome message, load highscore & seed guestbook on mount
   useEffect(() => {
     setHistory([{ type: 'output', text: t('terminal.welcome') }]);
+    
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const stored = window.localStorage.getItem('my_blog_vibe_snake_highscore');
+      if (stored) {
+        setHighScore(parseInt(stored, 10));
+      }
+      
+      const storedGb = window.localStorage.getItem('my_blog_vibe_guestbook');
+      if (!storedGb) {
+        const mockEntries = [
+          {
+            name: "Sarah Jenkins",
+            company: "TechCorp Global / Tech Recruiter",
+            message: "Loved the interactive playbook simulator! Very creative portfolio.",
+            date: "2026-06-01"
+          },
+          {
+            name: "Kenji Sato",
+            company: "Cloud Solutions Japan / DevOps Lead",
+            message: "Impressive RHCE credentials. The 3D skills constellation works beautifully.",
+            date: "2026-06-03"
+          }
+        ];
+        window.localStorage.setItem('my_blog_vibe_guestbook', JSON.stringify(mockEntries));
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Snake Game Loop
+  useEffect(() => {
+    if (interactiveMode !== 'snake' || gameOver) return;
+
+    const isTest = import.meta.env.MODE === 'test';
+    const tickRate = isTest ? 1 : 200;
+
+    const interval = setInterval(() => {
+      setSnake(prevSnake => {
+        if (prevSnake.length === 0) return prevSnake;
+
+        const head = prevSnake[0];
+        let newHead = { ...head };
+
+        switch (direction) {
+          case 'UP':
+            newHead.y -= 1;
+            break;
+          case 'DOWN':
+            newHead.y += 1;
+            break;
+          case 'LEFT':
+            newHead.x -= 1;
+            break;
+          case 'RIGHT':
+            newHead.x += 1;
+            break;
+          default:
+            break;
+        }
+
+        // Check boundary collision (15x10 grid)
+        if (newHead.x < 0 || newHead.x >= 15 || newHead.y < 0 || newHead.y >= 10) {
+          setGameOver(true);
+          return prevSnake;
+        }
+
+        // Check self collision
+        const hitSelf = prevSnake.some(segment => segment.x === newHead.x && segment.y === newHead.y);
+        if (hitSelf) {
+          setGameOver(true);
+          return prevSnake;
+        }
+
+        const newSnake = [newHead, ...prevSnake];
+
+        // Check food collision
+        if (newHead.x === food.x && newHead.y === food.y) {
+          setScore(prevScore => {
+            const nextScore = prevScore + 1;
+            if (nextScore > highScore) {
+              setHighScore(nextScore);
+              if (typeof window !== 'undefined' && window.localStorage) {
+                window.localStorage.setItem('my_blog_vibe_snake_highscore', nextScore.toString());
+              }
+            }
+            return nextScore;
+          });
+          setFood(spawnFood(newSnake));
+        } else {
+          newSnake.pop();
+        }
+
+        return newSnake;
+      });
+    }, tickRate);
+
+    return () => clearInterval(interval);
+  }, [interactiveMode, gameOver, direction, food, highScore]);
+
+  const renderSnakeBoard = () => {
+    const board = [];
+    for (let y = 0; y < 10; y++) {
+      const row = [];
+      for (let x = 0; x < 15; x++) {
+        const isHead = snake[0] && snake[0].x === x && snake[0].y === y;
+        const isBody = snake.slice(1).some(segment => segment.x === x && segment.y === y);
+        const isFood = food.x === x && food.y === y;
+
+        if (isHead) {
+          row.push('■');
+        } else if (isBody) {
+          row.push('□');
+        } else if (isFood) {
+          row.push('★');
+        } else {
+          row.push('·');
+        }
+      }
+      board.push(row.join(' '));
+    }
+
+    return (
+      <div className="snake-board-container" data-testid="snake-game-board">
+        <div className="snake-stats">
+          <span>{t('terminal.snakeScore')}{score}</span>
+          <span>{t('terminal.snakeHighScore')}{highScore}</span>
+        </div>
+        <div className="snake-grid">
+          <div>+-----------------------------+</div>
+          {board.map((rowText, i) => (
+            <div key={i}>| {rowText} |</div>
+          ))}
+          <div>+-----------------------------+</div>
+        </div>
+        <div className="snake-instructions">
+          {gameOver ? (
+            <span className="snake-game-over-text">{t('terminal.snakeGameOver')}</span>
+          ) : (
+            <span>{t('terminal.snakeInstructions')}</span>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   // Scroll to bottom whenever history changes
   useEffect(() => {
@@ -400,6 +625,40 @@ const TerminalSandbox = () => {
         }
         break;
       }
+      case 'guestbook': {
+        const sub = arg.toLowerCase().trim();
+        if (sub === 'sign') {
+          setInteractiveMode('guestbook');
+          setGuestbookStep(0);
+          setTempSignature({ name: '', company: '', message: '' });
+          setHistory(prev => [...prev, { type: 'output', text: "\nStarting interactive Guestbook signature wizard. Press ESC at any time to cancel.\n" }]);
+        } else if (sub === 'clear') {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.removeItem('my_blog_vibe_guestbook');
+          }
+          setHistory(prev => [...prev, { type: 'output', text: t('terminal.gbCleared') }]);
+        } else if (sub === 'list' || !sub) {
+          let entries = [];
+          if (typeof window !== 'undefined' && window.localStorage) {
+            const stored = window.localStorage.getItem('my_blog_vibe_guestbook');
+            if (stored) {
+              try {
+                entries = JSON.parse(stored);
+              } catch {
+                entries = [];
+              }
+            }
+          }
+          printGuestbookList(entries);
+        } else {
+          setHistory(prev => [...prev, { type: 'output', text: t('terminal.guestbookHelp') }]);
+        }
+        break;
+      }
+      case 'snake':
+      case 'play':
+        startSnakeGame();
+        break;
       default:
         setHistory(prev => [...prev, { type: 'output', text: `${t('terminal.cmdNotFound')}${cmd}` }]);
     }
@@ -409,6 +668,56 @@ const TerminalSandbox = () => {
     e.preventDefault();
     if (isExecutingPlaybook) return;
 
+    if (interactiveMode === 'guestbook') {
+      const val = inputValue.trim();
+      if (!val && guestbookStep < 2) return; // Name and company shouldn't be empty
+      if (guestbookStep === 0) {
+        setTempSignature(prev => ({ ...prev, name: val }));
+        setHistory(prev => [...prev, { type: 'input', text: `${t('terminal.gbEnterName')}${val}`, dir: currentDir }]);
+        setGuestbookStep(1);
+        setInputValue('');
+      } else if (guestbookStep === 1) {
+        setTempSignature(prev => ({ ...prev, company: val }));
+        setHistory(prev => [...prev, { type: 'input', text: `${t('terminal.gbEnterCompany')}${val}`, dir: currentDir }]);
+        setGuestbookStep(2);
+        setInputValue('');
+      } else if (guestbookStep === 2) {
+        const entry = {
+          name: tempSignature.name,
+          company: tempSignature.company,
+          message: val || 'Visited!',
+          date: new Date().toISOString().split('T')[0]
+        };
+        
+        let entries = [];
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const stored = window.localStorage.getItem('my_blog_vibe_guestbook');
+          if (stored) {
+            try {
+              entries = JSON.parse(stored);
+            } catch {
+              entries = [];
+            }
+          }
+          entries.push(entry);
+          window.localStorage.setItem('my_blog_vibe_guestbook', JSON.stringify(entries));
+        }
+        
+        setHistory(prev => [
+          ...prev,
+          { type: 'input', text: `${t('terminal.gbEnterMessage')}${val}`, dir: currentDir },
+          { type: 'output', text: `\n${t('terminal.gbSignedSuccess')}\n` }
+        ]);
+        
+        printGuestbookList(entries);
+        
+        setInteractiveMode(null);
+        setGuestbookStep(0);
+        setInputValue('');
+      }
+      return;
+    }
+
     processCommand(inputValue);
     setInputValue('');
   };
@@ -416,6 +725,46 @@ const TerminalSandbox = () => {
   const handleKeyDown = (e) => {
     if (isExecutingPlaybook) {
       e.preventDefault();
+      return;
+    }
+
+    if (interactiveMode === 'snake') {
+      e.preventDefault();
+      const key = e.key.toUpperCase();
+      if (gameOver) {
+        if (key === 'R') {
+          startSnakeGame();
+        } else if (key === 'Q') {
+          setInteractiveMode(null);
+          setHistory(prev => [...prev, { type: 'output', text: "\nSnake game exited.\n" }]);
+        }
+        return;
+      }
+      
+      if (key === 'Q') {
+        setInteractiveMode(null);
+        setHistory(prev => [...prev, { type: 'output', text: "\nSnake game exited.\n" }]);
+        return;
+      }
+      
+      if ((key === 'ARROWUP' || key === 'W') && direction !== 'DOWN') {
+        setDirection('UP');
+      } else if ((key === 'ARROWDOWN' || key === 'S') && direction !== 'UP') {
+        setDirection('DOWN');
+      } else if ((key === 'ARROWLEFT' || key === 'A') && direction !== 'RIGHT') {
+        setDirection('LEFT');
+      } else if ((key === 'ARROWRIGHT' || key === 'D') && direction !== 'LEFT') {
+        setDirection('RIGHT');
+      }
+      return;
+    }
+
+    if (interactiveMode === 'guestbook' && e.key === 'Escape') {
+      e.preventDefault();
+      setInteractiveMode(null);
+      setGuestbookStep(0);
+      setInputValue('');
+      setHistory(prev => [...prev, { type: 'output', text: "\nGuestbook signature cancelled.\n" }]);
       return;
     }
 
@@ -449,10 +798,20 @@ const TerminalSandbox = () => {
           { type: 'input', text: inputValue, dir: currentDir },
           { type: 'output', text: listText }
         ]);
+      } else if (/^guestbook\s+$/i.test(inputValue)) {
+        // User typed "guestbook " and pressed tab: list guestbook options
+        const subs = ['sign', 'list', 'clear'];
+        const listText = subs.join('   ');
+        
+        setHistory(prev => [
+          ...prev,
+          { type: 'input', text: inputValue, dir: currentDir },
+          { type: 'output', text: listText }
+        ]);
       } else if (parts.length === 1 && parts[0]) {
         // Autocomplete command
         const cmdPrefix = parts[0];
-        const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help'];
+        const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help', 'guestbook', 'snake'];
         const matches = commands.filter(c => c.startsWith(cmdPrefix));
         if (matches.length === 1) {
           setInputValue(matches[0] + ' ');
@@ -464,6 +823,21 @@ const TerminalSandbox = () => {
         
         if (matches.length === 1) {
           setInputValue(`theme ${matches[0]}`);
+        } else if (matches.length > 1) {
+          const listText = matches.join('   ');
+          setHistory(prev => [
+            ...prev,
+            { type: 'input', text: inputValue, dir: currentDir },
+            { type: 'output', text: listText }
+          ]);
+        }
+      } else if (parts.length === 2 && parts[0] === 'guestbook' && parts[1]) {
+        const subPrefix = parts[1].toLowerCase();
+        const subs = ['sign', 'list', 'clear'];
+        const matches = subs.filter(s => s.startsWith(subPrefix));
+        
+        if (matches.length === 1) {
+          setInputValue(`guestbook ${matches[0]}`);
         } else if (matches.length > 1) {
           const listText = matches.join('   ');
           setHistory(prev => [
@@ -565,6 +939,8 @@ const TerminalSandbox = () => {
             setHistory([{ type: 'output', text: t('terminal.welcome') }]);
             setCurrentDir('/');
             setInputValue('');
+            setInteractiveMode(null);
+            setGuestbookStep(0);
           }} role="button" tabIndex={0}>
             <RefreshCw size={12} />
           </span>
@@ -589,12 +965,24 @@ const TerminalSandbox = () => {
           </div>
         ))}
 
+        {interactiveMode === 'snake' && renderSnakeBoard()}
+
         {!isExecutingPlaybook && (
           <form onSubmit={handleSubmit} className="terminal-input-row">
-            <span className="terminal-prompt">
-              anim@animos:{getPromptPath()} $
-            </span>
-            <div className="terminal-input-wrapper">
+            {interactiveMode === 'snake' ? (
+              <div style={{ color: 'var(--accent-secondary)', opacity: 0.8, fontSize: '0.85rem' }}>
+                [Snake Active] Controls: Arrow keys / WASD. Press Q to Quit.
+              </div>
+            ) : interactiveMode === 'guestbook' ? (
+              <span className="terminal-prompt">
+                {guestbookStep === 0 ? t('terminal.gbEnterName') : guestbookStep === 1 ? t('terminal.gbEnterCompany') : t('terminal.gbEnterMessage')}
+              </span>
+            ) : (
+              <span className="terminal-prompt">
+                anim@animos:{getPromptPath()} $
+              </span>
+            )}
+            <div className="terminal-input-wrapper" style={interactiveMode === 'snake' ? { opacity: 0, position: 'absolute', pointerEvents: 'none' } : {}}>
               <input
                 ref={inputRef}
                 type="text"

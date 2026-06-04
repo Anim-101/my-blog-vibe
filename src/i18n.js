@@ -265,7 +265,7 @@ const resources = {
             "terminal": {
                 "welcome": "Welcome to AnimOS v1.0.0 (zsh-sandbox)\nCertified: Red Hat Certified Engineer (RHCE) #200-244-934 (Perfect Score 300/300)\n\nType 'help' to see list of available commands.\nType 'theme [name]' to change colors (glass, matrix, cyberpunk, amber, classic).\n",
                 "prompt": "anim@animos:~ $ ",
-                "helpText": "Available commands:\n  ls                      List directory contents\n  cd [dir]                Change directory\n  cat [file]              Print file contents\n  neofetch                Display system information and credentials\n  ansible-playbook [file] Execute a simulated Ansible playbook\n  theme [theme-name]      Change terminal visual theme\n  sudo rhce               Run special command for Red Hat Certification details\n  clear                   Clear the screen\n  help                    Display this help message",
+                "helpText": "Available commands:\n  ls                      List directory contents\n  cd [dir]                Change directory\n  cat [file]              Print file contents\n  neofetch                Display system information and credentials\n  ansible-playbook [file] Execute a simulated Ansible playbook\n  theme [theme-name]      Change terminal visual theme\n  guestbook               View or sign the recruiter guestbook\n  snake                   Play a retro ASCII Snake game\n  sudo rhce               Run special command for Red Hat Certification details\n  clear                   Clear the screen\n  help                    Display this help message",
                 "cmdNotFound": "command not found: ",
                 "noSuchFile": "No such file or directory: ",
                 "isDir": "Is a directory: ",
@@ -278,7 +278,20 @@ const resources = {
                 "bioTitle": "=== Biography ===",
                 "contactTitle": "=== Contact Details ===",
                 "skillsTitle": "=== Skill Categories ===",
-                "certsTitle": "=== Professional Certifications ==="
+                "certsTitle": "=== Professional Certifications ===",
+                "guestbookHelp": "Usage: guestbook [list|sign|clear]",
+                "guestbookTitle": "=== Recruiter Guestbook ===",
+                "guestbookNoEntries": "No entries found. Be the first to sign using 'guestbook sign'!",
+                "gbEnterName": "Enter your name: ",
+                "gbEnterCompany": "Enter your company / role: ",
+                "gbEnterMessage": "Enter your message: ",
+                "gbSignedSuccess": "Thank you for signing the guestbook!",
+                "gbCleared": "Guestbook signatures cleared successfully.",
+                "snakeTitle": "=== Retro CLI Snake Game ===",
+                "snakeInstructions": "Use Arrow keys or WASD to control. Press 'q' to quit.",
+                "snakeScore": "Score: ",
+                "snakeHighScore": "  High Score: ",
+                "snakeGameOver": "Game Over! Press 'r' to restart, 'q' to quit."
             },
             "photography": {
                 "title1": "Through the",
@@ -564,7 +577,7 @@ const resources = {
             "terminal": {
                 "welcome": "AnimOS v1.0.0 (zsh-sandbox) へようこそ\n認定資格: Red Hat 認定エンジニア (RHCE) #200-244-934 (満点 300/300)\n\n'help' と入力すると利用可能なコマンド一覧が表示されます。\n'theme [name]' でテーマを変更できます (glass, matrix, cyberpunk, amber, classic)。\n",
                 "prompt": "anim@animos:~ $ ",
-                "helpText": "利用可能なコマンド:\n  ls                      ディレクトリの内容を表示\n  cd [dir]                ディレクトリの移動\n  cat [file]              ファイル内容を表示\n  neofetch                システム情報と認定資格を表示\n  ansible-playbook [file] 模擬 Ansible プレイブックを実行\n  theme [theme-name]      ターミナルの配色テーマを変更\n  sudo rhce               Red Hat 認定の秘密情報を実行\n  clear                   画面をクリア\n  help                    このヘルプメッセージを表示",
+                "helpText": "利用可能なコマンド:\n  ls                      ディレクトリの内容を表示\n  cd [dir]                ディレクトリの移動\n  cat [file]              ファイル内容を表示\n  neofetch                システム情報と認定資格を表示\n  ansible-playbook [file] 模擬 Ansible プレイブックを実行\n  theme [theme-name]      ターミナルの配色テーマを変更\n  guestbook               ゲストブックの閲覧・記帳\n  snake                   レトロな ASCII スネークゲームをプレイ\n  sudo rhce               Red Hat 認定の秘密情報を実行\n  clear                   画面をクリア\n  help                    このヘルプメッセージを表示",
                 "cmdNotFound": "コマンドが見つかりません: ",
                 "noSuchFile": "ファイルまたはディレクトリが見つかりません: ",
                 "isDir": "ディレクトリです: ",
@@ -577,7 +590,20 @@ const resources = {
                 "bioTitle": "=== 略歴 ===",
                 "contactTitle": "=== 連絡先 ===",
                 "skillsTitle": "=== スキルカテゴリ ===",
-                "certsTitle": "=== プロフェッショナル認定資格 ==="
+                "certsTitle": "=== プロフェッショナル認定資格 ===",
+                "guestbookHelp": "使用法: guestbook [list|sign|clear]",
+                "guestbookTitle": "=== ゲストブック ===",
+                "guestbookNoEntries": "署名が見つかりません。'guestbook sign' で最初の署名を残しましょう！",
+                "gbEnterName": "名前を入力してください: ",
+                "gbEnterCompany": "会社名 / 役職を入力してください: ",
+                "gbEnterMessage": "メッセージを入力してください: ",
+                "gbSignedSuccess": "ゲストブックへのご署名ありがとうございました！",
+                "gbCleared": "ゲストブックの署名が正常に消去されました。",
+                "snakeTitle": "=== レトロ CLI スネークゲーム ===",
+                "snakeInstructions": "矢印キーまたは WASD キーで操作します。'q' で終了します。",
+                "snakeScore": "スコア: ",
+                "snakeHighScore": "  ハイスコア: ",
+                "snakeGameOver": "ゲームオーバー！'r' でリスタート、'q' で終了します。"
             },
             "photography": {
                 "title1": "レンズ",

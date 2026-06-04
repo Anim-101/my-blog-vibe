@@ -247,4 +247,67 @@ describe('TerminalSandbox Component', () => {
         expect(successMessage).toBeDefined();
         expect(container.textContent).toContain('PLAY RECAP');
     });
+
+    it('handles guestbook sign interactive wizard flow and listing', () => {
+        const { container } = render(<TerminalSandbox />);
+        const input = container.querySelector('.terminal-input');
+        const form = container.querySelector('form');
+
+        // Run 'guestbook' to list entries (should show seeded entries)
+        fireEvent.change(input, { target: { value: 'guestbook' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.guestbookTitle');
+        expect(container.textContent).toContain('Sarah Jenkins');
+
+        // Run 'guestbook sign' to start wizard
+        fireEvent.change(input, { target: { value: 'guestbook sign' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('Starting interactive Guestbook signature wizard');
+
+        // Step 0: Name
+        fireEvent.change(input, { target: { value: 'John Doe' } });
+        fireEvent.submit(form);
+        
+        // Step 1: Company
+        fireEvent.change(input, { target: { value: 'ACME Corp' } });
+        fireEvent.submit(form);
+
+        // Step 2: Message
+        fireEvent.change(input, { target: { value: 'Great site!' } });
+        fireEvent.submit(form);
+
+        // Verify signature success and display
+        expect(container.textContent).toContain('terminal.gbSignedSuccess');
+        expect(container.textContent).toContain('John Doe');
+        expect(container.textContent).toContain('ACME Corp');
+        expect(container.textContent).toContain('Great site!');
+        
+        // Test clear guestbook
+        fireEvent.change(input, { target: { value: 'guestbook clear' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.gbCleared');
+    });
+
+    it('handles playing and exiting the snake game', () => {
+        const { container } = render(<TerminalSandbox />);
+        const input = container.querySelector('.terminal-input');
+        const form = container.querySelector('form');
+
+        // Run 'snake' to start game
+        fireEvent.change(input, { target: { value: 'snake' } });
+        fireEvent.submit(form);
+
+        // Board should render
+        expect(container.querySelector('[data-testid="snake-game-board"]')).not.toBeNull();
+        expect(container.textContent).toContain('terminal.snakeScore');
+
+        // Change directions using keys
+        fireEvent.keyDown(input, { key: 'ArrowDown' });
+        // Game tick runs in background, but we can also quit
+        fireEvent.keyDown(input, { key: 'q' });
+
+        // Verify game has exited
+        expect(container.querySelector('[data-testid="snake-game-board"]')).toBeNull();
+        expect(container.textContent).toContain('Snake game exited.');
+    });
 });
