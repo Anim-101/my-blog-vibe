@@ -20,7 +20,9 @@ import {
   DollarSign,
   Zap,
   Box,
-  Share2
+  Share2,
+  Sparkles,
+  Bot
 } from 'lucide-react';
 import './Infrastructure.css';
 
@@ -156,6 +158,22 @@ const Infrastructure = () => {
         };
         return priceMap[size] || 10.00;
       }
+      if (type === 'ai_api') {
+        const priceMap = {
+          'lightweight': 5.00,
+          'standard': 30.00,
+          'enterprise': 150.00,
+        };
+        return priceMap[size] || 30.00;
+      }
+      if (type === 'ml_platform') {
+        const priceMap = {
+          'notebook': 36.50,
+          'training': 167.90,
+          'cluster': 730.00,
+        };
+        return priceMap[size] || 36.50;
+      }
       if (type === 'dns') return 0.50;
       if (type === 'loadbalancer') return 16.43;
       if (type === 'storage') return 2.30;
@@ -210,6 +228,22 @@ const Infrastructure = () => {
         };
         return priceMap[size] || 35.00;
       }
+      if (type === 'ai_api') {
+        const priceMap = {
+          'lightweight': 5.00,
+          'standard': 30.00,
+          'enterprise': 150.00,
+        };
+        return priceMap[size] || 30.00;
+      }
+      if (type === 'ml_platform') {
+        const priceMap = {
+          'notebook': 36.50,
+          'training': 167.90,
+          'cluster': 730.00,
+        };
+        return priceMap[size] || 36.50;
+      }
       if (type === 'dns') return 0.50;
       if (type === 'loadbalancer') return 18.25;
       if (type === 'storage') return 2.08;
@@ -226,6 +260,8 @@ const Infrastructure = () => {
       { type: 'compute', name: 'EC2 Instance', cost: 7.59, icon: <Server size={18} />, desc: 't3.micro instance' },
       { type: 'container', name: 'ECS Fargate', cost: 32.00, icon: <Box size={18} />, desc: 'Serverless container' },
       { type: 'serverless', name: 'Lambda Function', cost: 5.00, icon: <Zap size={18} />, desc: 'Serverless compute' },
+      { type: 'ai_api', name: 'Amazon Bedrock', cost: 30.00, icon: <Sparkles size={18} />, desc: 'Serverless GenAI APIs' },
+      { type: 'ml_platform', name: 'SageMaker', cost: 36.50, icon: <Bot size={18} />, desc: 'ML Model Development' },
       { type: 'database', name: 'RDS Instance', cost: 13.14, icon: <Database size={18} />, desc: 'db.t3.micro database' },
       { type: 'nosql', name: 'DynamoDB Table', cost: 15.00, icon: <Database size={18} />, desc: 'NoSQL Database' },
       { type: 'storage', name: 'S3 Bucket', cost: 2.30, icon: <HardDrive size={18} />, desc: 'Object Storage' }
@@ -237,6 +273,8 @@ const Infrastructure = () => {
       { type: 'compute', name: 'Virtual Machine', cost: 7.59, icon: <Server size={18} />, desc: 'B1s burstable instance' },
       { type: 'container', name: 'AKS Cluster', cost: 32.00, icon: <Box size={18} />, desc: 'Managed Kubernetes' },
       { type: 'serverless', name: 'Azure Function', cost: 5.00, icon: <Zap size={18} />, desc: 'Serverless compute' },
+      { type: 'ai_api', name: 'Azure OpenAI', cost: 30.00, icon: <Sparkles size={18} />, desc: 'GPT-4o & LLM Service' },
+      { type: 'ml_platform', name: 'Azure ML Studio', cost: 36.50, icon: <Bot size={18} />, desc: 'Enterprise ML Workspace' },
       { type: 'database', name: 'Azure SQL', cost: 215.38, icon: <Database size={18} />, desc: 'GP_Gen5_2 database' },
       { type: 'nosql', name: 'Cosmos DB', cost: 24.00, icon: <Database size={18} />, desc: 'NoSQL Database' },
       { type: 'storage', name: 'Blob Storage', cost: 2.08, icon: <HardDrive size={18} />, desc: 'Hot storage account' }
@@ -255,7 +293,9 @@ const Infrastructure = () => {
       serverless: 320,
       database: 460,
       nosql: 460,
-      storage: 460
+      storage: 460,
+      ai_api: 460,
+      ml_platform: 460
     };
 
     const typeNodes = nodes.filter(n => n.type === item.type);
@@ -269,8 +309,8 @@ const Infrastructure = () => {
       const middleNodes = nodes.filter(n => n.type === 'compute' || n.type === 'container' || n.type === 'serverless');
       const middleCount = middleNodes.length;
       y = 100 + (middleCount * 80);
-    } else if (item.type === 'database' || item.type === 'nosql' || item.type === 'storage') {
-      const backendNodes = nodes.filter(n => n.type === 'database' || n.type === 'nosql' || n.type === 'storage');
+    } else if (item.type === 'database' || item.type === 'nosql' || item.type === 'storage' || item.type === 'ai_api' || item.type === 'ml_platform') {
+      const backendNodes = nodes.filter(n => n.type === 'database' || n.type === 'nosql' || n.type === 'storage' || n.type === 'ai_api' || n.type === 'ml_platform');
       const backendCount = backendNodes.length;
       y = 100 + (backendCount * 80);
     } else if (item.type === 'loadbalancer') {
@@ -287,7 +327,9 @@ const Infrastructure = () => {
                         item.type === 'serverless' ? '512MB' :
                         item.type === 'nosql' ? 'standard' :
                         item.type === 'container' ? 'medium' :
-                        item.type === 'cdn' ? 'basic' : 'default';
+                        item.type === 'cdn' ? 'basic' :
+                        item.type === 'ai_api' ? 'standard' :
+                        item.type === 'ml_platform' ? 'notebook' : 'default';
 
     const cost = getResourceCost(item.type, defaultSize, provider);
 
@@ -327,7 +369,7 @@ const Infrastructure = () => {
     const cdnNodes = nodes.filter(n => n.type === 'cdn');
     const lbNodes = nodes.filter(n => n.type === 'loadbalancer');
     const middleNodes = nodes.filter(n => n.type === 'compute' || n.type === 'container' || n.type === 'serverless');
-    const backNodes = nodes.filter(n => n.type === 'database' || n.type === 'nosql' || n.type === 'storage');
+    const backNodes = nodes.filter(n => n.type === 'database' || n.type === 'nosql' || n.type === 'storage' || n.type === 'ai_api' || n.type === 'ml_platform');
 
     // DNS connections
     dnsNodes.forEach(dns => {
@@ -511,6 +553,18 @@ resource "aws_ecs_task_definition" "${resourceId}" {
     type = "S"
   }
 }\n\n`;
+        } else if (n.type === 'ai_api') {
+          code += `resource "aws_bedrock_provisioned_model_throughput" "${resourceId}" {
+  model_arn           = "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-v1:0"
+  provisioned_model_name = "${resourceId}-throughput"
+  model_units         = 1
+}\n\n`;
+        } else if (n.type === 'ml_platform') {
+          code += `resource "aws_sagemaker_notebook_instance" "${resourceId}" {
+  name          = "portfolio-notebook"
+  role_arn      = aws_iam_role.sagemaker_role.arn
+  instance_type = "${n.instanceSize === 'notebook' ? "ml.t3.medium" : n.instanceSize === 'cluster' ? "ml.p3.2xlarge" : "ml.m5.xlarge"}"
+}\n\n`;
         } else if (n.type === 'storage') {
           code += `resource "aws_s3_bucket" "${resourceId}" {
   bucket = "anim-portfolio-storage"
@@ -620,6 +674,23 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
     failover_priority = 0
   }
 }\n\n`;
+        } else if (n.type === 'ai_api') {
+          code += `resource "azurerm_cognitive_account" "${resourceId}" {
+  name                = "portfolio-openai"
+  location            = "eastus"
+  resource_group_name = "portfolio-rg"
+  kind                = "OpenAI"
+  sku_name            = "S0"
+}\n\n`;
+        } else if (n.type === 'ml_platform') {
+          code += `resource "azurerm_machine_learning_workspace" "${resourceId}" {
+  name                    = "portfolio-ml-workspace"
+  location                = "eastus"
+  resource_group_name     = "portfolio-rg"
+  application_insights_id = azurerm_application_insights.insights.id
+  key_vault_id            = azurerm_key_vault.vault.id
+  storage_account_id      = azurerm_storage_account.storage.id
+}\n\n`;
         } else if (n.type === 'storage') {
           code += `resource "azurerm_storage_account" "${resourceId}" {
   name                     = "animportfoliostor"
@@ -688,6 +759,16 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
         yaml += `    - name: Setup NoSQL Database table (${n.name})
       ${provider === 'aws' ? 'amazon.aws.dynamodb_table' : 'azure.azcollection.azure_rm_cosmosdbaccount'}:
         name: "portfolio-nosql"
+        state: present\n\n`;
+      } else if (n.type === 'ai_api') {
+        yaml += `    - name: Provision Cognitive Services Account for ${n.name}
+      ${provider === 'aws' ? 'amazon.aws.bedrock_model' : 'azure.azcollection.azure_rm_cognitiveservicesaccount'}:
+        name: "portfolio-ai-service"
+        state: present\n\n`;
+      } else if (n.type === 'ml_platform') {
+        yaml += `    - name: Provision Machine Learning workspace for ${n.name}
+      ${provider === 'aws' ? 'amazon.aws.sagemaker_notebook' : 'azure.azcollection.azure_rm_machinelearningworkspace'}:
+        name: "portfolio-ml"
         state: present\n\n`;
       } else if (n.type === 'storage') {
         yaml += `    - name: Setup Cloud Storage Buckets
@@ -871,6 +952,8 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                   else if (node.type === 'serverless') icon = <Zap size={20} />;
                   else if (node.type === 'container') icon = <Box size={20} />;
                   else if (node.type === 'nosql') icon = <Database size={20} />;
+                  else if (node.type === 'ai_api') icon = <Sparkles size={20} />;
+                  else if (node.type === 'ml_platform') icon = <Bot size={20} />;
 
                   return (
                     <div 
@@ -899,7 +982,7 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                       <div className="node-icon-wrapper">{icon}</div>
                       <div className="node-label">{node.name}</div>
                       <div className="node-desc">
-                        {['compute', 'database', 'serverless', 'container', 'nosql', 'cdn'].includes(node.type) ? node.instanceSize : `$${node.cost.toFixed(2)}/mo`}
+                        {['compute', 'database', 'serverless', 'container', 'nosql', 'cdn', 'ai_api', 'ml_platform'].includes(node.type) ? node.instanceSize : `$${node.cost.toFixed(2)}/mo`}
                       </div>
                     </div>
                   );
@@ -932,7 +1015,7 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                     />
                   </div>
 
-                  {['compute', 'database', 'serverless', 'container', 'nosql', 'cdn'].includes(selectedNode.type) && (
+                  {['compute', 'database', 'serverless', 'container', 'nosql', 'cdn', 'ai_api', 'ml_platform'].includes(selectedNode.type) && (
                     <div className="config-form-group">
                       <label>Instance Size / Tier</label>
                       <select 
@@ -1014,6 +1097,20 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                               <option value="premium">Premium 2TB ($220.00/mo)</option>
                             </>
                           )
+                        )}
+                        {selectedNode.type === 'ai_api' && (
+                          <>
+                            <option value="lightweight">Lightweight APIs ($5.00/mo)</option>
+                            <option value="standard">Standard Endpoint ($30.00/mo)</option>
+                            <option value="enterprise">Provisioned Throughput ($150.00/mo)</option>
+                          </>
+                        )}
+                        {selectedNode.type === 'ml_platform' && (
+                          <>
+                            <option value="notebook">Notebook Instance ($36.50/mo)</option>
+                            <option value="training">Training Instances ($167.90/mo)</option>
+                            <option value="cluster">Multi-GPU Cluster ($730.00/mo)</option>
+                          </>
                         )}
                       </select>
                     </div>
