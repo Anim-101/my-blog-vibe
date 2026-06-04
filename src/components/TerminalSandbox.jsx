@@ -563,7 +563,7 @@ const TerminalSandbox = () => {
     }
     
     const textBoard = board.map(row => {
-      return row.map(cell => (cell ? '■' : '·')).join(' ');
+      return row.map(cell => (cell ? '#' : '.')).join(' ');
     });
     
     return (
@@ -573,18 +573,16 @@ const TerminalSandbox = () => {
           <span>{t('terminal.tetrisHighScore')}{tetrisHighScore}</span>
         </div>
         <div className="tetris-grid">
-          <div>╔═════════════════════╗</div>
+          <div>+---------------------+</div>
           {textBoard.map((rowText, i) => (
-            <div key={i}>║ {rowText} ║</div>
+            <div key={i}>| {rowText} |</div>
           ))}
-          <div>╚═════════════════════╝</div>
+          <div>+---------------------+</div>
         </div>
         <div className="tetris-instructions">
           {tetrisGameOver ? (
             <span className="tetris-game-over-text">{t('terminal.tetrisGameOver')}</span>
-          ) : (
-            <span>{t('terminal.tetrisInstructions')}</span>
-          )}
+          ) : null}
         </div>
       </div>
     );
@@ -621,11 +619,11 @@ const TerminalSandbox = () => {
     const danger = isSnakeDanger();
 
     // Determine snake head arrow based on direction
-    let headChar = '■';
-    if (direction === 'UP') headChar = '▲';
-    else if (direction === 'DOWN') headChar = '▼';
-    else if (direction === 'LEFT') headChar = '◀';
-    else if (direction === 'RIGHT') headChar = '▶';
+    let headChar = 'o';
+    if (direction === 'UP') headChar = '^';
+    else if (direction === 'DOWN') headChar = 'v';
+    else if (direction === 'LEFT') headChar = '<';
+    else if (direction === 'RIGHT') headChar = '>';
 
     for (let y = 0; y < 10; y++) {
       const row = [];
@@ -637,11 +635,11 @@ const TerminalSandbox = () => {
         if (isHead) {
           row.push(headChar);
         } else if (isBody) {
-          row.push('□');
+          row.push('o');
         } else if (isFood) {
-          row.push('★');
+          row.push('*');
         } else {
-          row.push('·');
+          row.push('.');
         }
       }
       board.push(row.join(' '));
@@ -655,31 +653,33 @@ const TerminalSandbox = () => {
           <span>{t('terminal.snakeHighScore')}{highScore}</span>
         </div>
         <div className="snake-grid">
-          <div>╔═════════════════════════════╗</div>
+          <div>+-----------------------------+</div>
           {board.map((rowText, i) => (
-            <div key={i}>║ {rowText} ║</div>
+            <div key={i}>| {rowText} |</div>
           ))}
-          <div>╚═════════════════════════════╝</div>
+          <div>+-----------------------------+</div>
         </div>
         <div className="snake-instructions">
           {gameOver ? (
             <span className="snake-game-over-text">{t('terminal.snakeGameOver')}</span>
           ) : danger ? (
             <span className="snake-game-warning-text">⚠️ COLLISION IMMINENT! CHANGE DIRECTION!</span>
-          ) : (
-            <span>{t('terminal.snakeInstructions')}</span>
-          )}
+          ) : null}
         </div>
       </div>
     );
   };
 
-  // Scroll to bottom whenever history changes
+  // Scroll to bottom on history change, but keep scrolled to top for games so the scoreboard is visible
   useEffect(() => {
     if (screenRef.current) {
-      screenRef.current.scrollTop = screenRef.current.scrollHeight;
+      if (interactiveMode === 'snake' || interactiveMode === 'tetris') {
+        screenRef.current.scrollTop = 0;
+      } else {
+        screenRef.current.scrollTop = screenRef.current.scrollHeight;
+      }
     }
-  }, [history]);
+  }, [history, interactiveMode]);
 
   // Clean up interval on unmount
   useEffect(() => {
@@ -1300,7 +1300,7 @@ const TerminalSandbox = () => {
       </div>
 
       <div className="terminal-screen" ref={screenRef}>
-        {history.map((line, index) => (
+        {(interactiveMode !== 'snake' && interactiveMode !== 'tetris') && history.map((line, index) => (
           <div key={index} className="terminal-output-line">
             {line.type === 'input' ? (
               <div>
