@@ -120,6 +120,40 @@ describe('TerminalSandbox Component', () => {
         
         // Input should remain as 'cd skills/' so user can continue typing
         expect(input.value).toBe('cd skills/');
+
+        // Type 'ls ' and press Tab
+        fireEvent.change(input, { target: { value: 'ls ' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(container.textContent).toContain('skills');
+
+        // Type 'ls skills' and press Tab
+        fireEvent.change(input, { target: { value: 'ls skills' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        // It should autocomplete to 'ls skills/' since skills is a directory
+        expect(input.value).toBe('ls skills/');
+
+        // Type 'ls skills/' and press Tab
+        fireEvent.change(input, { target: { value: 'ls skills/' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(container.textContent).toContain('frontend.json');
+        expect(input.value).toBe('ls skills/');
+
+        // Type 'cat ' and press Tab
+        fireEvent.change(input, { target: { value: 'cat ' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(container.textContent).toContain('bio.md');
+
+        // Type 'cat skills' and press Tab
+        fireEvent.change(input, { target: { value: 'cat skills' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        // It should autocomplete to 'cat skills/'
+        expect(input.value).toBe('cat skills/');
+
+        // Type 'cat skills/' and press Tab
+        fireEvent.change(input, { target: { value: 'cat skills/' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(container.textContent).toContain('skills.md');
+        expect(input.value).toBe('cat skills/');
     });
 
     it('reads files correctly with cat', () => {

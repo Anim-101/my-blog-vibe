@@ -425,8 +425,8 @@ const TerminalSandbox = () => {
       const trimmed = inputValue.trim();
       const parts = trimmed.split(/\s+/);
       
-      if (/^(cd|cat)\s+$/i.test(inputValue)) {
-        // User typed "cd " or "cat " and pressed tab: list current directory contents
+      if (/^(cd|cat|ls)\s+$/i.test(inputValue)) {
+        // User typed "cd ", "cat ", or "ls " and pressed tab: list current directory contents
         const contents = VFS[currentDir]?.contents || [];
         const listText = contents.map(item => {
           const targetPath = currentDir === '/' ? `/${item}` : `${currentDir}/${item}`;
@@ -447,7 +447,7 @@ const TerminalSandbox = () => {
         if (matches.length === 1) {
           setInputValue(matches[0] + ' ');
         }
-      } else if (parts.length === 2 && (parts[0] === 'cd' || parts[0] === 'cat') && parts[1]) {
+      } else if (parts.length === 2 && (parts[0] === 'cd' || parts[0] === 'cat' || parts[0] === 'ls') && parts[1]) {
         const cmd = parts[0];
         const pathArg = parts[1];
         
