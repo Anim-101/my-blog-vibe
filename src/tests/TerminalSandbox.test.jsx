@@ -108,7 +108,7 @@ describe('TerminalSandbox Component', () => {
         fireEvent.change(input, { target: { value: 'cd ' } });
         fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
         // It should list the contents of the current directory (/)
-        expect(container.textContent).toContain('skills.md');
+        expect(container.textContent).toContain('skills');
         expect(container.textContent).toContain('bio.md');
 
         // Type 'cd skills/' and press Tab

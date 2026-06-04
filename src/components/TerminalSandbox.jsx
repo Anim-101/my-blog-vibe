@@ -31,7 +31,7 @@ const getPlaybooksMd = () => `=== Ansible Playbooks ===
 const VFS = {
   '/': {
     type: 'dir',
-    contents: ['bio.md', 'contact.md', 'skills.md', 'certifications.md', 'playbooks.md', 'skills', 'certifications', 'playbooks']
+    contents: ['bio.md', 'contact.md', 'skills', 'certifications', 'playbooks']
   },
   '/skills': {
     type: 'dir',
@@ -52,17 +52,14 @@ const FILE_CONTENTS = {
   '/contact.md': (t) => `${t('terminal.contactTitle')}\n\nEmail: ${personalInfo.socialLinks.email}\nGitHub: ${personalInfo.socialLinks.github}\nLinkedIn: ${personalInfo.socialLinks.linkedin}`,
   
   // Skills Markdown Files
-  '/skills.md': (t) => getSkillsMd(t),
   '/skills/skills.md': (t) => getSkillsMd(t),
   '/skills/readme.md': (t) => getSkillsMd(t),
 
   // Certifications Markdown Files
-  '/certifications.md': (t) => getCertsMd(t),
   '/certifications/certifications.md': (t) => getCertsMd(t),
   '/certifications/readme.md': (t) => getCertsMd(t),
 
   // Playbook Markdown Files
-  '/playbooks.md': (t) => getPlaybooksMd(t),
   '/playbooks/playbooks.md': (t) => getPlaybooksMd(t),
   '/playbooks/readme.md': (t) => getPlaybooksMd(t),
 
@@ -309,11 +306,15 @@ const TerminalSandbox = () => {
         }
         let target = resolvePath(arg, currentDir);
         
-        // If file or directory doesn't exist locally, check if we can fall back to the root directory
-        // for bio.md or contact.md, etc.
+        // If file or directory doesn't exist locally, check if we can fall back
         if (!FILE_CONTENTS[target] && !VFS[target]) {
           const fileName = target.split('/').pop();
-          if (FILE_CONTENTS['/' + fileName]) {
+          const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+          const subDirMd = `/${nameWithoutExt}/${fileName}`;
+          
+          if (FILE_CONTENTS[subDirMd]) {
+            target = subDirMd;
+          } else if (FILE_CONTENTS['/' + fileName]) {
             target = '/' + fileName;
           }
         }
