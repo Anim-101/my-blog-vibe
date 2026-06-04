@@ -420,8 +420,25 @@ const TerminalSandbox = () => {
 
     if (e.key === 'Tab') {
       e.preventDefault();
-      const parts = inputValue.trim().split(' ');
-      if (parts.length === 1 && parts[0]) {
+      
+      const trimmed = inputValue.trim();
+      const parts = trimmed.split(/\s+/);
+      
+      if (/^(cd|cat)\s+$/i.test(inputValue)) {
+        // User typed "cd " or "cat " and pressed tab: list current directory contents
+        const contents = VFS[currentDir]?.contents || [];
+        const listText = contents.map(item => {
+          const targetPath = currentDir === '/' ? `/${item}` : `${currentDir}/${item}`;
+          const isDir = VFS[targetPath]?.type === 'dir';
+          return isDir ? `${item}/` : item;
+        }).join('   ');
+        
+        setHistory(prev => [
+          ...prev,
+          { type: 'input', text: inputValue, dir: currentDir },
+          { type: 'output', text: listText }
+        ]);
+      } else if (parts.length === 1 && parts[0]) {
         // Autocomplete command
         const cmdPrefix = parts[0];
         const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help'];
@@ -430,16 +447,45 @@ const TerminalSandbox = () => {
           setInputValue(matches[0] + ' ');
         }
       } else if (parts.length === 2 && (parts[0] === 'cd' || parts[0] === 'cat') && parts[1]) {
-        // Autocomplete file/dir name
         const cmd = parts[0];
-        const pathPrefix = parts[1];
-        const dirContents = VFS[currentDir]?.contents || [];
-        const matches = dirContents.filter(item => item.startsWith(pathPrefix));
-        if (matches.length === 1) {
-          const match = matches[0];
-          const isDirectory = VFS[currentDir === '/' ? `/${match}` : `${currentDir}/${match}`]?.type === 'dir';
-          const suffix = isDirectory ? '/' : '';
-          setInputValue(`${cmd} ${match}${suffix}`);
+        const pathArg = parts[1];
+        
+        let parentPath = '';
+        let prefix = pathArg;
+        
+        if (pathArg.includes('/')) {
+          const lastSlashIndex = pathArg.lastIndexOf('/');
+          parentPath = pathArg.substring(0, lastSlashIndex);
+          prefix = pathArg.substring(lastSlashIndex + 1);
+        }
+        
+        const resolvedParent = resolvePath(parentPath || '.', currentDir);
+        
+        if (VFS[resolvedParent] && VFS[resolvedParent].type === 'dir') {
+          const contents = VFS[resolvedParent].contents || [];
+          const matches = contents.filter(item => item.startsWith(prefix));
+          
+          if (matches.length === 1) {
+            const match = matches[0];
+            const targetPath = resolvedParent === '/' ? `/${match}` : `${resolvedParent}/${match}`;
+            const isDirectory = VFS[targetPath]?.type === 'dir';
+            const suffix = isDirectory ? '/' : '';
+            
+            const completedPath = parentPath ? `${parentPath}/${match}${suffix}` : `${match}${suffix}`;
+            setInputValue(`${cmd} ${completedPath}`);
+          } else if (matches.length > 1 || (prefix === '' && contents.length > 0)) {
+            const listText = (matches.length > 0 ? matches : contents).map(item => {
+              const targetPath = resolvedParent === '/' ? `/${item}` : `${resolvedParent}/${item}`;
+              const isDir = VFS[targetPath]?.type === 'dir';
+              return isDir ? `${item}/` : item;
+            }).join('   ');
+            
+            setHistory(prev => [
+              ...prev,
+              { type: 'input', text: inputValue, dir: currentDir },
+              { type: 'output', text: listText }
+            ]);
+          }
         }
       }
     } else if (e.key === 'ArrowUp') {

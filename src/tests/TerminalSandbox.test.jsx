@@ -100,6 +100,28 @@ describe('TerminalSandbox Component', () => {
         expect(container.textContent).toContain('frontend.json');
     });
 
+    it('supports tab autocomplete and choice listing', () => {
+        const { container } = render(<TerminalSandbox />);
+        const input = container.querySelector('.terminal-input');
+
+        // Type 'cd ' and press Tab
+        fireEvent.change(input, { target: { value: 'cd ' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        // It should list the contents of the current directory (/)
+        expect(container.textContent).toContain('skills.md');
+        expect(container.textContent).toContain('bio.md');
+
+        // Type 'cd skills/' and press Tab
+        fireEvent.change(input, { target: { value: 'cd skills/' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        // It should list the contents of the skills directory
+        expect(container.textContent).toContain('frontend.json');
+        expect(container.textContent).toContain('backend.json');
+        
+        // Input should remain as 'cd skills/' so user can continue typing
+        expect(input.value).toBe('cd skills/');
+    });
+
     it('reads files correctly with cat', () => {
         const { container } = render(<TerminalSandbox />);
         const input = container.querySelector('.terminal-input');
