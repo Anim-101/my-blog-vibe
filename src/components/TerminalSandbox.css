@@ -499,3 +499,9 @@
     font-size: 0.8rem;
   }
 }
+
+.game-cell {
+  display: inline-block;
+  width: 2ch;
+  text-align: center;
+}

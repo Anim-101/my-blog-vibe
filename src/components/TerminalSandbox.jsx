@@ -562,10 +562,6 @@ const TerminalSandbox = () => {
       }
     }
     
-    const textBoard = board.map(row => {
-      return row.map(cell => (cell ? '#' : '.')).join(' ');
-    });
-    
     return (
       <div className="tetris-board-container" data-testid="tetris-game-board">
         <div className="tetris-stats">
@@ -573,11 +569,19 @@ const TerminalSandbox = () => {
           <span>{t('terminal.tetrisHighScore')}{tetrisHighScore}</span>
         </div>
         <div className="tetris-grid">
-          <div>+---------------------+</div>
-          {textBoard.map((rowText, i) => (
-            <div key={i}>| {rowText} |</div>
+          <div>+----------------------+</div>
+          {board.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              <span>| </span>
+              {row.map((cell, colIndex) => (
+                <span key={colIndex} className="game-cell">
+                  {cell ? '■' : '·'}
+                </span>
+              ))}
+              <span> |</span>
+            </div>
           ))}
-          <div>+---------------------+</div>
+          <div>+----------------------+</div>
         </div>
         <div className="tetris-instructions">
           {tetrisGameOver ? (
@@ -615,16 +619,16 @@ const TerminalSandbox = () => {
   };
 
   const renderSnakeBoard = () => {
-    const board = [];
     const danger = isSnakeDanger();
 
     // Determine snake head arrow based on direction
-    let headChar = 'o';
-    if (direction === 'UP') headChar = '^';
-    else if (direction === 'DOWN') headChar = 'v';
-    else if (direction === 'LEFT') headChar = '<';
-    else if (direction === 'RIGHT') headChar = '>';
+    let headChar = '■';
+    if (direction === 'UP') headChar = '▲';
+    else if (direction === 'DOWN') headChar = '▼';
+    else if (direction === 'LEFT') headChar = '◀';
+    else if (direction === 'RIGHT') headChar = '▶';
 
+    const gridRows = [];
     for (let y = 0; y < 10; y++) {
       const row = [];
       for (let x = 0; x < 15; x++) {
@@ -635,14 +639,14 @@ const TerminalSandbox = () => {
         if (isHead) {
           row.push(headChar);
         } else if (isBody) {
-          row.push('o');
+          row.push('□');
         } else if (isFood) {
-          row.push('*');
+          row.push('★');
         } else {
-          row.push('.');
+          row.push('·');
         }
       }
-      board.push(row.join(' '));
+      gridRows.push(row);
     }
 
     return (
@@ -653,11 +657,19 @@ const TerminalSandbox = () => {
           <span>{t('terminal.snakeHighScore')}{highScore}</span>
         </div>
         <div className="snake-grid">
-          <div>+-----------------------------+</div>
-          {board.map((rowText, i) => (
-            <div key={i}>| {rowText} |</div>
+          <div>+--------------------------------+</div>
+          {gridRows.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              <span>| </span>
+              {row.map((char, colIndex) => (
+                <span key={colIndex} className="game-cell">
+                  {char}
+                </span>
+              ))}
+              <span> |</span>
+            </div>
           ))}
-          <div>+-----------------------------+</div>
+          <div>+--------------------------------+</div>
         </div>
         <div className="snake-instructions">
           {gameOver ? (
