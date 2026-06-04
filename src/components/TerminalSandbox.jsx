@@ -174,6 +174,8 @@ const TerminalSandbox = () => {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const directionRef = useRef('RIGHT');
+  const lastMovedDirectionRef = useRef('RIGHT');
 
   // Tetris Game State
   const [tetrisGrid, setTetrisGrid] = useState(Array.from({ length: 15 }, () => Array(10).fill(0)));
@@ -216,6 +218,8 @@ const TerminalSandbox = () => {
     ];
     setSnake(initialSnake);
     setDirection('RIGHT');
+    directionRef.current = 'RIGHT';
+    lastMovedDirectionRef.current = 'RIGHT';
     setScore(0);
     setGameOver(false);
     setFood(spawnFood(initialSnake));
@@ -428,8 +432,10 @@ const TerminalSandbox = () => {
 
         const head = prevSnake[0];
         let newHead = { ...head };
+        const currentDir = directionRef.current;
+        lastMovedDirectionRef.current = currentDir;
 
-        switch (direction) {
+        switch (currentDir) {
           case 'UP':
             newHead.y -= 1;
             break;
@@ -483,7 +489,7 @@ const TerminalSandbox = () => {
     }, tickRate);
 
     return () => clearInterval(interval);
-  }, [interactiveMode, gameOver, direction, food, highScore]);
+  }, [interactiveMode, gameOver, food, highScore]);
 
   // Tetris Game Loop - Drop Tick
   useEffect(() => {
@@ -1068,13 +1074,18 @@ const TerminalSandbox = () => {
         return;
       }
       
-      if ((key === 'ARROWUP' || key === 'W') && direction !== 'DOWN') {
+      const lastDir = lastMovedDirectionRef.current;
+      if ((key === 'ARROWUP' || key === 'W') && lastDir !== 'DOWN') {
+        directionRef.current = 'UP';
         setDirection('UP');
-      } else if ((key === 'ARROWDOWN' || key === 'S') && direction !== 'UP') {
+      } else if ((key === 'ARROWDOWN' || key === 'S') && lastDir !== 'UP') {
+        directionRef.current = 'DOWN';
         setDirection('DOWN');
-      } else if ((key === 'ARROWLEFT' || key === 'A') && direction !== 'RIGHT') {
+      } else if ((key === 'ARROWLEFT' || key === 'A') && lastDir !== 'RIGHT') {
+        directionRef.current = 'LEFT';
         setDirection('LEFT');
-      } else if ((key === 'ARROWRIGHT' || key === 'D') && direction !== 'LEFT') {
+      } else if ((key === 'ARROWRIGHT' || key === 'D') && lastDir !== 'LEFT') {
+        directionRef.current = 'RIGHT';
         setDirection('RIGHT');
       }
       return;
