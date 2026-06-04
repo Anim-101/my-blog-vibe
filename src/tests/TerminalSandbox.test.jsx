@@ -154,6 +154,29 @@ describe('TerminalSandbox Component', () => {
         fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
         expect(container.textContent).toContain('skills.md');
         expect(input.value).toBe('cat skills/');
+
+        // Type 'theme ' and press Tab
+        fireEvent.change(input, { target: { value: 'theme ' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(container.textContent).toContain('matrix');
+        expect(container.textContent).toContain('cyberpunk');
+
+        // Type 'theme m' and press Tab
+        fireEvent.change(input, { target: { value: 'theme m' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(input.value).toBe('theme matrix');
+
+        // Type 'theme c' and press Tab
+        fireEvent.change(input, { target: { value: 'theme c' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(container.textContent).toContain('cyberpunk');
+        expect(container.textContent).toContain('classic');
+        expect(input.value).toBe('theme c');
+
+        // Type 'theme cl' and press Tab
+        fireEvent.change(input, { target: { value: 'theme cl' } });
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' });
+        expect(input.value).toBe('theme classic');
     });
 
     it('reads files correctly with cat', () => {

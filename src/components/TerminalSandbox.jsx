@@ -439,6 +439,16 @@ const TerminalSandbox = () => {
           { type: 'input', text: inputValue, dir: currentDir },
           { type: 'output', text: listText }
         ]);
+      } else if (/^theme\s+$/i.test(inputValue)) {
+        // User typed "theme " and pressed tab: list available themes
+        const themes = ['glass', 'matrix', 'cyberpunk', 'amber', 'classic'];
+        const listText = themes.join('   ');
+        
+        setHistory(prev => [
+          ...prev,
+          { type: 'input', text: inputValue, dir: currentDir },
+          { type: 'output', text: listText }
+        ]);
       } else if (parts.length === 1 && parts[0]) {
         // Autocomplete command
         const cmdPrefix = parts[0];
@@ -446,6 +456,21 @@ const TerminalSandbox = () => {
         const matches = commands.filter(c => c.startsWith(cmdPrefix));
         if (matches.length === 1) {
           setInputValue(matches[0] + ' ');
+        }
+      } else if (parts.length === 2 && parts[0] === 'theme' && parts[1]) {
+        const themePrefix = parts[1].toLowerCase();
+        const themes = ['glass', 'matrix', 'cyberpunk', 'amber', 'classic'];
+        const matches = themes.filter(t => t.startsWith(themePrefix));
+        
+        if (matches.length === 1) {
+          setInputValue(`theme ${matches[0]}`);
+        } else if (matches.length > 1) {
+          const listText = matches.join('   ');
+          setHistory(prev => [
+            ...prev,
+            { type: 'input', text: inputValue, dir: currentDir },
+            { type: 'output', text: listText }
+          ]);
         }
       } else if (parts.length === 2 && (parts[0] === 'cd' || parts[0] === 'cat' || parts[0] === 'ls') && parts[1]) {
         const cmd = parts[0];
