@@ -111,6 +111,16 @@ describe('TerminalSandbox Component', () => {
 
         expect(container.textContent).toContain('terminal.bioTitle');
         expect(container.textContent).toContain('about.role');
+
+        // Cat directory shorthand (should load skills/skills.md)
+        fireEvent.change(input, { target: { value: 'cat skills' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.skillsTitle');
+
+        // Cat explicit sub-path from parent directory
+        fireEvent.change(input, { target: { value: 'cat skills/skills.md' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.skillsTitle');
     });
 
     it('runs neofetch', () => {

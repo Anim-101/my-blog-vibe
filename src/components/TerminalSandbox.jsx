@@ -4,29 +4,68 @@ import { Terminal, RefreshCw } from 'lucide-react';
 import { personalInfo } from '../data/personal';
 import './TerminalSandbox.css';
 
+// Virtual File System Helper Markdown formatters
+const getSkillsMd = (t) => `${t('terminal.skillsTitle')}
+
+# Frontend
+- React, JavaScript (ES6+), TypeScript, Next.js, Vite, HTML5/CSS3
+
+# Backend
+- Node.js, Python, REST APIs, Microservices, SaaS Architecture
+
+# DevOps & Cloud Infrastructure
+- Ansible Automation, Linux System Administration, AWS (VPC, Lambda, S3, IAM), Docker, CI/CD`;
+
+const getCertsMd = (t) => `${t('terminal.certsTitle')}
+
+- Red Hat Certified Engineer (RHCE) - Perfect Score 300/300 (ID: 200-244-934)
+- Red Hat Certified System Administrator (RHCSA) - Perfect Score 300/300 (ID: 200-244-934)
+- Microsoft Certified: Azure Fundamentals & Azure AI Fundamentals
+- AWS Certified Solutions Architect – Associate (ID: Z4D9R1K2BJQQ1S5G)`;
+
+const getPlaybooksMd = () => `=== Ansible Playbooks ===
+
+- deploy_skills.yml: Playbook to configure full stack environment and verify credentials.`;
+
 // Virtual File System Definition
 const VFS = {
   '/': {
     type: 'dir',
-    contents: ['bio.md', 'contact.md', 'skills', 'certifications', 'playbooks']
+    contents: ['bio.md', 'contact.md', 'skills.md', 'certifications.md', 'playbooks.md', 'skills', 'certifications', 'playbooks']
   },
   '/skills': {
     type: 'dir',
-    contents: ['frontend.json', 'backend.json', 'devops.json']
+    contents: ['skills.md', 'readme.md', 'frontend.json', 'backend.json', 'devops.json']
   },
   '/certifications': {
     type: 'dir',
-    contents: ['rhce.json', 'rhcsa.json', 'azure.json', 'aws.json']
+    contents: ['certifications.md', 'readme.md', 'rhce.json', 'rhcsa.json', 'azure.json', 'aws.json']
   },
   '/playbooks': {
     type: 'dir',
-    contents: ['deploy_skills.yml']
+    contents: ['playbooks.md', 'readme.md', 'deploy_skills.yml']
   }
 };
 
 const FILE_CONTENTS = {
   '/bio.md': (t) => `${t('terminal.bioTitle')}\n\n${t('about.bio')}\n\nRole: ${t('about.role')}`,
   '/contact.md': (t) => `${t('terminal.contactTitle')}\n\nEmail: ${personalInfo.socialLinks.email}\nGitHub: ${personalInfo.socialLinks.github}\nLinkedIn: ${personalInfo.socialLinks.linkedin}`,
+  
+  // Skills Markdown Files
+  '/skills.md': (t) => getSkillsMd(t),
+  '/skills/skills.md': (t) => getSkillsMd(t),
+  '/skills/readme.md': (t) => getSkillsMd(t),
+
+  // Certifications Markdown Files
+  '/certifications.md': (t) => getCertsMd(t),
+  '/certifications/certifications.md': (t) => getCertsMd(t),
+  '/certifications/readme.md': (t) => getCertsMd(t),
+
+  // Playbook Markdown Files
+  '/playbooks.md': (t) => getPlaybooksMd(t),
+  '/playbooks/playbooks.md': (t) => getPlaybooksMd(t),
+  '/playbooks/readme.md': (t) => getPlaybooksMd(t),
+
   '/skills/frontend.json': () => JSON.stringify({
     category: "Frontend Development",
     technologies: ["React", "JavaScript (ES6+)", "TypeScript", "Next.js", "Vite", "HTML5/CSS3"]
@@ -250,8 +289,20 @@ const TerminalSandbox = () => {
           break;
         }
         const target = resolvePath(arg, currentDir);
+        
         if (VFS[target] && VFS[target].type === 'dir') {
-          setHistory(prev => [...prev, { type: 'output', text: `${t('terminal.isDir')}${arg}` }]);
+          // If trying to cat a directory, attempt to find a default markdown file in it
+          const dirName = target.split('/').pop();
+          const specificMd = `${target}/${dirName}.md`;
+          const readmeMd = `${target}/readme.md`;
+          
+          if (FILE_CONTENTS[specificMd]) {
+            setHistory(prev => [...prev, { type: 'output', text: FILE_CONTENTS[specificMd](t) }]);
+          } else if (FILE_CONTENTS[readmeMd]) {
+            setHistory(prev => [...prev, { type: 'output', text: FILE_CONTENTS[readmeMd](t) }]);
+          } else {
+            setHistory(prev => [...prev, { type: 'output', text: `${t('terminal.isDir')}${arg}` }]);
+          }
         } else if (FILE_CONTENTS[target]) {
           setHistory(prev => [...prev, { type: 'output', text: FILE_CONTENTS[target](t) }]);
         } else {
