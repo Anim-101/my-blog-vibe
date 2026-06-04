@@ -17,7 +17,10 @@ import {
   Cloud,
   X,
   FileCode2,
-  DollarSign
+  DollarSign,
+  Zap,
+  Box,
+  Share2
 } from 'lucide-react';
 import './Infrastructure.css';
 
@@ -102,21 +105,141 @@ const Infrastructure = () => {
     }
   };
 
+  const getResourceCost = (type, size, currentProvider) => {
+    const prov = currentProvider || provider;
+    if (prov === 'aws') {
+      if (type === 'compute') {
+        const priceMap = {
+          't3.micro': 7.59,
+          't3.small': 15.18,
+          'm5.large': 70.08,
+        };
+        return priceMap[size] || 7.59;
+      }
+      if (type === 'database') {
+        const priceMap = {
+          'db.t3.micro': 13.14,
+          'db.t3.small': 26.28,
+          'db.m5.large': 128.48,
+        };
+        return priceMap[size] || 13.14;
+      }
+      if (type === 'serverless') {
+        const priceMap = {
+          '128MB': 1.50,
+          '512MB': 5.00,
+          '1024MB': 10.00,
+        };
+        return priceMap[size] || 5.00;
+      }
+      if (type === 'container') {
+        const priceMap = {
+          'small': 8.00,
+          'medium': 32.00,
+          'large': 64.00,
+        };
+        return priceMap[size] || 32.00;
+      }
+      if (type === 'nosql') {
+        const priceMap = {
+          'basic': 5.00,
+          'standard': 15.00,
+          'premium': 75.00,
+        };
+        return priceMap[size] || 15.00;
+      }
+      if (type === 'cdn') {
+        const priceMap = {
+          'basic': 10.00,
+          'standard': 40.00,
+          'premium': 160.00,
+        };
+        return priceMap[size] || 10.00;
+      }
+      if (type === 'dns') return 0.50;
+      if (type === 'loadbalancer') return 16.43;
+      if (type === 'storage') return 2.30;
+    } else {
+      // azure
+      if (type === 'compute') {
+        const priceMap = {
+          'Standard_B1s': 7.59,
+          'Standard_B2s': 30.37,
+          'Standard_D2s_v5': 70.08,
+        };
+        return priceMap[size] || 7.59;
+      }
+      if (type === 'database') {
+        const priceMap = {
+          'S0': 14.75,
+          'GP_Gen5_2': 215.38,
+          'GP_Gen5_4': 427.08,
+          'BC_Gen5_4': 1161.40,
+        };
+        return priceMap[size] || 215.38;
+      }
+      if (type === 'serverless') {
+        const priceMap = {
+          '128MB': 1.50,
+          '512MB': 5.00,
+          '1024MB': 10.00,
+        };
+        return priceMap[size] || 5.00;
+      }
+      if (type === 'container') {
+        const priceMap = {
+          'small': 8.00,
+          'medium': 32.00,
+          'large': 64.00,
+        };
+        return priceMap[size] || 32.00;
+      }
+      if (type === 'nosql') {
+        const priceMap = {
+          'basic': 5.00,
+          'standard': 24.00,
+          'premium': 60.00,
+        };
+        return priceMap[size] || 24.00;
+      }
+      if (type === 'cdn') {
+        const priceMap = {
+          'basic': 35.00,
+          'standard': 70.00,
+          'premium': 220.00,
+        };
+        return priceMap[size] || 35.00;
+      }
+      if (type === 'dns') return 0.50;
+      if (type === 'loadbalancer') return 18.25;
+      if (type === 'storage') return 2.08;
+    }
+    return 0;
+  };
+
   // Define catalog items with their costs and descriptors
   const catalog = {
     aws: [
       { type: 'dns', name: 'Route 53', cost: 0.50, icon: <Globe size={18} />, desc: 'DNS Routing' },
-      { type: 'loadbalancer', name: 'ALB', cost: 18.00, icon: <Layers size={18} />, desc: 'Application Load Balancer' },
-      { type: 'compute', name: 'EC2 Instance', cost: 12.00, icon: <Server size={18} />, desc: 't3.micro instance' },
-      { type: 'database', name: 'RDS Instance', cost: 24.00, icon: <Database size={18} />, desc: 'db.t3.micro database' },
-      { type: 'storage', name: 'S3 Bucket', cost: 4.00, icon: <HardDrive size={18} />, desc: 'Object Storage' }
+      { type: 'cdn', name: 'CloudFront', cost: 10.00, icon: <Share2 size={18} />, desc: 'Content Delivery Network' },
+      { type: 'loadbalancer', name: 'ALB', cost: 16.43, icon: <Layers size={18} />, desc: 'Application Load Balancer' },
+      { type: 'compute', name: 'EC2 Instance', cost: 7.59, icon: <Server size={18} />, desc: 't3.micro instance' },
+      { type: 'container', name: 'ECS Fargate', cost: 32.00, icon: <Box size={18} />, desc: 'Serverless container' },
+      { type: 'serverless', name: 'Lambda Function', cost: 5.00, icon: <Zap size={18} />, desc: 'Serverless compute' },
+      { type: 'database', name: 'RDS Instance', cost: 13.14, icon: <Database size={18} />, desc: 'db.t3.micro database' },
+      { type: 'nosql', name: 'DynamoDB Table', cost: 15.00, icon: <Database size={18} />, desc: 'NoSQL Database' },
+      { type: 'storage', name: 'S3 Bucket', cost: 2.30, icon: <HardDrive size={18} />, desc: 'Object Storage' }
     ],
     azure: [
       { type: 'dns', name: 'Azure DNS', cost: 0.50, icon: <Globe size={18} />, desc: 'Domain Hosting' },
-      { type: 'loadbalancer', name: 'Load Balancer', cost: 20.00, icon: <Layers size={18} />, desc: 'L4 Load Balancer' },
-      { type: 'compute', name: 'Virtual Machine', cost: 14.00, icon: <Server size={18} />, desc: 'B1s burstable instance' },
-      { type: 'database', name: 'Azure SQL', cost: 28.00, icon: <Database size={18} />, desc: 'S0 standard database' },
-      { type: 'storage', name: 'Blob Storage', cost: 5.00, icon: <HardDrive size={18} />, desc: 'Hot storage account' }
+      { type: 'cdn', name: 'Azure Front Door', cost: 35.00, icon: <Share2 size={18} />, desc: 'Edge CDN Service' },
+      { type: 'loadbalancer', name: 'Load Balancer', cost: 18.25, icon: <Layers size={18} />, desc: 'L4 Load Balancer' },
+      { type: 'compute', name: 'Virtual Machine', cost: 7.59, icon: <Server size={18} />, desc: 'B1s burstable instance' },
+      { type: 'container', name: 'AKS Cluster', cost: 32.00, icon: <Box size={18} />, desc: 'Managed Kubernetes' },
+      { type: 'serverless', name: 'Azure Function', cost: 5.00, icon: <Zap size={18} />, desc: 'Serverless compute' },
+      { type: 'database', name: 'Azure SQL', cost: 215.38, icon: <Database size={18} />, desc: 'GP_Gen5_2 database' },
+      { type: 'nosql', name: 'Cosmos DB', cost: 24.00, icon: <Database size={18} />, desc: 'NoSQL Database' },
+      { type: 'storage', name: 'Blob Storage', cost: 2.08, icon: <HardDrive size={18} />, desc: 'Hot storage account' }
     ]
   };
 
@@ -125,10 +248,14 @@ const Infrastructure = () => {
     // Generate simple coordinates depending on item type to keep canvas clean
     const xOffsets = {
       dns: 40,
-      loadbalancer: 160,
-      compute: 280,
-      database: 420,
-      storage: 420
+      cdn: 120,
+      loadbalancer: 200,
+      compute: 320,
+      container: 320,
+      serverless: 320,
+      database: 460,
+      nosql: 460,
+      storage: 460
     };
 
     const typeNodes = nodes.filter(n => n.type === item.type);
@@ -138,33 +265,38 @@ const Infrastructure = () => {
     let y = 180;
 
     // Shift y values to stack items vertically if multiple of same type exist
-    if (item.type === 'compute') {
-      if (count === 0) y = 180;
-      else if (count === 1) {
-        // Adjust previous compute node and current compute node
-        setNodes(prev => prev.map(n => n.type === 'compute' ? { ...n, y: 100 } : n));
-        y = 260;
-      } else {
-        y = 100 + (count * 80);
-      }
-    } else if (item.type === 'database') {
-      y = 100 + (count * 160);
-    } else if (item.type === 'storage') {
-      y = 260 + (count * 160);
+    if (item.type === 'compute' || item.type === 'container' || item.type === 'serverless') {
+      const middleNodes = nodes.filter(n => n.type === 'compute' || n.type === 'container' || n.type === 'serverless');
+      const middleCount = middleNodes.length;
+      y = 100 + (middleCount * 80);
+    } else if (item.type === 'database' || item.type === 'nosql' || item.type === 'storage') {
+      const backendNodes = nodes.filter(n => n.type === 'database' || n.type === 'nosql' || n.type === 'storage');
+      const backendCount = backendNodes.length;
+      y = 100 + (backendCount * 80);
     } else if (item.type === 'loadbalancer') {
       y = 180 + (count * 80);
     } else if (item.type === 'dns') {
       y = 180 + (count * 80);
+    } else if (item.type === 'cdn') {
+      y = 180 + (count * 80);
     }
 
     nodeIdCounterRef.current += 1;
+    const defaultSize = item.type === 'compute' ? (provider === 'aws' ? 't3.micro' : 'Standard_B1s') : 
+                        item.type === 'database' ? (provider === 'aws' ? 'db.t3.micro' : 'GP_Gen5_2') :
+                        item.type === 'serverless' ? '512MB' :
+                        item.type === 'nosql' ? 'standard' :
+                        item.type === 'container' ? 'medium' :
+                        item.type === 'cdn' ? 'basic' : 'default';
+
+    const cost = getResourceCost(item.type, defaultSize, provider);
+
     const newNode = {
       id: `${item.type}-${nodeIdCounterRef.current}`,
       type: item.type,
       name: `${item.name} #${count + 1}`,
-      cost: item.cost,
-      instanceSize: item.type === 'compute' ? (provider === 'aws' ? 't3.micro' : 'Standard_B1s') : 
-                    item.type === 'database' ? (provider === 'aws' ? 'db.t3.micro' : 'GP_Gen5_2') : 'default',
+      cost: cost,
+      instanceSize: defaultSize,
       publicIp: item.type === 'compute',
       publicRead: false, // For storage
       x,
@@ -182,44 +314,52 @@ const Infrastructure = () => {
   };
 
   const updateNode = (updated) => {
-    setNodes(prev => prev.map(n => n.id === updated.id ? updated : n));
-    setSelectedNode(updated);
+    const cost = getResourceCost(updated.type, updated.instanceSize, provider);
+    const updatedWithCost = { ...updated, cost };
+    setNodes(prev => prev.map(n => n.id === updated.id ? updatedWithCost : n));
+    setSelectedNode(updatedWithCost);
   };
 
   // Generate connection lines automatically for 3-tier architecture
   const getConnections = () => {
     const list = [];
     const dnsNodes = nodes.filter(n => n.type === 'dns');
+    const cdnNodes = nodes.filter(n => n.type === 'cdn');
     const lbNodes = nodes.filter(n => n.type === 'loadbalancer');
-    const computeNodes = nodes.filter(n => n.type === 'compute');
-    const dbNodes = nodes.filter(n => n.type === 'database');
-    const storageNodes = nodes.filter(n => n.type === 'storage');
+    const middleNodes = nodes.filter(n => n.type === 'compute' || n.type === 'container' || n.type === 'serverless');
+    const backNodes = nodes.filter(n => n.type === 'database' || n.type === 'nosql' || n.type === 'storage');
 
-    // DNS -> LB
+    // DNS connections
     dnsNodes.forEach(dns => {
-      lbNodes.forEach(lb => {
-        list.push({ from: dns, to: lb });
-      });
+      if (cdnNodes.length > 0) {
+        cdnNodes.forEach(cdn => list.push({ from: dns, to: cdn }));
+      } else if (lbNodes.length > 0) {
+        lbNodes.forEach(lb => list.push({ from: dns, to: lb }));
+      } else {
+        middleNodes.forEach(mid => list.push({ from: dns, to: mid }));
+      }
     });
 
-    // LB -> Compute
+    // CDN connections
+    cdnNodes.forEach(cdn => {
+      if (lbNodes.length > 0) {
+        lbNodes.forEach(lb => list.push({ from: cdn, to: lb }));
+      } else {
+        middleNodes.forEach(mid => list.push({ from: cdn, to: mid }));
+      }
+    });
+
+    // Load Balancer connections
     lbNodes.forEach(lb => {
-      computeNodes.forEach(comp => {
-        list.push({ from: lb, to: comp });
+      middleNodes.forEach(mid => {
+        list.push({ from: lb, to: mid });
       });
     });
 
-    // Compute -> DB
-    computeNodes.forEach(comp => {
-      dbNodes.forEach(db => {
-        list.push({ from: comp, to: db });
-      });
-    });
-
-    // Compute -> Storage
-    computeNodes.forEach(comp => {
-      storageNodes.forEach(st => {
-        list.push({ from: comp, to: st });
+    // Middle tier to backend tier connections
+    middleNodes.forEach(mid => {
+      backNodes.forEach(back => {
+        list.push({ from: mid, to: back });
       });
     });
 
@@ -281,6 +421,28 @@ const Infrastructure = () => {
           code += `resource "aws_route53_zone" "${resourceId}" {
   name = "myportfolio.local"
 }\n\n`;
+        } else if (n.type === 'cdn') {
+          code += `resource "aws_cloudfront_distribution" "${resourceId}" {
+  origin {
+    domain_name = "portfolio-alb.us-east-1.elb.amazonaws.com"
+    origin_id   = "ALB"
+  }
+  enabled             = true
+  default_cache_behavior {
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "ALB"
+    viewer_protocol_policy = "redirect-to-https"
+  }
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+}\n\n`;
         } else if (n.type === 'loadbalancer') {
           code += `resource "aws_lb" "${resourceId}" {
   name               = "portfolio-alb"
@@ -298,6 +460,36 @@ const Infrastructure = () => {
     Name = "${n.name}"
   }
 }\n\n`;
+        } else if (n.type === 'container') {
+          code += `resource "aws_ecs_cluster" "portfolio_cluster" {
+  name = "portfolio-ecs-cluster"
+}
+
+resource "aws_ecs_task_definition" "${resourceId}" {
+  family                   = "service"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = "${n.instanceSize === 'small' ? 256 : n.instanceSize === 'large' ? 2048 : 1024}"
+  memory                   = "${n.instanceSize === 'small' ? 512 : n.instanceSize === 'large' ? 4096 : 2048}"
+  container_definitions    = jsonencode([{
+    name      = "portfolio-app"
+    image     = "nginx:alpine"
+    essential = true
+    portMappings = [{
+      containerPort = 80
+      hostPort      = 80
+    }]
+  }])
+}\n\n`;
+        } else if (n.type === 'serverless') {
+          code += `resource "aws_lambda_function" "${resourceId}" {
+  filename      = "lambda_function_payload.zip"
+  function_name = "${resourceId}"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs18.x"
+  memory_size   = ${n.instanceSize === '128MB' ? 128 : n.instanceSize === '1024MB' ? 1024 : 512}
+}\n\n`;
         } else if (n.type === 'database') {
           code += `resource "aws_db_instance" "${resourceId}" {
   allocated_storage    = 20
@@ -308,6 +500,16 @@ const Infrastructure = () => {
   password             = "supersecretpw"
   publicly_accessible  = ${n.publicIp}
   skip_final_snapshot  = true
+}\n\n`;
+        } else if (n.type === 'nosql') {
+          code += `resource "aws_dynamodb_table" "${resourceId}" {
+  name           = "PortfolioData"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "UserId"
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
 }\n\n`;
         } else if (n.type === 'storage') {
           code += `resource "aws_s3_bucket" "${resourceId}" {
@@ -334,6 +536,13 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
           code += `resource "azurerm_dns_zone" "${resourceId}" {
   name                = "myportfolio.local"
   resource_group_name = "portfolio-rg"
+}\n\n`;
+        } else if (n.type === 'cdn') {
+          code += `resource "azurerm_cdn_profile" "${resourceId}" {
+  name                = "portfolio-cdn"
+  resource_group_name = "portfolio-rg"
+  location            = "global"
+  sku                 = "Standard_Microsoft"
 }\n\n`;
         } else if (n.type === 'loadbalancer') {
           code += `resource "azurerm_lb" "${resourceId}" {
@@ -366,12 +575,50 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
     version   = "latest"
   }
 }\n\n`;
+        } else if (n.type === 'container') {
+          code += `resource "azurerm_kubernetes_cluster" "${resourceId}" {
+  name                = "portfolio-aks"
+  location            = "eastus"
+  resource_group_name = "portfolio-rg"
+  dns_prefix          = "portfolioaks"
+  default_node_pool {
+    name       = "default"
+    node_count = 1
+    vm_size    = "${n.instanceSize === 'small' ? "Standard_A2_v2" : n.instanceSize === 'large' ? "Standard_D2s_v5" : "Standard_B2s"}"
+  }
+  identity {
+    type = "SystemAssigned"
+  }
+}\n\n`;
+        } else if (n.type === 'serverless') {
+          code += `resource "azurerm_linux_function_app" "${resourceId}" {
+  name                = "portfolio-func"
+  resource_group_name = "portfolio-rg"
+  location            = "eastus"
+  storage_account_name = azurerm_storage_account.storage.name
+  service_plan_id      = azurerm_service_plan.plan.id
+}\n\n`;
         } else if (n.type === 'database') {
           code += `resource "azurerm_mssql_database" "${resourceId}" {
   name           = "portfolio-sql"
   server_id      = azurerm_mssql_server.sql_server.id
   sku_name       = "${n.instanceSize}"
   zone_redundant = false
+}\n\n`;
+        } else if (n.type === 'nosql') {
+          code += `resource "azurerm_cosmosdb_account" "${resourceId}" {
+  name                = "portfolio-cosmos-db"
+  location            = "eastus"
+  resource_group_name = "portfolio-rg"
+  offer_type          = "Standard"
+  kind                = "GlobalDocumentDB"
+  consistency_policy {
+    consistency_level = "Session"
+  }
+  geo_location {
+    location          = "eastus"
+    failover_priority = 0
+  }
 }\n\n`;
         } else if (n.type === 'storage') {
           code += `resource "azurerm_storage_account" "${resourceId}" {
@@ -397,10 +644,16 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
   tasks:\n`;
 
     nodes.forEach(n => {
+      const resourceId = n.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
       if (n.type === 'dns') {
         yaml += `    - name: Configure DNS Route Zone for ${n.name}
       ${provider === 'aws' ? 'amazon.aws.route53' : 'azure.azcollection.azure_rm_dnszone'}:
         zone: "myportfolio.local"
+        state: present\n\n`;
+      } else if (n.type === 'cdn') {
+        yaml += `    - name: Configure CDN Service for ${n.name}
+      ${provider === 'aws' ? 'amazon.aws.cloudfront_distribution' : 'azure.azcollection.azure_rm_cdnprofile'}:
+        name: "portfolio-cdn"
         state: present\n\n`;
       } else if (n.type === 'loadbalancer') {
         yaml += `    - name: Create Load Balancer endpoint
@@ -414,12 +667,27 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
         type: "${n.instanceSize}"
         public_ip: ${n.publicIp}
         state: present\n\n`;
+      } else if (n.type === 'container') {
+        yaml += `    - name: Provision container orchestrator service
+      ${provider === 'aws' ? 'amazon.aws.ecs_taskdefinition' : 'azure.azcollection.azure_rm_aks'}:
+        name: "portfolio-container-service"
+        state: present\n\n`;
+      } else if (n.type === 'serverless') {
+        yaml += `    - name: Deploy Serverless function instance
+      ${provider === 'aws' ? 'amazon.aws.lambda' : 'azure.azcollection.azure_rm_functionapp'}:
+        name: "${resourceId}"
+        state: present\n\n`;
       } else if (n.type === 'database') {
         yaml += `    - name: Setup Database instance (${n.name})
       ${provider === 'aws' ? 'amazon.aws.rds_instance' : 'azure.azcollection.azure_rm_sqlserver'}:
         name: "portfolio-db"
         tier: "${n.instanceSize}"
         publicly_accessible: ${n.publicIp}
+        state: present\n\n`;
+      } else if (n.type === 'nosql') {
+        yaml += `    - name: Setup NoSQL Database table (${n.name})
+      ${provider === 'aws' ? 'amazon.aws.dynamodb_table' : 'azure.azcollection.azure_rm_cosmosdbaccount'}:
+        name: "portfolio-nosql"
         state: present\n\n`;
       } else if (n.type === 'storage') {
         yaml += `    - name: Setup Cloud Storage Buckets
@@ -599,6 +867,10 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                   else if (node.type === 'storage') icon = <HardDrive size={20} />;
                   else if (node.type === 'loadbalancer') icon = <Layers size={20} />;
                   else if (node.type === 'dns') icon = <Globe size={20} />;
+                  else if (node.type === 'cdn') icon = <Share2 size={20} />;
+                  else if (node.type === 'serverless') icon = <Zap size={20} />;
+                  else if (node.type === 'container') icon = <Box size={20} />;
+                  else if (node.type === 'nosql') icon = <Database size={20} />;
 
                   return (
                     <div 
@@ -627,7 +899,7 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                       <div className="node-icon-wrapper">{icon}</div>
                       <div className="node-label">{node.name}</div>
                       <div className="node-desc">
-                        {node.type === 'compute' || node.type === 'database' ? node.instanceSize : `$${node.cost.toFixed(2)}/mo`}
+                        {['compute', 'database', 'serverless', 'container', 'nosql', 'cdn'].includes(node.type) ? node.instanceSize : `$${node.cost.toFixed(2)}/mo`}
                       </div>
                     </div>
                   );
@@ -660,7 +932,7 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                     />
                   </div>
 
-                  {(selectedNode.type === 'compute' || selectedNode.type === 'database') && (
+                  {['compute', 'database', 'serverless', 'container', 'nosql', 'cdn'].includes(selectedNode.type) && (
                     <div className="config-form-group">
                       <label>Instance Size / Tier</label>
                       <select 
@@ -668,32 +940,78 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                         value={selectedNode.instanceSize}
                         onChange={(e) => updateNode({ ...selectedNode, instanceSize: e.target.value })}
                       >
-                        {selectedNode.type === 'compute' ? (
+                        {selectedNode.type === 'compute' && (
                           provider === 'aws' ? (
                             <>
-                              <option value="t3.micro">t3.micro ($12.00/mo)</option>
-                              <option value="t3.small">t3.small ($24.00/mo)</option>
-                              <option value="m5.large">m5.large ($96.00/mo)</option>
+                              <option value="t3.micro">t3.micro ($7.59/mo)</option>
+                              <option value="t3.small">t3.small ($15.18/mo)</option>
+                              <option value="m5.large">m5.large ($70.08/mo)</option>
                             </>
                           ) : (
                             <>
-                              <option value="Standard_B1s">Standard_B1s ($14.00/mo)</option>
-                              <option value="Standard_B2s">Standard_B2s ($28.00/mo)</option>
-                              <option value="Standard_D2s_v5">Standard_D2s_v5 ($110.00/mo)</option>
+                              <option value="Standard_B1s">Standard_B1s ($7.59/mo)</option>
+                              <option value="Standard_B2s">Standard_B2s ($30.37/mo)</option>
+                              <option value="Standard_D2s_v5">Standard_D2s_v5 ($70.08/mo)</option>
                             </>
                           )
-                        ) : (
+                        )}
+                        {selectedNode.type === 'database' && (
                           provider === 'aws' ? (
                             <>
-                              <option value="db.t3.micro">db.t3.micro ($24.00/mo)</option>
-                              <option value="db.t3.small">db.t3.small ($48.00/mo)</option>
-                              <option value="db.m5.large">db.m5.large ($180.00/mo)</option>
+                              <option value="db.t3.micro">db.t3.micro ($13.14/mo)</option>
+                              <option value="db.t3.small">db.t3.small ($26.28/mo)</option>
+                              <option value="db.m5.large">db.m5.large ($128.48/mo)</option>
                             </>
                           ) : (
                             <>
-                              <option value="GP_Gen5_2">GP_Gen5_2 ($28.00/mo)</option>
-                              <option value="GP_Gen5_4">GP_Gen5_4 ($56.00/mo)</option>
-                              <option value="BC_Gen5_4">BC_Gen5_4 ($190.00/mo)</option>
+                              <option value="S0">Standard S0 ($14.75/mo)</option>
+                              <option value="GP_Gen5_2">GP_Gen5_2 ($215.38/mo)</option>
+                              <option value="GP_Gen5_4">GP_Gen5_4 ($427.08/mo)</option>
+                              <option value="BC_Gen5_4">BC_Gen5_4 ($1,161.40/mo)</option>
+                            </>
+                          )
+                        )}
+                        {selectedNode.type === 'serverless' && (
+                          <>
+                            <option value="128MB">128 MB RAM ($1.50/mo)</option>
+                            <option value="512MB">512 MB RAM ($5.00/mo)</option>
+                            <option value="1024MB">1024 MB RAM ($10.00/mo)</option>
+                          </>
+                        )}
+                        {selectedNode.type === 'container' && (
+                          <>
+                            <option value="small">Small Task ($8.00/mo)</option>
+                            <option value="medium">Medium Task ($32.00/mo)</option>
+                            <option value="large">Large Task ($64.00/mo)</option>
+                          </>
+                        )}
+                        {selectedNode.type === 'nosql' && (
+                          provider === 'aws' ? (
+                            <>
+                              <option value="basic">On-Demand Basic ($5.00/mo)</option>
+                              <option value="standard">Standard Baseline ($15.00/mo)</option>
+                              <option value="premium">High Throughput ($75.00/mo)</option>
+                            </>
+                          ) : (
+                            <>
+                              <option value="basic">Serverless Basic ($5.00/mo)</option>
+                              <option value="standard">400 RU/s Standard ($24.00/mo)</option>
+                              <option value="premium">1000 RU/s Premium ($60.00/mo)</option>
+                            </>
+                          )
+                        )}
+                        {selectedNode.type === 'cdn' && (
+                          provider === 'aws' ? (
+                            <>
+                              <option value="basic">Basic &lt; 100GB ($10.00/mo)</option>
+                              <option value="standard">Standard 500GB ($40.00/mo)</option>
+                              <option value="premium">Premium 2TB ($160.00/mo)</option>
+                            </>
+                          ) : (
+                            <>
+                              <option value="basic">Basic &lt; 100GB ($35.00/mo)</option>
+                              <option value="standard">Standard 500GB ($70.00/mo)</option>
+                              <option value="premium">Premium 2TB ($220.00/mo)</option>
                             </>
                           )
                         )}

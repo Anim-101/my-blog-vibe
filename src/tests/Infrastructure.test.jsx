@@ -78,8 +78,8 @@ describe('Cloud Infrastructure Designer Page', () => {
 
         // Verify Cost Calculator
         expect(container.textContent).toContain('EC2 Instance #1 (compute)');
-        // Cost totals: $12.00 monthly
-        expect(container.textContent).toContain('$12.00');
+        // Cost totals: $7.59 monthly
+        expect(container.textContent).toContain('$7.59');
 
         // Verify Terraform IaC output displays the aws_instance resource
         const preCode = container.querySelector('.iac-code-panel pre');
