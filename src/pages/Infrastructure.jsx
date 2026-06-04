@@ -30,12 +30,76 @@ const Infrastructure = () => {
   const [activeIacTab, setActiveIacTab] = useState('terraform');
   const [copied, setCopied] = useState(false);
   const nodeIdCounterRef = useRef(0);
+  const canvasRef = useRef(null);
+  const dragStartRef = useRef({ x: 0, y: 0 });
+  const nodeStartRef = useRef({ x: 0, y: 0 });
+  const draggingNodeIdRef = useRef(null);
+  const dragDistanceRef = useRef(0);
+  const [draggedNodeId, setDraggedNodeId] = useState(null);
 
   const handleProviderChange = (newProvider) => {
     setProvider(newProvider);
     setNodes([]);
     setSelectedNode(null);
     setIsSimulating(false);
+    draggingNodeIdRef.current = null;
+    setDraggedNodeId(null);
+  };
+
+  const handleStartDrag = (e, node) => {
+    e.stopPropagation();
+    
+    const clientX = e.clientX || e.touches?.[0]?.clientX;
+    const clientY = e.clientY || e.touches?.[0]?.clientY;
+    if (clientX === undefined || clientY === undefined) return;
+
+    dragStartRef.current = { x: clientX, y: clientY };
+    nodeStartRef.current = { x: node.x, y: node.y };
+    draggingNodeIdRef.current = node.id;
+    dragDistanceRef.current = 0;
+    setDraggedNodeId(node.id);
+  };
+
+  const handleDrag = (e) => {
+    if (!draggingNodeIdRef.current) return;
+    
+    // Prevent default scroll on touch devices during dragging
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+
+    const clientX = e.clientX || e.touches?.[0]?.clientX;
+    const clientY = e.clientY || e.touches?.[0]?.clientY;
+    if (clientX === undefined || clientY === undefined) return;
+
+    const dx = clientX - dragStartRef.current.x;
+    const dy = clientY - dragStartRef.current.y;
+    
+    dragDistanceRef.current = Math.sqrt(dx * dx + dy * dy);
+
+    const canvasWidth = canvasRef.current?.clientWidth || 900;
+    const canvasHeight = 480;
+
+    let newX = nodeStartRef.current.x + dx;
+    let newY = nodeStartRef.current.y + dy;
+
+    // Constrain nodes inside the 480px canvas container (subtract node size 110px)
+    newX = Math.max(0, Math.min(newX, canvasWidth - 110));
+    newY = Math.max(0, Math.min(newY, canvasHeight - 110));
+
+    setNodes(prev => prev.map(n => n.id === draggingNodeIdRef.current ? { ...n, x: newX, y: newY } : n));
+  };
+
+  const handleEndDrag = () => {
+    draggingNodeIdRef.current = null;
+    setDraggedNodeId(null);
+  };
+
+  const handleNodeClick = (e, node) => {
+    e.stopPropagation();
+    if (dragDistanceRef.current < 5) {
+      setSelectedNode(node);
+    }
   };
 
   // Define catalog items with their costs and descriptors
@@ -490,7 +554,16 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
             </span>
           </div>
 
-          <div className="canvas-container" data-testid="designer-canvas">
+          <div 
+            ref={canvasRef}
+            className="canvas-container" 
+            data-testid="designer-canvas"
+            onMouseMove={handleDrag}
+            onTouchMove={handleDrag}
+            onMouseUp={handleEndDrag}
+            onTouchEnd={handleEndDrag}
+            onMouseLeave={handleEndDrag}
+          >
             {nodes.length === 0 ? (
               <div className="canvas-empty-state">
                 <Cloud size={48} style={{ opacity: 0.3 }} />
@@ -531,11 +604,14 @@ resource "aws_s3_bucket_public_access_block" "${resourceId}_acl" {
                     <div 
                       key={node.id}
                       className={`canvas-node ${provider} ${isSelected ? 'selected' : ''}`}
-                      style={{ left: `${node.x}px`, top: `${node.y}px` }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedNode(node);
+                      style={{ 
+                        left: `${node.x}px`, 
+                        top: `${node.y}px`,
+                        cursor: draggedNodeId === node.id ? 'grabbing' : 'grab'
                       }}
+                      onMouseDown={(e) => handleStartDrag(e, node)}
+                      onTouchStart={(e) => handleStartDrag(e, node)}
+                      onClick={(e) => handleNodeClick(e, node)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => {
