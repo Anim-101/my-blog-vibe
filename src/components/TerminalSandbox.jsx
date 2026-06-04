@@ -776,7 +776,7 @@ const TerminalSandbox = () => {
           setHistory(prev => [...prev, { type: 'output', text: t('terminal.invalidTheme') }]);
         } else {
           const newTheme = arg.toLowerCase();
-          if (['glass', 'matrix', 'cyberpunk', 'amber', 'classic'].includes(newTheme)) {
+          if (['glass', 'matrix', 'cyberpunk', 'amber', 'classic', 'dracula', 'solarized', 'synthwave', 'light'].includes(newTheme)) {
             setTheme(newTheme);
             setHistory(prev => [...prev, { type: 'output', text: `${t('terminal.themeChanged')}${newTheme}` }]);
           } else {
@@ -784,6 +784,14 @@ const TerminalSandbox = () => {
           }
         }
         break;
+      case 'history': {
+        const currentHistory = [...commandHistory, trimmed];
+        const formattedHistory = currentHistory
+          .map((cmd, idx) => `  ${idx + 1}  ${cmd}`)
+          .join('\n');
+        setHistory(prev => [...prev, { type: 'output', text: formattedHistory }]);
+        break;
+      }
       case 'ls': {
         const contents = VFS[currentDir]?.contents || [];
         const formattedList = contents.map(item => {
@@ -1150,7 +1158,7 @@ const TerminalSandbox = () => {
         ]);
       } else if (/^theme\s+$/i.test(inputValue)) {
         // User typed "theme " and pressed tab: list available themes
-        const themes = ['glass', 'matrix', 'cyberpunk', 'amber', 'classic'];
+        const themes = ['glass', 'matrix', 'cyberpunk', 'amber', 'classic', 'dracula', 'solarized', 'synthwave', 'light'];
         const listText = themes.join('   ');
         
         setHistory(prev => [
@@ -1171,14 +1179,14 @@ const TerminalSandbox = () => {
       } else if (parts.length === 1 && parts[0]) {
         // Autocomplete command
         const cmdPrefix = parts[0];
-        const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help', 'guestbook', 'snake', 'tetris'];
+        const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help', 'guestbook', 'snake', 'tetris', 'history'];
         const matches = commands.filter(c => c.startsWith(cmdPrefix));
         if (matches.length === 1) {
           setInputValue(matches[0] + ' ');
         }
       } else if (parts.length === 2 && parts[0] === 'theme' && parts[1]) {
         const themePrefix = parts[1].toLowerCase();
-        const themes = ['glass', 'matrix', 'cyberpunk', 'amber', 'classic'];
+        const themes = ['glass', 'matrix', 'cyberpunk', 'amber', 'classic', 'dracula', 'solarized', 'synthwave', 'light'];
         const matches = themes.filter(t => t.startsWith(themePrefix));
         
         if (matches.length === 1) {

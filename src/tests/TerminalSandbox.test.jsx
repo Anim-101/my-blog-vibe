@@ -231,6 +231,29 @@ describe('TerminalSandbox Component', () => {
         expect(container.textContent).toContain('Uptime:');
     });
 
+    it('handles history command correctly', () => {
+        const { container } = render(<TerminalSandbox />);
+        const input = container.querySelector('.terminal-input');
+        const form = container.querySelector('form');
+
+        // Execute first command
+        fireEvent.change(input, { target: { value: 'help' } });
+        fireEvent.submit(form);
+
+        // Execute second command
+        fireEvent.change(input, { target: { value: 'ls' } });
+        fireEvent.submit(form);
+
+        // Run 'history'
+        fireEvent.change(input, { target: { value: 'history' } });
+        fireEvent.submit(form);
+
+        // Verify history output contains formatted commands and indices
+        expect(container.textContent).toContain('1  help');
+        expect(container.textContent).toContain('2  ls');
+        expect(container.textContent).toContain('3  history');
+    });
+
     it('simulates ansible-playbook execution', async () => {
         const { container, findByText } = render(<TerminalSandbox />);
         const input = container.querySelector('.terminal-input');
