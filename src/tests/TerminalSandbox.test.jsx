@@ -121,6 +121,23 @@ describe('TerminalSandbox Component', () => {
         fireEvent.change(input, { target: { value: 'cat skills/skills.md' } });
         fireEvent.submit(form);
         expect(container.textContent).toContain('terminal.skillsTitle');
+
+        // Test fallback (typing skills/bio.md should resolve to bio.md in root)
+        fireEvent.change(input, { target: { value: 'cat skills/bio.md' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.bioTitle');
+
+        // cd into skills and test parent resolution with 'cat ../bio.md'
+        fireEvent.change(input, { target: { value: 'cd skills' } });
+        fireEvent.submit(form);
+        fireEvent.change(input, { target: { value: 'cat ../bio.md' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.bioTitle');
+
+        // cd into skills and test implicit parent fallback 'cat bio.md'
+        fireEvent.change(input, { target: { value: 'cat bio.md' } });
+        fireEvent.submit(form);
+        expect(container.textContent).toContain('terminal.bioTitle');
     });
 
     it('runs neofetch', () => {

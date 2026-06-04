@@ -128,13 +128,32 @@ const FILE_CONTENTS = {
 const resolvePath = (path, currentDir) => {
   if (!path) return null;
   const target = path.trim();
+  
+  let absolute;
   if (target.startsWith('/')) {
-    return target;
+    absolute = target;
+  } else {
+    if (currentDir === '/') {
+      absolute = '/' + target;
+    } else {
+      absolute = currentDir + '/' + target;
+    }
   }
-  if (currentDir === '/') {
-    return '/' + target;
+
+  // Normalize segments (resolve '.' and '..')
+  const parts = absolute.split('/').filter(Boolean);
+  const stack = [];
+  for (const part of parts) {
+    if (part === '.') {
+      continue;
+    } else if (part === '..') {
+      stack.pop();
+    } else {
+      stack.push(part);
+    }
   }
-  return currentDir + '/' + target;
+  
+  return '/' + stack.join('/');
 };
 
 const TerminalSandbox = () => {
@@ -288,8 +307,17 @@ const TerminalSandbox = () => {
           setHistory(prev => [...prev, { type: 'output', text: 'Usage: cat [filename]' }]);
           break;
         }
-        const target = resolvePath(arg, currentDir);
+        let target = resolvePath(arg, currentDir);
         
+        // If file or directory doesn't exist locally, check if we can fall back to the root directory
+        // for bio.md or contact.md, etc.
+        if (!FILE_CONTENTS[target] && !VFS[target]) {
+          const fileName = target.split('/').pop();
+          if (FILE_CONTENTS['/' + fileName]) {
+            target = '/' + fileName;
+          }
+        }
+
         if (VFS[target] && VFS[target].type === 'dir') {
           // If trying to cat a directory, attempt to find a default markdown file in it
           const dirName = target.split('/').pop();
