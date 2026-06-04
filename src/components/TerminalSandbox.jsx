@@ -528,6 +528,22 @@ const TerminalSandbox = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interactiveMode, tetrisPiece, tetrisGameOver, tetrisGrid]);
 
+  // Prevent page scroll when playing games (wheel and touchmove events)
+  useEffect(() => {
+    if (interactiveMode !== 'snake' && interactiveMode !== 'tetris') return;
+
+    const preventDefault = (e) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener('wheel', preventDefault, { passive: false });
+    window.addEventListener('touchmove', preventDefault, { passive: false });
+    return () => {
+      window.removeEventListener('wheel', preventDefault);
+      window.removeEventListener('touchmove', preventDefault);
+    };
+  }, [interactiveMode]);
+
   const renderTetrisBoard = () => {
     const board = tetrisGrid.map(row => [...row]);
     
