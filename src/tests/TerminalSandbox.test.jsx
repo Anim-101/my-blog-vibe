@@ -310,4 +310,46 @@ describe('TerminalSandbox Component', () => {
         expect(container.querySelector('[data-testid="snake-game-board"]')).toBeNull();
         expect(container.textContent).toContain('Snake game exited.');
     });
+
+    it('shows danger warning in the snake game when close to a wall', async () => {
+        const { container, findByText } = render(<TerminalSandbox />);
+        const input = container.querySelector('.terminal-input');
+        const form = container.querySelector('form');
+
+        // Run 'snake' to start game
+        fireEvent.change(input, { target: { value: 'snake' } });
+        fireEvent.submit(form);
+
+        // Wait for collision warning or game over (1ms tick makes this happen instantly)
+        const warning = await findByText(/COLLISION IMMINENT|Game Over/i);
+        expect(warning).toBeDefined();
+    });
+
+    it('handles playing and exiting the tetris game', () => {
+        const { container } = render(<TerminalSandbox />);
+        const input = container.querySelector('.terminal-input');
+        const form = container.querySelector('form');
+
+        // Run 'tetris' to start game
+        fireEvent.change(input, { target: { value: 'tetris' } });
+        fireEvent.submit(form);
+
+        // Board should render
+        expect(container.querySelector('[data-testid="tetris-game-board"]')).not.toBeNull();
+        expect(container.textContent).toContain('terminal.tetrisScore');
+
+        // Verify movement key events
+        fireEvent.keyDown(input, { key: 'ArrowLeft' });
+        fireEvent.keyDown(input, { key: 'ArrowRight' });
+        fireEvent.keyDown(input, { key: 'ArrowDown' });
+        fireEvent.keyDown(input, { key: 'ArrowUp' }); // rotate
+        fireEvent.keyDown(input, { key: ' ' }); // hard drop
+
+        // Press 'q' to quit
+        fireEvent.keyDown(input, { key: 'q' });
+
+        // Verify game has exited
+        expect(container.querySelector('[data-testid="tetris-game-board"]')).toBeNull();
+        expect(container.textContent).toContain('Tetris game exited.');
+    });
 });

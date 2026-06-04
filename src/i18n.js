@@ -263,9 +263,9 @@ const resources = {
                 "next": "Next"
             },
             "terminal": {
-                "welcome": "Welcome to AnimOS v1.0.0 (zsh-sandbox)\nCertified: Red Hat Certified Engineer (RHCE) #200-244-934 (Perfect Score 300/300)\n\nType 'help' to see list of available commands.\nType 'theme [name]' to change colors (glass, matrix, cyberpunk, amber, classic).\n",
+                "welcome": "Welcome to AnimOS v1.0.0 (zsh-sandbox)\nCertified: Red Hat Certified Engineer (RHCE) #200-244-934 (Perfect Score 300/300)\n\nType 'help' to see list of available commands.\nType 'snake' or 'tetris' to play retro games directly in this shell!\nType 'guestbook sign' to leave your signature.\n",
                 "prompt": "anim@animos:~ $ ",
-                "helpText": "Available commands:\n  ls                      List directory contents\n  cd [dir]                Change directory\n  cat [file]              Print file contents\n  neofetch                Display system information and credentials\n  ansible-playbook [file] Execute a simulated Ansible playbook\n  theme [theme-name]      Change terminal visual theme\n  guestbook               View or sign the recruiter guestbook\n  snake                   Play a retro ASCII Snake game\n  sudo rhce               Run special command for Red Hat Certification details\n  clear                   Clear the screen\n  help                    Display this help message",
+                "helpText": "Available commands:\n  ls                      List directory contents\n  cd [dir]                Change directory\n  cat [file]              Print file contents\n  neofetch                Display system information and credentials\n  ansible-playbook [file] Execute a simulated Ansible playbook\n  theme [theme-name]      Change terminal visual theme\n  guestbook               View or sign the recruiter guestbook\n  snake                   Play a retro ASCII Snake game\n  tetris                  Play a retro ASCII Tetris game\n  sudo rhce               Run special command for Red Hat Certification details\n  clear                   Clear the screen\n  help                    Display this help message",
                 "cmdNotFound": "command not found: ",
                 "noSuchFile": "No such file or directory: ",
                 "isDir": "Is a directory: ",
@@ -291,7 +291,12 @@ const resources = {
                 "snakeInstructions": "Use Arrow keys or WASD to control. Press 'q' to quit.",
                 "snakeScore": "Score: ",
                 "snakeHighScore": "  High Score: ",
-                "snakeGameOver": "Game Over! Press 'r' to restart, 'q' to quit."
+                "snakeGameOver": "Game Over! Press 'r' to restart, 'q' to quit.",
+                "tetrisTitle": "=== Retro CLI Tetris Game ===",
+                "tetrisInstructions": "A/D or Arrows to Move. W or Up to Rotate. S or Down to Drop. Space to Hard Drop. Q to Quit.",
+                "tetrisScore": "Score: ",
+                "tetrisHighScore": "  High Score: ",
+                "tetrisGameOver": "Game Over! Press 'r' to restart, 'q' to quit."
             },
             "photography": {
                 "title1": "Through the",
@@ -575,9 +580,9 @@ const resources = {
                 "next": "次へ"
             },
             "terminal": {
-                "welcome": "AnimOS v1.0.0 (zsh-sandbox) へようこそ\n認定資格: Red Hat 認定エンジニア (RHCE) #200-244-934 (満点 300/300)\n\n'help' と入力すると利用可能なコマンド一覧が表示されます。\n'theme [name]' でテーマを変更できます (glass, matrix, cyberpunk, amber, classic)。\n",
+                "welcome": "AnimOS v1.0.0 (zsh-sandbox) へようこそ\n認定資格: Red Hat 認定エンジニア (RHCE) #200-244-934 (満点 300/300)\n\n'help' で利用可能なコマンド一覧が表示されます。\n'snake' または 'tetris' でレトロゲームをプレイできます！\n'guestbook sign' でゲストブックに署名を残せます。\n",
                 "prompt": "anim@animos:~ $ ",
-                "helpText": "利用可能なコマンド:\n  ls                      ディレクトリの内容を表示\n  cd [dir]                ディレクトリの移動\n  cat [file]              ファイル内容を表示\n  neofetch                システム情報と認定資格を表示\n  ansible-playbook [file] 模擬 Ansible プレイブックを実行\n  theme [theme-name]      ターミナルの配色テーマを変更\n  guestbook               ゲストブックの閲覧・記帳\n  snake                   レトロな ASCII スネークゲームをプレイ\n  sudo rhce               Red Hat 認定の秘密情報を実行\n  clear                   画面をクリア\n  help                    このヘルプメッセージを表示",
+                "helpText": "利用可能なコマンド:\n  ls                      ディレクトリの内容を表示\n  cd [dir]                ディレクトリの移動\n  cat [file]              ファイル内容を表示\n  neofetch                システム情報と認定資格を表示\n  ansible-playbook [file] 模擬 Ansible プレイブックを実行\n  theme [theme-name]      ターミナルの配色テーマを変更\n  guestbook               ゲストブックの閲覧・記帳\n  snake                   レトロな ASCII スネークゲームをプレイ\n  tetris                  レトロな ASCII テトリスゲームをプレイ\n  sudo rhce               Red Hat 認定の秘密情報を実行\n  clear                   画面をクリア\n  help                    このヘルプメッセージを表示",
                 "cmdNotFound": "コマンドが見つかりません: ",
                 "noSuchFile": "ファイルまたはディレクトリが見つかりません: ",
                 "isDir": "ディレクトリです: ",
@@ -603,7 +608,12 @@ const resources = {
                 "snakeInstructions": "矢印キーまたは WASD キーで操作します。'q' で終了します。",
                 "snakeScore": "スコア: ",
                 "snakeHighScore": "  ハイスコア: ",
-                "snakeGameOver": "ゲームオーバー！'r' でリスタート、'q' で終了します。"
+                "snakeGameOver": "ゲームオーバー！'r' でリスタート、'q' で終了します。",
+                "tetrisTitle": "=== レトロ CLI テトリスゲーム ===",
+                "tetrisInstructions": "A/D または矢印キーで移動。W または上キーで回転。S または下キーで落とす。Spaceでハードドロップ。Qで終了します。",
+                "tetrisScore": "スコア: ",
+                "tetrisHighScore": "  ハイスコア: ",
+                "tetrisGameOver": "ゲームオーバー！'r' でリスタート、'q' で終了します。"
             },
             "photography": {
                 "title1": "レンズ",

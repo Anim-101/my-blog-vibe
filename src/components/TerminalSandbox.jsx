@@ -175,6 +175,13 @@ const TerminalSandbox = () => {
   const [highScore, setHighScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
+  // Tetris Game State
+  const [tetrisGrid, setTetrisGrid] = useState(Array.from({ length: 15 }, () => Array(10).fill(0)));
+  const [tetrisPiece, setTetrisPiece] = useState(null);
+  const [tetrisScore, setTetrisScore] = useState(0);
+  const [tetrisHighScore, setTetrisHighScore] = useState(0);
+  const [tetrisGameOver, setTetrisGameOver] = useState(false);
+
   const screenRef = useRef(null);
   const inputRef = useRef(null);
   const playbookIntervalRef = useRef(null);
@@ -219,6 +226,127 @@ const TerminalSandbox = () => {
     }
   };
 
+  // Tetris Definitions & Helpers
+  const TETROMINOES = {
+    I: [[1, 1, 1, 1]],
+    O: [[1, 1], [1, 1]],
+    T: [[0, 1, 0], [1, 1, 1]],
+    S: [[0, 1, 1], [1, 1, 0]],
+    Z: [[1, 1, 0], [0, 1, 1]],
+    J: [[1, 0, 0], [1, 1, 1]],
+    L: [[0, 0, 1], [1, 1, 1]]
+  };
+
+  const spawnTetrisPiece = () => {
+    const keys = Object.keys(TETROMINOES);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    const shape = TETROMINOES[randomKey];
+    const x = Math.floor((10 - shape[0].length) / 2);
+    return { shape, x, y: 0, type: randomKey };
+  };
+
+  const checkTetrisCollision = (shape, x, y, boardGrid) => {
+    for (let r = 0; r < shape.length; r++) {
+      for (let c = 0; c < shape[r].length; c++) {
+        if (shape[r][c]) {
+          const nextX = x + c;
+          const nextY = y + r;
+          
+          if (nextX < 0 || nextX >= 10 || nextY >= 15) {
+            return true;
+          }
+          
+          if (nextY >= 0 && boardGrid[nextY][nextX]) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
+
+  const startTetrisGame = () => {
+    setInteractiveMode('tetris');
+    setTetrisGrid(Array.from({ length: 15 }, () => Array(10).fill(0)));
+    setTetrisScore(0);
+    setTetrisGameOver(false);
+    const initialPiece = spawnTetrisPiece();
+    setTetrisPiece(initialPiece);
+
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const stored = window.localStorage.getItem('my_blog_vibe_tetris_highscore');
+      setTetrisHighScore(stored ? parseInt(stored, 10) : 0);
+    }
+  };
+
+  const lockTetrisPiece = (piece) => {
+    setTetrisGrid(prevGrid => {
+      const newGrid = prevGrid.map(row => [...row]);
+      const { shape, x, y } = piece;
+      
+      for (let r = 0; r < shape.length; r++) {
+        for (let c = 0; c < shape[r].length; c++) {
+          if (shape[r][c]) {
+            const boardRow = y + r;
+            const boardCol = x + c;
+            if (boardRow >= 0 && boardRow < 15 && boardCol >= 0 && boardCol < 10) {
+              newGrid[boardRow][boardCol] = 1;
+            }
+          }
+        }
+      }
+      
+      let linesCleared = 0;
+      const filteredGrid = newGrid.filter(row => {
+        const isFull = row.every(cell => cell === 1);
+        if (isFull) linesCleared++;
+        return !isFull;
+      });
+      
+      while (filteredGrid.length < 15) {
+        filteredGrid.unshift(Array(10).fill(0));
+      }
+      
+      if (linesCleared > 0) {
+        setTetrisScore(prevScore => {
+          const points = [0, 100, 300, 500, 800];
+          const nextScore = prevScore + (points[linesCleared] || 1000);
+          if (nextScore > tetrisHighScore) {
+            setTetrisHighScore(nextScore);
+            if (typeof window !== 'undefined' && window.localStorage) {
+              window.localStorage.setItem('my_blog_vibe_tetris_highscore', nextScore.toString());
+            }
+          }
+          return nextScore;
+        });
+      }
+      
+      return filteredGrid;
+    });
+  };
+
+  const rotateTetrisPiece = () => {
+    setTetrisPiece(prev => {
+      if (!prev) return prev;
+      const n = prev.shape.length;
+      const m = prev.shape[0].length;
+      const rotatedShape = Array.from({ length: m }, () => Array(n).fill(0));
+      for (let r = 0; r < n; r++) {
+        for (let c = 0; c < m; c++) {
+          rotatedShape[c][n - 1 - r] = prev.shape[r][c];
+        }
+      }
+      
+      const kicks = [0, -1, 1, -2, 2];
+      for (const kick of kicks) {
+        if (!checkTetrisCollision(rotatedShape, prev.x + kick, prev.y, tetrisGrid)) {
+          return { ...prev, shape: rotatedShape, x: prev.x + kick };
+        }
+      }
+      return prev;
+    });
+  };
+
   // Helper to format and display guestbook list
   const printGuestbookList = (entriesList) => {
     const list = entriesList || [];
@@ -258,6 +386,11 @@ const TerminalSandbox = () => {
       const stored = window.localStorage.getItem('my_blog_vibe_snake_highscore');
       if (stored) {
         setHighScore(parseInt(stored, 10));
+      }
+
+      const storedTetris = window.localStorage.getItem('my_blog_vibe_tetris_highscore');
+      if (storedTetris) {
+        setTetrisHighScore(parseInt(storedTetris, 10));
       }
       
       const storedGb = window.localStorage.getItem('my_blog_vibe_guestbook');
@@ -352,8 +485,126 @@ const TerminalSandbox = () => {
     return () => clearInterval(interval);
   }, [interactiveMode, gameOver, direction, food, highScore]);
 
+  // Tetris Game Loop - Drop Tick
+  useEffect(() => {
+    if (interactiveMode !== 'tetris' || tetrisGameOver) return;
+
+    const isTest = import.meta.env.MODE === 'test';
+    const tickRate = isTest ? 1 : 500;
+
+    const interval = setInterval(() => {
+      setTetrisPiece(prevPiece => {
+        if (!prevPiece) return prevPiece;
+        const canMoveDown = !checkTetrisCollision(prevPiece.shape, prevPiece.x, prevPiece.y + 1, tetrisGrid);
+        if (canMoveDown) {
+          return { ...prevPiece, y: prevPiece.y + 1 };
+        } else {
+          lockTetrisPiece(prevPiece);
+          return null;
+        }
+      });
+    }, tickRate);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [interactiveMode, tetrisGameOver, tetrisGrid]);
+
+  // Tetris Game Loop - Spawn Trigger
+  useEffect(() => {
+    if (interactiveMode === 'tetris' && !tetrisPiece && !tetrisGameOver) {
+      const next = spawnTetrisPiece();
+      if (checkTetrisCollision(next.shape, next.x, next.y, tetrisGrid)) {
+        setTetrisGameOver(true);
+      } else {
+        setTetrisPiece(next);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [interactiveMode, tetrisPiece, tetrisGameOver, tetrisGrid]);
+
+  const renderTetrisBoard = () => {
+    const board = tetrisGrid.map(row => [...row]);
+    
+    if (tetrisPiece) {
+      const { shape, x, y } = tetrisPiece;
+      for (let r = 0; r < shape.length; r++) {
+        for (let c = 0; c < shape[r].length; c++) {
+          if (shape[r][c]) {
+            const boardRow = y + r;
+            const boardCol = x + c;
+            if (boardRow >= 0 && boardRow < 15 && boardCol >= 0 && boardCol < 10) {
+              board[boardRow][boardCol] = 1;
+            }
+          }
+        }
+      }
+    }
+    
+    const textBoard = board.map(row => {
+      return row.map(cell => (cell ? '■' : '·')).join(' ');
+    });
+    
+    return (
+      <div className="tetris-board-container" data-testid="tetris-game-board">
+        <div className="tetris-stats">
+          <span>{t('terminal.tetrisScore')}{tetrisScore}</span>
+          <span>{t('terminal.tetrisHighScore')}{tetrisHighScore}</span>
+        </div>
+        <div className="tetris-grid">
+          <div>╔═════════════════════╗</div>
+          {textBoard.map((rowText, i) => (
+            <div key={i}>║ {rowText} ║</div>
+          ))}
+          <div>╚═════════════════════╝</div>
+        </div>
+        <div className="tetris-instructions">
+          {tetrisGameOver ? (
+            <span className="tetris-game-over-text">{t('terminal.tetrisGameOver')}</span>
+          ) : (
+            <span>{t('terminal.tetrisInstructions')}</span>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const isSnakeDanger = () => {
+    if (interactiveMode !== 'snake' || snake.length === 0 || gameOver) return false;
+    const head = snake[0];
+    
+    // Check near walls (grid size: 15 columns x 10 rows)
+    if (head.x === 0 && direction === 'LEFT') return true;
+    if (head.x === 14 && direction === 'RIGHT') return true;
+    if (head.y === 0 && direction === 'UP') return true;
+    if (head.y === 9 && direction === 'DOWN') return true;
+    
+    // Check near body segments
+    let nextX = head.x;
+    let nextY = head.y;
+    switch (direction) {
+      case 'UP': nextY -= 1; break;
+      case 'DOWN': nextY += 1; break;
+      case 'LEFT': nextX -= 1; break;
+      case 'RIGHT': nextX += 1; break;
+      default: break;
+    }
+    const hitSelf = snake.slice(1).some(segment => segment.x === nextX && segment.y === nextY);
+    if (hitSelf) return true;
+    
+    return false;
+  };
+
   const renderSnakeBoard = () => {
     const board = [];
+    const danger = isSnakeDanger();
+
+    // Determine snake head arrow based on direction
+    let headChar = '■';
+    if (direction === 'UP') headChar = '▲';
+    else if (direction === 'DOWN') headChar = '▼';
+    else if (direction === 'LEFT') headChar = '◀';
+    else if (direction === 'RIGHT') headChar = '▶';
+
     for (let y = 0; y < 10; y++) {
       const row = [];
       for (let x = 0; x < 15; x++) {
@@ -362,7 +613,7 @@ const TerminalSandbox = () => {
         const isFood = food.x === x && food.y === y;
 
         if (isHead) {
-          row.push('■');
+          row.push(headChar);
         } else if (isBody) {
           row.push('□');
         } else if (isFood) {
@@ -375,21 +626,24 @@ const TerminalSandbox = () => {
     }
 
     return (
-      <div className="snake-board-container" data-testid="snake-game-board">
+      <div className={`snake-board-container${danger ? ' danger' : ''}`} data-testid="snake-game-board">
         <div className="snake-stats">
           <span>{t('terminal.snakeScore')}{score}</span>
+          {danger && <span className="snake-danger-flash">⚠️ DANGER ⚠️</span>}
           <span>{t('terminal.snakeHighScore')}{highScore}</span>
         </div>
         <div className="snake-grid">
-          <div>+-----------------------------+</div>
+          <div>╔═════════════════════════════╗</div>
           {board.map((rowText, i) => (
-            <div key={i}>| {rowText} |</div>
+            <div key={i}>║ {rowText} ║</div>
           ))}
-          <div>+-----------------------------+</div>
+          <div>╚═════════════════════════════╝</div>
         </div>
         <div className="snake-instructions">
           {gameOver ? (
             <span className="snake-game-over-text">{t('terminal.snakeGameOver')}</span>
+          ) : danger ? (
+            <span className="snake-game-warning-text">⚠️ COLLISION IMMINENT! CHANGE DIRECTION!</span>
           ) : (
             <span>{t('terminal.snakeInstructions')}</span>
           )}
@@ -659,6 +913,9 @@ const TerminalSandbox = () => {
       case 'play':
         startSnakeGame();
         break;
+      case 'tetris':
+        startTetrisGame();
+        break;
       default:
         setHistory(prev => [...prev, { type: 'output', text: `${t('terminal.cmdNotFound')}${cmd}` }]);
     }
@@ -725,6 +982,70 @@ const TerminalSandbox = () => {
   const handleKeyDown = (e) => {
     if (isExecutingPlaybook) {
       e.preventDefault();
+      return;
+    }
+
+    if (interactiveMode === 'tetris') {
+      e.preventDefault();
+      const key = e.key.toUpperCase();
+      
+      if (tetrisGameOver) {
+        if (key === 'R') {
+          startTetrisGame();
+        } else if (key === 'Q') {
+          setInteractiveMode(null);
+          setHistory(prev => [...prev, { type: 'output', text: "\nTetris game exited.\n" }]);
+        }
+        return;
+      }
+
+      if (key === 'Q') {
+        setInteractiveMode(null);
+        setHistory(prev => [...prev, { type: 'output', text: "\nTetris game exited.\n" }]);
+        return;
+      }
+
+      if (key === 'ARROWLEFT' || key === 'A') {
+        setTetrisPiece(prev => {
+          if (!prev) return prev;
+          const nextX = prev.x - 1;
+          if (!checkTetrisCollision(prev.shape, nextX, prev.y, tetrisGrid)) {
+            return { ...prev, x: nextX };
+          }
+          return prev;
+        });
+      } else if (key === 'ARROWRIGHT' || key === 'D') {
+        setTetrisPiece(prev => {
+          if (!prev) return prev;
+          const nextX = prev.x + 1;
+          if (!checkTetrisCollision(prev.shape, nextX, prev.y, tetrisGrid)) {
+            return { ...prev, x: nextX };
+          }
+          return prev;
+        });
+      } else if (key === 'ARROWDOWN' || key === 'S') {
+        setTetrisPiece(prev => {
+          if (!prev) return prev;
+          const nextY = prev.y + 1;
+          if (!checkTetrisCollision(prev.shape, prev.x, nextY, tetrisGrid)) {
+            return { ...prev, y: nextY };
+          }
+          return prev;
+        });
+      } else if (key === 'ARROWUP' || key === 'W') {
+        rotateTetrisPiece();
+      } else if (e.key === ' ' || key === 'SPACE') {
+        setTetrisPiece(prev => {
+          if (!prev) return prev;
+          let currentY = prev.y;
+          while (!checkTetrisCollision(prev.shape, prev.x, currentY + 1, tetrisGrid)) {
+            currentY++;
+          }
+          const droppedPiece = { ...prev, y: currentY };
+          lockTetrisPiece(droppedPiece);
+          return null;
+        });
+      }
       return;
     }
 
@@ -811,7 +1132,7 @@ const TerminalSandbox = () => {
       } else if (parts.length === 1 && parts[0]) {
         // Autocomplete command
         const cmdPrefix = parts[0];
-        const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help', 'guestbook', 'snake'];
+        const commands = ['ls', 'cd', 'cat', 'clear', 'neofetch', 'ansible-playbook', 'theme', 'sudo', 'help', 'guestbook', 'snake', 'tetris'];
         const matches = commands.filter(c => c.startsWith(cmdPrefix));
         if (matches.length === 1) {
           setInputValue(matches[0] + ' ');
@@ -941,6 +1262,10 @@ const TerminalSandbox = () => {
             setInputValue('');
             setInteractiveMode(null);
             setGuestbookStep(0);
+            setTetrisGrid(Array.from({ length: 15 }, () => Array(10).fill(0)));
+            setTetrisPiece(null);
+            setTetrisScore(0);
+            setTetrisGameOver(false);
           }} role="button" tabIndex={0}>
             <RefreshCw size={12} />
           </span>
@@ -966,12 +1291,17 @@ const TerminalSandbox = () => {
         ))}
 
         {interactiveMode === 'snake' && renderSnakeBoard()}
+        {interactiveMode === 'tetris' && renderTetrisBoard()}
 
         {!isExecutingPlaybook && (
           <form onSubmit={handleSubmit} className="terminal-input-row">
             {interactiveMode === 'snake' ? (
               <div style={{ color: 'var(--accent-secondary)', opacity: 0.8, fontSize: '0.85rem' }}>
                 [Snake Active] Controls: Arrow keys / WASD. Press Q to Quit.
+              </div>
+            ) : interactiveMode === 'tetris' ? (
+              <div style={{ color: 'var(--accent-secondary)', opacity: 0.8, fontSize: '0.85rem' }}>
+                [Tetris Active] Controls: W/S/A/D / Arrows / Space. Press Q to Quit.
               </div>
             ) : interactiveMode === 'guestbook' ? (
               <span className="terminal-prompt">
@@ -982,7 +1312,7 @@ const TerminalSandbox = () => {
                 anim@animos:{getPromptPath()} $
               </span>
             )}
-            <div className="terminal-input-wrapper" style={interactiveMode === 'snake' ? { opacity: 0, position: 'absolute', pointerEvents: 'none' } : {}}>
+            <div className="terminal-input-wrapper" style={(interactiveMode === 'snake' || interactiveMode === 'tetris') ? { opacity: 0, position: 'absolute', pointerEvents: 'none' } : {}}>
               <input
                 ref={inputRef}
                 type="text"
