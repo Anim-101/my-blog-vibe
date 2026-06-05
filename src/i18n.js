@@ -25,7 +25,10 @@ const resources = {
                 "devBlog": "Dev Blog",
                 "photography": "Photography",
                 "memory": "Memory",
-                "designer": "Cloud Designer"
+                "designer": "Cloud Designer",
+                "agents": "Agent Sandbox",
+                "tools": "Tools",
+                "compiler": "Compiler"
             },
             "home": {
                 "greeting": "Hi, I'm",
@@ -348,6 +351,44 @@ const resources = {
                     "publicDatabase": "Caution: Database server has a public IP address. In production, keep it in a private subnet.",
                     "openS3": "Caution: S3 storage bucket is set to public read-access."
                 }
+            },
+            "agents": {
+                "title": "Generative AI Agent Sandbox",
+                "subtitle": "Build agentic workflows with custom models, memory modules, and execution tools to visualize real-time reasoning loops.",
+                "catalog": "Component Catalog",
+                "canvas": "Agent Workspace",
+                "emptyCanvas": "Drag or click components from the sidebar to assemble your agentic workflow.",
+                "execute": "Execute Agent Task",
+                "stop": "Stop Execution",
+                "clear": "Reset Canvas",
+                "settings": "Component Settings",
+                "exporterTitle": "Agent Code Exporter",
+                "exporterSubtitle": "Integration snippets generated for your active sandbox workspace.",
+                "terminalTitle": "Agent Thought & Reasoning Console",
+                "terminalEmpty": "Ready for instruction. Enter a task below to trigger execution.",
+                "inputPlaceholder": "e.g., Search the weather in Tokyo and write a comparative summary...",
+                "run": "Run Task",
+                "delete": "Delete Component",
+                "copied": "Copied!",
+                "copy": "Copy Code"
+            },
+            "compiler": {
+                "title": "Online Code Compiler",
+                "subtitle": "Edit, execute, and preview code in a live multi-language development environment.",
+                "run": "Run Code",
+                "stop": "Stop",
+                "clear": "Clear Console",
+                "reset": "Reset Files",
+                "fileExplorer": "Workspace Files",
+                "newFile": "New File",
+                "deleteFile": "Delete File",
+                "consoleTab": "Console Output",
+                "previewTab": "Live Preview",
+                "emptyConsole": "Click Run Code to execute and see output here.",
+                "previewError": "HTML Live Preview is only supported for index.html files.",
+                "created": "File created successfully.",
+                "deleted": "File deleted successfully.",
+                "stats": "Executed in {{time}}ms"
             }
         }
     },
@@ -373,7 +414,10 @@ const resources = {
                 "devBlog": "開発ブログ",
                 "photography": "写真",
                 "memory": "メモリー",
-                "designer": "クラウド設計"
+                "designer": "クラウド設計",
+                "agents": "AIエージェント",
+                "tools": "ツール",
+                "compiler": "コンパイラ"
             },
             "home": {
                 "greeting": "こんにちは、",
@@ -696,6 +740,44 @@ const resources = {
                     "publicDatabase": "注意: データベースにパブリックIPが割り当てられています。本番環境ではプライベートサブネットに配置してください。",
                     "openS3": "注意: ストレージバケットが一般公開読み取りに設定されています。"
                 }
+            },
+            "agents": {
+                "title": "AIエージェント・サンドボックス",
+                "subtitle": "LLMモデル、メモリバッファ、実ツールノードをキャンバス上で組み立て、思考と行動の推論ループをリアルタイムに視覚化します。",
+                "catalog": "コンポーネントカタログ",
+                "canvas": "ワークスペースキャンバス",
+                "emptyCanvas": "サイドバーからノードをクリックまたは追加して、エージェントのワークフローを構成してください。",
+                "execute": "タスクを実行",
+                "stop": "実行停止",
+                "clear": "リセット",
+                "settings": "ノード設定",
+                "exporterTitle": "コードエクスポート",
+                "exporterSubtitle": "構成されたエージェントの実装に適合する統合用コードスニペットです。",
+                "terminalTitle": "エージェント推論コンソール",
+                "terminalEmpty": "命令の待機中。下部の入力欄にエージェントへのタスクを入力してください。",
+                "inputPlaceholder": "例: 東京の天気情報を取得し、ロンドンとの気温差を計算してください...",
+                "run": "実行する",
+                "delete": "ノード削除",
+                "copied": "コピーしました！",
+                "copy": "コードをコピー"
+            },
+            "compiler": {
+                "title": "オンラインコードコンパイラ",
+                "subtitle": "ライブのマルチ言語開発環境でコードを編集、実行、およびプレビューします。",
+                "run": "実行",
+                "stop": "停止",
+                "clear": "出力をクリア",
+                "reset": "リセット",
+                "fileExplorer": "ファイル一覧",
+                "newFile": "新規ファイル",
+                "deleteFile": "削除",
+                "consoleTab": "コンソール出力",
+                "previewTab": "ライブプレビュー",
+                "emptyConsole": "[コードを実行] をクリックして実行結果を表示します。",
+                "previewError": "ライブプレビューは index.html ファイルの実行時のみ有効です。",
+                "created": "ファイルを作成しました。",
+                "deleted": "ファイルを削除しました。",
+                "stats": "実行時間: {{time}}ms"
             }
         }
     }

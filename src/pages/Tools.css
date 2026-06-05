@@ -1,0 +1,59 @@
+/* Tools Consolidated Page Styles */
+
+.tools-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--nav-height, 80px));
+  padding-bottom: 2rem;
+}
+
+.tools-subnav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 5.5rem; /* Push down below main floating navbar */
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-medium);
+  padding-bottom: 1rem;
+}
+
+.tools-subnav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm, 6px);
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-medium);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.tools-subnav-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+  background: var(--bg-hover);
+}
+
+.tools-subnav-btn.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #1e40af 100%);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Compact headers when loaded inside tools content */
+.tools-content .designer-header {
+  margin-top: 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Adjust components height under tools layout */
+.tools-content .infrastructure-designer,
+.tools-content .agents-sandbox {
+  min-height: auto;
+  padding-top: 0;
+}

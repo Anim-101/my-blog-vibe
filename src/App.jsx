@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AICopilot from './components/AICopilot';
@@ -13,6 +13,9 @@ import Photography from './pages/Photography';
 import About from './pages/About';
 import Memory from './pages/Memory';
 import Infrastructure from './pages/Infrastructure';
+import Agents from './pages/Agents';
+import Tools from './pages/Tools';
+import Compiler from './pages/Compiler';
 
 function App() {
   return (
@@ -29,7 +32,12 @@ function App() {
           <Route path="/photography" element={<Photography />} />
           <Route path="/photography/:slug" element={<PhotoPost />} />
           <Route path="/memory" element={<Memory />} />
-          <Route path="/designer" element={<Infrastructure />} />
+          <Route path="/tools" element={<Tools />}>
+            <Route index element={<Navigate to="/tools/designer" replace />} />
+            <Route path="designer" element={<Infrastructure />} />
+            <Route path="agents" element={<Agents />} />
+            <Route path="compiler" element={<Compiler />} />
+          </Route>
         </Routes>
       </main>
       <Footer />
