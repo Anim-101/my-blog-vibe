@@ -28,7 +28,8 @@ const resources = {
                 "designer": "Cloud Designer",
                 "agents": "Agent Sandbox",
                 "tools": "Tools",
-                "compiler": "Compiler"
+                "compiler": "Compiler",
+                "git": "Git Visualizer"
             },
             "home": {
                 "greeting": "Hi, I'm",
@@ -389,6 +390,21 @@ const resources = {
                 "created": "File created successfully.",
                 "deleted": "File deleted successfully.",
                 "stats": "Executed in {{time}}ms"
+            },
+            "git": {
+                "title": "Git Branching Sandbox",
+                "subtitle": "Visualize the commit graph tree in real-time, execute commands, and solve branching challenges.",
+                "run": "Run Command",
+                "sandbox": "Sandbox Mode",
+                "game": "Challenge Mode",
+                "level": "Level {{level}}",
+                "levelTitle": "Git Challenge",
+                "congrats": "Congratulations!",
+                "nextLevel": "Next Level",
+                "resetLevel": "Reset Level",
+                "success": "Goal achieved! You successfully modeled the target commit tree.",
+                "error": "Error: {{message}}",
+                "instruction": "Goal: {{goal}}"
             }
         }
     },
@@ -417,7 +433,8 @@ const resources = {
                 "designer": "クラウド設計",
                 "agents": "AIエージェント",
                 "tools": "ツール",
-                "compiler": "コンパイラ"
+                "compiler": "コンパイラ",
+                "git": "Gitビジュアライザ"
             },
             "home": {
                 "greeting": "こんにちは、",
@@ -778,6 +795,21 @@ const resources = {
                 "created": "ファイルを作成しました。",
                 "deleted": "ファイルを削除しました。",
                 "stats": "実行時間: {{time}}ms"
+            },
+            "git": {
+                "title": "Gitブランチ・サンドボックス",
+                "subtitle": "コミットグラフツリーをリアルタイムに視覚化し、Gitコマンドを実行してブランチング課題を解決します。",
+                "run": "実行",
+                "sandbox": "サンドボックスモード",
+                "game": "チャレンジモード",
+                "level": "レベル {{level}}",
+                "levelTitle": "Git チャレンジ",
+                "congrats": "おめでとうございます！",
+                "nextLevel": "次のレベルへ",
+                "resetLevel": "リセット",
+                "success": "目標を達成しました！ターゲットとなるコミットツリーを正しく再現できました。",
+                "error": "エラー: {{message}}",
+                "instruction": "目標: {{goal}}"
             }
         }
     }

@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Cloud, Sparkles, Terminal } from 'lucide-react';
+import { Cloud, Sparkles, Terminal, GitBranch } from 'lucide-react';
 import './Tools.css';
 
 const Tools = () => {
@@ -30,6 +30,13 @@ const Tools = () => {
         >
           <Terminal size={16} />
           <span>{t('nav.compiler')}</span>
+        </NavLink>
+        <NavLink 
+          to="/tools/git" 
+          className={({ isActive }) => `tools-subnav-btn ${isActive ? 'active' : ''}`}
+        >
+          <GitBranch size={16} />
+          <span>{t('nav.git')}</span>
         </NavLink>
       </div>
 
