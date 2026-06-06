@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
 import { getMemoryPhotos } from '../utils/content';
 import './Memory.css';
 
@@ -17,6 +17,63 @@ const seededRandom = (seedString) => {
 
 const Memory = () => {
     const navigate = useNavigate();
+    
+    const iframeRef = useRef(null);
+    const [isMuted, setIsMuted] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [volume, setVolume] = useState(50);
+
+    const sendPlayerCommand = (func, args = '') => {
+        if (iframeRef.current && iframeRef.current.contentWindow) {
+            const command = JSON.stringify({
+                event: 'command',
+                func: func,
+                args: args
+            });
+            iframeRef.current.contentWindow.postMessage(command, '*');
+        }
+    };
+
+    const handlePlayToggle = () => {
+        if (isPlaying) {
+            sendPlayerCommand('pauseVideo');
+            setIsPlaying(false);
+        } else {
+            sendPlayerCommand('playVideo');
+            setIsPlaying(true);
+            if (isMuted) {
+                sendPlayerCommand('unMute');
+                setIsMuted(false);
+            }
+        }
+    };
+
+    const handleMuteToggle = () => {
+        if (isMuted) {
+            sendPlayerCommand('unMute');
+            setIsMuted(false);
+            if (!isPlaying) {
+                sendPlayerCommand('playVideo');
+                setIsPlaying(true);
+            }
+        } else {
+            sendPlayerCommand('mute');
+            setIsMuted(true);
+        }
+    };
+
+    const handleVolumeChange = (e) => {
+        const vol = Number(e.target.value);
+        setVolume(vol);
+        sendPlayerCommand('setVolume', [vol]);
+        if (vol > 0 && isMuted) {
+            sendPlayerCommand('unMute');
+            setIsMuted(false);
+        } else if (vol === 0 && !isMuted) {
+            sendPlayerCommand('mute');
+            setIsMuted(true);
+        }
+    };
     
     // Track viewport size dynamically to calculate aspect ratio grid layout
     const [viewportSize, setViewportSize] = useState(() => ({
@@ -437,6 +494,49 @@ const Memory = () => {
                     </div>
                 </div>
             )}
+            {/* Background Music Widget */}
+            <div className={`memory-audio-widget ${isMuted ? 'muted-pulse' : ''}`} data-testid="memory-audio-widget">
+                <div className="audio-widget-info">
+                    <Music size={14} className="music-note-icon" />
+                    <span className="audio-track-name">I am trying to forget...</span>
+                </div>
+                <div className="audio-widget-controls">
+                    <button 
+                        type="button" 
+                        className="audio-btn play-pause-btn" 
+                        onClick={handlePlayToggle}
+                        title={isPlaying ? "Pause Music" : "Play Music"}
+                    >
+                        {isPlaying ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+                    </button>
+                    <button 
+                        type="button" 
+                        className="audio-btn mute-btn" 
+                        onClick={handleMuteToggle}
+                        title={isMuted ? "Unmute Music" : "Mute Music"}
+                    >
+                        {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                    </button>
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        value={isMuted ? 0 : volume} 
+                        onChange={handleVolumeChange} 
+                        className="audio-volume-slider"
+                        title="Adjust Volume"
+                    />
+                </div>
+            </div>
+
+            {/* Hidden Iframe Player */}
+            <iframe
+                ref={iframeRef}
+                title="Background Music"
+                className="memory-audio-iframe"
+                src="https://www.youtube.com/embed/Phbb2Bci7eA?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=Phbb2Bci7eA&controls=0&showinfo=0&rel=0"
+                allow="autoplay"
+            />
         </div>
     );
 };
