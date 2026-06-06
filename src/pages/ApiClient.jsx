@@ -6,6 +6,7 @@ import './ApiClient.css';
 const PRESETS = [
   { name: 'Get Posts (Real)', method: 'GET', url: 'https://jsonplaceholder.typicode.com/posts' },
   { name: 'Get User profile (Real)', method: 'GET', url: 'https://jsonplaceholder.typicode.com/users/1' },
+  { name: 'Anime Search (Real)', method: 'GET', url: 'https://api.jikan.moe/v4/anime?q=naruto&limit=3' },
   { name: 'Delay Simulator (Real)', method: 'GET', url: 'https://httpbin.org/delay/1' },
   { name: 'Anim\'s GitHub (Real)', method: 'GET', url: 'https://api.github.com/users/B1nit' },
   { name: 'Mock Users (Local)', method: 'GET', url: 'mock://users' },
@@ -170,6 +171,27 @@ const ApiClient = () => {
           { id: 2, title: 'Red Hat certified setups', body: 'Perfect score playbooks in action.' }
         ];
       }
+    } else if (targetUrl.includes('jikan.moe') || targetUrl.includes('anime')) {
+      mockData = {
+        data: [
+          {
+            mal_id: 20,
+            title: 'Naruto',
+            type: 'TV',
+            episodes: 220,
+            status: 'Finished Airing',
+            synopsis: "Moments prior to Naruto Uzumaki's birth, a huge demon known as the Kyuubi, the Nine-Tailed Fox, attacked Konohagakure..."
+          },
+          {
+            mal_id: 1735,
+            title: 'Naruto: Shippuuden',
+            type: 'TV',
+            episodes: 500,
+            status: 'Finished Airing',
+            synopsis: "It has been two and a half years since Naruto Uzumaki left Konohagakure..."
+          }
+        ]
+      };
     } else {
       // General fallbacks
       mockData = {

@@ -57,6 +57,7 @@ describe('REST API Client Page Component', () => {
         expect(getByText('Quick Presets:')).toBeDefined();
         expect(container.textContent).toContain('Mock Users (Local)');
         expect(container.textContent).toContain('Mock Server Error (Local)');
+        expect(container.textContent).toContain('Anime Search (Real)');
         
         // Assert initial URL input value
         const urlInput = getByTestId('api-url-input');
