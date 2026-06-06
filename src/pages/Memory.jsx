@@ -518,7 +518,9 @@ const Memory = () => {
                                 alt={lightboxPhoto.title}
                                 onContextMenu={(e) => e.preventDefault()}
                                 onDragStart={(e) => e.preventDefault()}
+                                style={{ userSelect: 'none', WebkitUserDrag: 'none' }}
                             />
+                            <div className="image-protection-shield" />
                         </div>
                         <h2 className="lightbox-title">{lightboxPhoto.title}</h2>
                     </div>

@@ -127,7 +127,11 @@ const PhotoPost = () => {
                                 src={imgUrl}
                                 alt={`${post.title} - ${idx + 1}`}
                                 className="carousel-image"
+                                onContextMenu={(e) => e.preventDefault()}
+                                onDragStart={(e) => e.preventDefault()}
+                                style={{ userSelect: 'none', WebkitUserDrag: 'none' }}
                             />
+                            <div className="image-protection-shield" />
                         </div>
                     ))}
                 </div>

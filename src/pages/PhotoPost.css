@@ -182,3 +182,29 @@
         display: none;
     }
 }
+
+/* Image protection shield to prevent direct saving / dragging */
+.carousel-slide {
+    position: relative;
+}
+
+.image-protection-shield {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 5;
+    background: transparent;
+    cursor: default;
+    pointer-events: auto; /* Capture clicks and right-clicks */
+}
+
+@media (max-width: 768px) {
+    .image-protection-shield {
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        bottom: 2.5rem;
+    }
+}
