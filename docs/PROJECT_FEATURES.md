@@ -82,6 +82,7 @@ A browser-based API testing utility (Postman emulator).
 ## 📖 5. Developer Blog & Media Portfolios
 - **DevBlog**: Pagination, keyword tags search (`Fuse.js` fuzzy matching), and parsing markdown templates.
 - **Photography Gallery**: Clean grid layouts loading structured imagery catalog files.
+- **3D Memory Immersive Space**: Dynamic physics-panning photogrid shifts driven by mouse movement or smartphone gyroscopes. Includes a floating glassmorphic lofi background ambient music controller widget playing curated YouTube tracks.
 
 ---
 
@@ -97,6 +98,7 @@ my-blog-vibe/
 │   │   ├── Home.jsx           # Retro CRT Shell Terminal sandbox
 │   │   ├── About.jsx          # Profile details & Holographic Credentials
 │   │   ├── Experience.jsx     # Streaming Pipeline simulator
+│   │   ├── Memory.jsx         # Immersive 3D Space & Music Player
 │   │   ├── Infrastructure.jsx # Cloud Designer grid canvas
 │   │   ├── Agents.jsx         # GenAI Agent assembler
 │   │   ├── Compiler.jsx       # Multi-language Online Compiler
