@@ -373,6 +373,16 @@ const Memory = () => {
         setLightboxPhoto(photo);
     };
 
+    const backgroundPlayer = useMemo(() => (
+        <iframe
+            ref={iframeRef}
+            title="Background Music"
+            className="memory-audio-iframe"
+            src="https://www.youtube.com/embed/Phbb2Bci7eA?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=Phbb2Bci7eA&controls=0&showinfo=0&rel=0"
+            allow="autoplay"
+        />
+    ), []);
+
     return (
         <div 
             className="memory-container" 
@@ -530,13 +540,7 @@ const Memory = () => {
             </div>
 
             {/* Hidden Iframe Player */}
-            <iframe
-                ref={iframeRef}
-                title="Background Music"
-                className="memory-audio-iframe"
-                src="https://www.youtube.com/embed/Phbb2Bci7eA?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=Phbb2Bci7eA&controls=0&showinfo=0&rel=0"
-                allow="autoplay"
-            />
+            {backgroundPlayer}
         </div>
     );
 };
