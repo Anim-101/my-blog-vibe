@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Send, Plus, Trash2, Globe, AlertTriangle, Play, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Send, Plus, Trash2, Globe, AlertTriangle, Play, CheckCircle2, RefreshCw, Copy } from 'lucide-react';
 import './ApiClient.css';
 
 const PRESETS = [
@@ -11,6 +11,21 @@ const PRESETS = [
   { name: 'Mock Users (Local)', method: 'GET', url: 'mock://users' },
   { name: 'Mock Server Error (Local)', method: 'POST', url: 'mock://error/500' }
 ];
+
+const escapeHtml = (text) => {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+};
+
+const getHighlightedText = (text, highlight) => {
+  const escaped = escapeHtml(text);
+  if (!highlight.trim()) return escaped;
+  const cleanHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const regex = new RegExp(`(${cleanHighlight})`, 'gi');
+  return escaped.replace(regex, '<mark class="json-search-highlight">$1</mark>');
+};
 
 const ApiClient = () => {
   const { t } = useTranslation();
@@ -33,6 +48,8 @@ const ApiClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorText, setErrorText] = useState('');
   const [isJsonValid, setIsJsonValid] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // CORS dialog warning state
   const [showCorsModal, setShowCorsModal] = useState(false);
@@ -81,6 +98,24 @@ const ApiClient = () => {
     setUrl(preset.url);
   };
 
+  const handleCopy = () => {
+    if (!resBody) return;
+    navigator.clipboard.writeText(resBody);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getMatchCount = () => {
+    if (!searchQuery.trim() || !resBody) return 0;
+    const cleanSearch = searchQuery.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    try {
+      const matches = resBody.match(new RegExp(cleanSearch, 'gi'));
+      return matches ? matches.length : 0;
+    } catch {
+      return 0;
+    }
+  };
+
   const clearAll = () => {
     setResStatus(null);
     setResTime(null);
@@ -89,6 +124,8 @@ const ApiClient = () => {
     setResHeaders([]);
     setErrorText('');
     setShowCorsModal(false);
+    setSearchQuery('');
+    setCopied(false);
   };
 
   // Mock server emulator logic
@@ -436,12 +473,48 @@ const ApiClient = () => {
                     </div>
                   </div>
 
+                  {/* Response Utilities (Search & Copy) */}
+                  <div className="response-utilities-bar">
+                    <div className="search-box-container">
+                      <input 
+                        type="text" 
+                        placeholder="Search response..." 
+                        value={searchQuery} 
+                        onChange={(e) => setSearchQuery(e.target.value)} 
+                        className="response-search-input"
+                        data-testid="response-search-input"
+                      />
+                      {searchQuery.trim() && (
+                        <span className="search-matches-badge" data-testid="search-matches-badge">
+                          {getMatchCount()} matches
+                        </span>
+                      )}
+                    </div>
+                    <button 
+                      type="button" 
+                      className={`copy-response-btn ${copied ? 'copied' : ''}`}
+                      onClick={handleCopy}
+                      data-testid="copy-response-btn"
+                    >
+                      {copied ? <CheckCircle2 size={14} /> : <Copy size={14} />}
+                      <span>{copied ? 'Copied!' : 'Copy'}</span>
+                    </button>
+                  </div>
+
                   {/* Response content */}
                   <div className="response-content-block">
                     {activeResTab === 'body' ? (
-                      <pre className="response-body-pre" data-testid="response-body-output">
-                        <code>{resBody}</code>
-                      </pre>
+                      searchQuery.trim() ? (
+                        <pre 
+                          className="response-body-pre highlighted" 
+                          data-testid="response-body-output"
+                          dangerouslySetInnerHTML={{ __html: getHighlightedText(resBody, searchQuery) }}
+                        />
+                      ) : (
+                        <pre className="response-body-pre" data-testid="response-body-output">
+                          <code>{resBody}</code>
+                        </pre>
+                      )
                     ) : (
                       <div className="response-headers-list">
                         {resHeaders.map((rh, idx) => (

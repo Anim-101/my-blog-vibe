@@ -152,4 +152,42 @@ describe('REST API Client Page Component', () => {
         expect(container.textContent).toContain('500 Internal Server Error');
         expect(container.textContent).toContain('Simulated 500 crash');
     });
+
+    it('supports searching and copying response body', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                writeText: vi.fn().mockImplementation(() => Promise.resolve())
+            }
+        });
+
+        const { getByText, getByTestId, container } = render(<ApiClient />);
+        
+        // Select Mock Users
+        const presetBtn = getByText('Mock Users (Local)');
+        fireEvent.click(presetBtn);
+
+        const sendBtn = getByTestId('api-send-btn');
+        fireEvent.click(sendBtn);
+
+        await act(async () => {
+            vi.advanceTimersByTime(1000);
+        });
+
+        // Test search input filters response body
+        const searchInput = getByTestId('response-search-input');
+        fireEvent.change(searchInput, { target: { value: 'Avanade' } });
+
+        const matchesBadge = getByTestId('search-matches-badge');
+        expect(matchesBadge.textContent).toContain('1 matches');
+
+        // Verify highlight mark element
+        const preBlock = container.querySelector('.response-body-pre');
+        expect(preBlock.innerHTML).toContain('<mark class="json-search-highlight">Avanade</mark>');
+
+        // Test copy button
+        const copyBtn = getByTestId('copy-response-btn');
+        fireEvent.click(copyBtn);
+        expect(navigator.clipboard.writeText).toHaveBeenCalled();
+        expect(copyBtn.textContent).toContain('Copied!');
+    });
 });
