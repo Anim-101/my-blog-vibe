@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Cloud, Sparkles, Terminal, GitBranch } from 'lucide-react';
+import { Cloud, Sparkles, Terminal, GitBranch, Globe } from 'lucide-react';
 import './Tools.css';
 
 const Tools = () => {
@@ -37,6 +37,13 @@ const Tools = () => {
         >
           <GitBranch size={16} />
           <span>{t('nav.git')}</span>
+        </NavLink>
+        <NavLink 
+          to="/tools/api" 
+          className={({ isActive }) => `tools-subnav-btn ${isActive ? 'active' : ''}`}
+        >
+          <Globe size={16} />
+          <span>{t('nav.apiClient')}</span>
         </NavLink>
       </div>
 

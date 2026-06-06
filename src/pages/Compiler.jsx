@@ -11,7 +11,8 @@ import {
   X, 
   FileText,
   FileCode,
-  LayoutGrid
+  LayoutGrid,
+  Database
 } from 'lucide-react';
 import './Compiler.css';
 
@@ -177,16 +178,32 @@ p {
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 `,
+  'query.sql': `-- SQL Database Query Sandbox
+CREATE TABLE employees (
+  id INT,
+  name VARCHAR(50),
+  department VARCHAR(50),
+  salary INT
+);
+
+INSERT INTO employees VALUES (1, 'Anim Akash', 'Engineering', 120000);
+INSERT INTO employees VALUES (2, 'Bob Jones', 'Design', 95000);
+INSERT INTO employees VALUES (3, 'Alice Smith', 'Engineering', 135000);
+INSERT INTO employees VALUES (4, 'Charlie Brown', 'Marketing', 88000);
+
+-- Query the table
+SELECT name, department, salary FROM employees WHERE salary > 90000;
+`,
   'README.md': `# Online Web & Script Compiler
 
 Welcome to the browser-based REPL editor! You can create, edit, and run files instantly.
 
 ### Supported Features
-1. **Python Scripting**: Select \`script.py\` and click **Run Code** to execute in the custom emulator.
-2. **JavaScript Shell**: Select \`main.js\` and check output console.
-3. **Web Dev Mode**: Select \`index.html\` or run it to launch the **Live Address Bar Preview** combining \`style.css\` and \`main.js\`.
-
-Use the explorer on the left to add your custom files!
+1. **Python Scripting**: Run \`script.py\` to execute loops and math.
+2. **JavaScript Shell**: Run \`main.js\` to run JS code.
+3. **Database Queries**: Run \`query.sql\` to run SQL queries and render visual database tables.
+4. **Markdown Preview**: Run \`README.md\` (or any \`.md\` file) to render a formatted live view page.
+5. **Web Dev Mode**: Run \`index.html\` to launch the interactive live preview frame.
 `
 };
 
@@ -197,7 +214,7 @@ const Compiler = () => {
     return saved ? JSON.parse(saved) : INITIAL_FILES;
   });
   const [activeFile, setActiveFile] = useState('script.py');
-  const [openFiles, setOpenFiles] = useState(['script.py', 'main.js', 'index.html']);
+  const [openFiles, setOpenFiles] = useState(['script.py', 'main.js', 'index.html', 'query.sql']);
   const [consoleLogs, setConsoleLogs] = useState([]);
   const [activeTab, setActiveTab] = useState('console'); // 'console' or 'preview'
   const [isRunning, setIsRunning] = useState(false);
@@ -298,7 +315,7 @@ const Compiler = () => {
     if (!confirmReset) return;
     setFiles(INITIAL_FILES);
     setActiveFile('script.py');
-    setOpenFiles(['script.py', 'main.js', 'index.html']);
+    setOpenFiles(['script.py', 'main.js', 'index.html', 'query.sql']);
     setConsoleLogs([]);
     setPreviewSrcDoc('');
     setRunStats(null);
@@ -480,6 +497,215 @@ const Compiler = () => {
     }
   };
 
+  // Custom client-side SQL Query Sandbox interpreter
+  const executeSQL = (code, logWriter, outputLogs) => {
+    const cleanCode = code
+      .split('\n')
+      .map(line => {
+        const commentIndex = line.indexOf('--');
+        return commentIndex !== -1 ? line.substring(0, commentIndex) : line;
+      })
+      .join('\n');
+
+    const statements = cleanCode.split(';').map(s => s.trim()).filter(s => s.length > 0);
+    const localTables = {};
+
+    statements.forEach(statement => {
+      try {
+        const upper = statement.toUpperCase();
+        
+        // 1. CREATE TABLE
+        if (upper.startsWith('CREATE TABLE')) {
+          const match = statement.match(/CREATE\s+TABLE\s+(\w+)\s*\(([^)]+)\)/i);
+          if (!match) throw new Error("Syntax error in CREATE TABLE");
+          const tableName = match[1].toLowerCase();
+          const colsStr = match[2];
+          const columns = colsStr.split(',').map(c => {
+            const parts = c.trim().split(/\s+/);
+            return parts[0].toLowerCase(); // column name
+          });
+          localTables[tableName] = { columns, rows: [] };
+          logWriter(`[SQL] Table "${tableName}" created successfully.`, 'info');
+        }
+        
+        // 2. INSERT INTO
+        else if (upper.startsWith('INSERT INTO')) {
+          const match = statement.match(/INSERT\s+INTO\s+(\w+)\s*(?:\(([^)]+)\))?\s*VALUES\s*\(([^)]+)\)/i);
+          if (!match) throw new Error("Syntax error in INSERT INTO");
+          const tableName = match[1].toLowerCase();
+          const valuesStr = match[3];
+          
+          if (!localTables[tableName]) throw new Error(`Table "${tableName}" does not exist`);
+          
+          const table = localTables[tableName];
+          const values = valuesStr.split(',').map(v => {
+            const trimmed = v.trim();
+            if ((trimmed.startsWith("'") && trimmed.endsWith("'")) || (trimmed.startsWith('"') && trimmed.endsWith('"'))) {
+              return trimmed.slice(1, -1);
+            }
+            return isNaN(trimmed) ? trimmed : Number(trimmed);
+          });
+          
+          const row = {};
+          table.columns.forEach((col, idx) => {
+            row[col] = values[idx] !== undefined ? values[idx] : null;
+          });
+          table.rows.push(row);
+          logWriter(`[SQL] 1 row inserted into "${tableName}".`, 'info');
+        }
+        
+        // 3. SELECT
+        else if (upper.startsWith('SELECT')) {
+          const selectMatch = statement.match(/SELECT\s+(.+?)\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+))?/i);
+          if (!selectMatch) throw new Error("Syntax error in SELECT");
+          
+          const colsSelector = selectMatch[1].trim();
+          const tableName = selectMatch[2].toLowerCase();
+          const whereClause = selectMatch[3];
+          
+          if (!localTables[tableName]) throw new Error(`Table "${tableName}" does not exist`);
+          const table = localTables[tableName];
+          
+          // Filter rows based on WHERE clause
+          let filteredRows = [...table.rows];
+          if (whereClause) {
+            const whereParts = whereClause.match(/(\w+)\s*(=|>|<)\s*(.+)/);
+            if (whereParts) {
+              const col = whereParts[1].toLowerCase();
+              const op = whereParts[2];
+              let val = whereParts[3].trim();
+              if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))) {
+                val = val.slice(1, -1);
+              } else {
+                val = isNaN(val) ? val : Number(val);
+              }
+              
+              filteredRows = filteredRows.filter(row => {
+                const rowVal = row[col];
+                if (op === '=') return String(rowVal) === String(val);
+                if (op === '>') return Number(rowVal) > Number(val);
+                if (op === '<') return Number(rowVal) < Number(val);
+                return true;
+              });
+            }
+          }
+          
+          // Select columns
+          let selectedColumns = [];
+          if (colsSelector === '*') {
+            selectedColumns = table.columns;
+          } else {
+            selectedColumns = colsSelector.split(',').map(c => c.trim().toLowerCase());
+          }
+          
+          outputLogs.push({
+            type: 'table',
+            headers: selectedColumns,
+            rows: filteredRows
+          });
+        }
+        
+        // 4. UPDATE
+        else if (upper.startsWith('UPDATE')) {
+          const updateMatch = statement.match(/UPDATE\s+(\w+)\s+SET\s+(.+?)(?:\s+WHERE\s+(.+))?/i);
+          if (!updateMatch) throw new Error("Syntax error in UPDATE");
+          
+          const tableName = updateMatch[1].toLowerCase();
+          const setClause = updateMatch[2];
+          const whereClause = updateMatch[3];
+          
+          if (!localTables[tableName]) throw new Error(`Table "${tableName}" does not exist`);
+          const table = localTables[tableName];
+          
+          // Parse SET
+          const setParts = setClause.split('=').map(s => s.trim());
+          const setCol = setParts[0].toLowerCase();
+          let setVal = setParts[1];
+          if ((setVal.startsWith("'") && setVal.endsWith("'")) || (setVal.startsWith('"') && setVal.endsWith('"'))) {
+            setVal = setVal.slice(1, -1);
+          } else {
+            setVal = isNaN(setVal) ? setVal : Number(setVal);
+          }
+          
+          let count = 0;
+          table.rows.forEach(row => {
+            let matches = true;
+            if (whereClause) {
+              const whereParts = whereClause.match(/(\w+)\s*(=|>|<)\s*(.+)/);
+              if (whereParts) {
+                const col = whereParts[1].toLowerCase();
+                const op = whereParts[2];
+                let val = whereParts[3].trim();
+                if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))) {
+                  val = val.slice(1, -1);
+                } else {
+                  val = isNaN(val) ? val : Number(val);
+                }
+                
+                const rowVal = row[col];
+                if (op === '=') matches = String(rowVal) === String(val);
+                else if (op === '>') matches = Number(rowVal) > Number(val);
+                else if (op === '<') matches = Number(rowVal) < Number(val);
+              }
+            }
+            
+            if (matches) {
+              row[setCol] = setVal;
+              count++;
+            }
+          });
+          
+          logWriter(`[SQL] ${count} rows updated.`, 'info');
+        }
+        
+        else {
+          throw new Error(`Command "${statement.split(/\s+/)[0]}" is not supported in this sandbox`);
+        }
+      } catch (err) {
+        logWriter(`[SQL Error] ${err.message} in statement: "${statement}"`, 'error');
+      }
+    });
+  };
+
+  // Custom client-side Markdown compile converter
+  const compileMarkdown = (mdText) => {
+    let html = mdText
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/```([\s\S]*?)```/g, (_, code) => `<pre style="background: #161b22; padding: 1rem; border-radius: 6px; overflow: auto; font-family: monospace; border: 1px solid #30363d;"><code>${code.trim()}</code></pre>`)
+      .replace(/`([^`]+)`/g, '<code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace;">$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/^#\s+(.+)$/gm, '<h1 style="color: #3b82f6; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; font-size: 1.8rem;">$1</h1>')
+      .replace(/^##\s+(.+)$/gm, '<h2 style="color: #58a6ff; margin-top: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.3rem; font-size: 1.4rem;">$1</h2>')
+      .replace(/^###\s+(.+)$/gm, '<h3 style="color: #bc8cff; margin-top: 1.2rem; font-size: 1.1rem;">$1</h3>')
+      .replace(/^\-\s+(.+)$/gm, '<li style="margin-left: 1.5rem; margin-bottom: 0.35rem;">$1</li>')
+      .replace(/\n\n([^\n<]+)/g, '<p style="color: #8b949e; line-height: 1.6; margin: 1rem 0;">$1</p>');
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body {
+            background: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            padding: 2rem;
+            margin: 0;
+            line-height: 1.6;
+          }
+          h1, h2, h3 { font-weight: 700; margin-bottom: 1rem; }
+          strong { color: #ffffff; }
+        </style>
+      </head>
+      <body>
+        ${html}
+      </body>
+      </html>
+    `;
+  };
+
   const runCode = () => {
     setIsRunning(true);
     setRunStats(null);
@@ -499,6 +725,18 @@ const Compiler = () => {
         executePython(files[activeFile], logWriter);
         setConsoleLogs(outputLogs);
         setActiveTab('console');
+      } else if (activeFile.endsWith('.sql')) {
+        logWriter('[RUN] Connecting mock DB. Executing SQL queries...', 'info');
+        executeSQL(files[activeFile], logWriter, outputLogs);
+        setConsoleLogs(outputLogs);
+        setActiveTab('console');
+      } else if (activeFile.endsWith('.md')) {
+        logWriter('[RUN] Compiling markdown preview page...', 'info');
+        const parsedHtml = compileMarkdown(files[activeFile]);
+        setPreviewSrcDoc(parsedHtml);
+        setConsoleLogs(outputLogs);
+        setActiveTab('preview');
+        logWriter('[INFO] Markdown live page generated.', 'info');
       } else if (activeFile.endsWith('.js')) {
         logWriter('[RUN] Evaluating JavaScript sandbox...', 'info');
         const customConsole = {
@@ -603,6 +841,8 @@ const Compiler = () => {
     if (filename.endsWith('.js')) return <FileCode2 size={16} className="file-js-icon" />;
     if (filename.endsWith('.html')) return <FileCode2 size={16} className="file-html-icon" />;
     if (filename.endsWith('.css')) return <FileCode2 size={16} className="file-css-icon" />;
+    if (filename.endsWith('.sql')) return <Database size={16} className="file-sql-icon" />;
+    if (filename.endsWith('.md')) return <FileText size={16} className="file-md-icon" />;
     return <FileText size={16} className="file-txt-icon" />;
   };
 
@@ -811,11 +1051,37 @@ const Compiler = () => {
                       <span>{t('compiler.emptyConsole')}</span>
                     </div>
                   ) : (
-                    consoleLogs.map((log, idx) => (
-                      <div key={idx} className={`console-log-row ${log.type}`}>
-                        {log.text}
-                      </div>
-                    ))
+                    consoleLogs.map((log, idx) => {
+                      if (log.type === 'table') {
+                        return (
+                          <div key={idx} className="console-log-table-wrapper" style={{ overflowX: 'auto', margin: '0.5rem 0' }}>
+                            <table className="console-log-table">
+                              <thead>
+                                <tr>
+                                  {log.headers.map((h, i) => (
+                                    <th key={i}>{h.toUpperCase()}</th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {log.rows.map((row, rIdx) => (
+                                  <tr key={rIdx}>
+                                    {log.headers.map((h, cIdx) => (
+                                      <td key={cIdx}>{row[h] !== null ? String(row[h]) : 'NULL'}</td>
+                                    ))}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        );
+                      }
+                      return (
+                        <div key={idx} className={`console-log-row ${log.type}`}>
+                          {log.text}
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>

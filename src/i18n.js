@@ -29,7 +29,8 @@ const resources = {
                 "agents": "Agent Sandbox",
                 "tools": "Tools",
                 "compiler": "Compiler",
-                "git": "Git Visualizer"
+                "git": "Git Visualizer",
+                "apiClient": "API Client"
             },
             "home": {
                 "greeting": "Hi, I'm",
@@ -405,6 +406,31 @@ const resources = {
                 "success": "Goal achieved! You successfully modeled the target commit tree.",
                 "error": "Error: {{message}}",
                 "instruction": "Goal: {{goal}}"
+            },
+            "apiClient": {
+                "title": "REST API Client",
+                "subtitle": "Send HTTP requests, test API endpoints, inspect JSON responses, and view performance latency stats.",
+                "send": "Send",
+                "clear": "Clear",
+                "method": "Method",
+                "url": "URL",
+                "headers": "Headers",
+                "body": "Body",
+                "response": "Response",
+                "status": "Status",
+                "time": "Time",
+                "size": "Size",
+                "emptyResponse": "Enter a URL and click Send to inspect the API response.",
+                "loading": "Sending request...",
+                "error": "Failed to execute request",
+                "key": "Key",
+                "value": "Value",
+                "addHeader": "Add Header",
+                "presets": "Quick Presets",
+                "corsWarning": "CORS Policy Warning",
+                "corsDesc": "The request was blocked by the browser's security policies. Would you like to simulate a successful mock API response instead?",
+                "simulateResp": "Simulate Response",
+                "cancel": "Cancel"
             }
         }
     },
@@ -434,7 +460,8 @@ const resources = {
                 "agents": "AIエージェント",
                 "tools": "ツール",
                 "compiler": "コンパイラ",
-                "git": "Gitビジュアライザ"
+                "git": "Gitビジュアライザ",
+                "apiClient": "APIクライアント"
             },
             "home": {
                 "greeting": "こんにちは、",
@@ -810,6 +837,31 @@ const resources = {
                 "success": "目標を達成しました！ターゲットとなるコミットツリーを正しく再現できました。",
                 "error": "エラー: {{message}}",
                 "instruction": "目標: {{goal}}"
+            },
+            "apiClient": {
+                "title": "REST API クライアント",
+                "subtitle": "HTTPリクエストの送信、APIエンドポイントのテスト、JSONレスポンスの検証、レイテンシ統計の表示を行います。",
+                "send": "送信",
+                "clear": "クリア",
+                "method": "メソッド",
+                "url": "URL",
+                "headers": "ヘッダー",
+                "body": "ボディ",
+                "response": "レスポンス",
+                "status": "ステータス",
+                "time": "時間",
+                "size": "サイズ",
+                "emptyResponse": "URLを入力し、送信をクリックしてAPIレスポンスを検証します。",
+                "loading": "リクエスト送信中...",
+                "error": "リクエストの実行に失敗しました",
+                "key": "キー",
+                "value": "値",
+                "addHeader": "ヘッダーを追加",
+                "presets": "クイックプリセット",
+                "corsWarning": "CORS ポリシー警告",
+                "corsDesc": "ブラウザのセキュリティポリシーによりリクエストがブロックされました。代わりに模擬モックAPIレスポンスをシミュレートしますか？",
+                "simulateResp": "レスポンスをシミュレート",
+                "cancel": "キャンセル"
             }
         }
     }

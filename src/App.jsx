@@ -17,6 +17,7 @@ import Agents from './pages/Agents';
 import Tools from './pages/Tools';
 import Compiler from './pages/Compiler';
 import GitVisualizer from './pages/GitVisualizer';
+import ApiClient from './pages/ApiClient';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="agents" element={<Agents />} />
             <Route path="compiler" element={<Compiler />} />
             <Route path="git" element={<GitVisualizer />} />
+            <Route path="api" element={<ApiClient />} />
           </Route>
         </Routes>
       </main>

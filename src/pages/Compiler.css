@@ -177,6 +177,8 @@
 .file-js-icon { color: #f1e05a; }
 .file-html-icon { color: #e34c26; }
 .file-css-icon { color: #563d7c; }
+.file-sql-icon { color: #00bcff; }
+.file-md-icon { color: #0078d4; }
 .file-txt-icon { color: #8b949e; }
 
 /* 2. Middle Panel - Code Editor */
@@ -442,6 +444,50 @@
 .console-log-row.output {
   color: #58a6ff;
 }
+
+/* SQL Console Table Styles */
+.console-log-table-wrapper {
+  overflow-x: auto;
+  margin: 0.75rem 0;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0d1117;
+}
+
+.console-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  color: #c9d1d9;
+}
+
+.console-log-table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-primary, #3b82f6);
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.console-log-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+}
+
+.console-log-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.console-log-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
 
 /* Interactive Preview Box */
 .compiler-preview-view {

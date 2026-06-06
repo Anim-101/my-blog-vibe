@@ -112,4 +112,59 @@ describe('Online Code Compiler Page Component', () => {
         expect(iframe.srcdoc).toContain('<!DOCTYPE html>');
         expect(iframe.srcdoc).toContain('Interactive Counter');
     });
+
+    it('runs SQL queries and renders query results inside a grid table', async () => {
+        const { getByText, getAllByText, container } = render(<Compiler />);
+        
+        // Click on query.sql explorer item
+        const sqlFile = getAllByText('query.sql')[0];
+        fireEvent.click(sqlFile);
+
+        const textarea = container.querySelector('.editor-textarea');
+        expect(textarea.value).toContain('CREATE TABLE employees');
+
+        const runBtn = getByText('Run Code');
+        fireEvent.click(runBtn);
+
+        // Fast-forward timeout
+        await act(async () => {
+            vi.advanceTimersByTime(1000);
+        });
+
+        // Verify it executes SQL queries and displays a table
+        expect(container.querySelector('.console-log-table')).toBeDefined();
+        expect(container.textContent).toContain('[SQL] Table "employees" created successfully.');
+        expect(container.textContent).toContain('1 row inserted into "employees".');
+        expect(container.textContent).toContain('NAME');
+        expect(container.textContent).toContain('DEPARTMENT');
+        expect(container.textContent).toContain('SALARY');
+        expect(container.textContent).toContain('Anim Akash');
+    });
+
+    it('runs Markdown compiler and loads parsed HTML inside visual preview iframe', async () => {
+        const { getByText, getAllByText, container } = render(<Compiler />);
+        
+        // Select README.md from explorer
+        const mdFile = getAllByText('README.md')[0];
+        fireEvent.click(mdFile);
+
+        const textarea = container.querySelector('.editor-textarea');
+        expect(textarea.value).toContain('# Online Web & Script Compiler');
+
+        const runBtn = getByText('Run Code');
+        fireEvent.click(runBtn);
+
+        // Fast-forward timeout
+        await act(async () => {
+            vi.advanceTimersByTime(1000);
+        });
+
+        // Verify that the preview iframe contains parsed Markdown
+        const iframe = container.querySelector('iframe');
+        expect(iframe).toBeDefined();
+        expect(iframe.srcdoc).toContain('Online Web &amp; Script Compiler');
+        expect(iframe.srcdoc).toContain('Supported Features');
+        expect(iframe.srcdoc).toContain('Python Scripting');
+    });
 });
+
