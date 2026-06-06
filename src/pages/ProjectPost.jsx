@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getProjectPostBySlug } from '../utils/content';
@@ -11,6 +12,15 @@ const ProjectPost = () => {
     const { t } = useTranslation();
     const { slug } = useParams();
     const post = getProjectPostBySlug(slug);
+
+    useEffect(() => {
+        if (post && post.title) {
+            document.title = `${post.title} | Anim's Blog`;
+        }
+        return () => {
+            document.title = "Anim's Blog";
+        };
+    }, [post]);
 
     if (!post) {
         return (

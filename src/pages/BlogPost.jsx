@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getBlogPostBySlug } from '../utils/content';
@@ -10,6 +11,15 @@ const BlogPost = () => {
     const { t } = useTranslation();
     const { slug } = useParams();
     const post = getBlogPostBySlug(slug);
+
+    useEffect(() => {
+        if (post && post.title) {
+            document.title = `${post.title} | Anim's Blog`;
+        }
+        return () => {
+            document.title = "Anim's Blog";
+        };
+    }, [post]);
 
     if (!post) {
         return (

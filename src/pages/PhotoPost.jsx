@@ -32,6 +32,15 @@ const PhotoPost = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    useEffect(() => {
+        if (post && post.title) {
+            document.title = `${post.title} | Anim's Blog`;
+        }
+        return () => {
+            document.title = "Anim's Blog";
+        };
+    }, [post]);
+
     // Reset slider index directly in render when slug changes (avoiding useEffect layout thrashing)
     const [prevSlug, setPrevSlug] = useState(slug);
     if (slug !== prevSlug) {
