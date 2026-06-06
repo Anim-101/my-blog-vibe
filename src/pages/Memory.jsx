@@ -491,7 +491,6 @@ const Memory = () => {
                                             />
                                         )}
                                     </div>
-                                    <h3 className="memory-title">{star.title}</h3>
                                 </div>
                             </div>
                         </div>
@@ -522,7 +521,6 @@ const Memory = () => {
                             />
                             <div className="image-protection-shield" />
                         </div>
-                        <h2 className="lightbox-title">{lightboxPhoto.title}</h2>
                     </div>
                 </div>
             )}
