@@ -19,7 +19,7 @@ const Memory = () => {
     const navigate = useNavigate();
     
     const iframeRef = useRef(null);
-    const [isMuted, setIsMuted] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true);
     const [volume, setVolume] = useState(50);
 
@@ -281,6 +281,26 @@ const Memory = () => {
         targetRef.current = { x: newX, y: newY };
     };
 
+    // Kickstart unmuted audio play on first user interaction if blocked by browser autoplay policy
+    useEffect(() => {
+        const handleFirstInteraction = (e) => {
+            if (e.target.closest('.memory-audio-widget')) return;
+            
+            sendPlayerCommand('playVideo');
+            sendPlayerCommand('unMute');
+            
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+        };
+        window.addEventListener('click', handleFirstInteraction);
+        window.addEventListener('touchstart', handleFirstInteraction);
+        
+        return () => {
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+        };
+    }, []);
+
     // Detect touch device once at mount (using lazy state initialization to comply with React 19 safety)
     const [isTouchDevice] = useState(() => {
         return typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -378,7 +398,7 @@ const Memory = () => {
             ref={iframeRef}
             title="Background Music"
             className="memory-audio-iframe"
-            src="https://www.youtube.com/embed/Phbb2Bci7eA?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=Phbb2Bci7eA&controls=0&showinfo=0&rel=0"
+            src="https://www.youtube.com/embed/Phbb2Bci7eA?enablejsapi=1&autoplay=1&mute=0&loop=1&playlist=Phbb2Bci7eA&controls=0&showinfo=0&rel=0"
             allow="autoplay"
         />
     ), []);
