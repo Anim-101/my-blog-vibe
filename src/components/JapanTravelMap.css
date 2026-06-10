@@ -152,6 +152,36 @@
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* Invisible hover bridge to keep hover active as the mouse moves from the star to the card */
+.map-hover-card::before {
+  content: '';
+  position: absolute;
+  background: transparent;
+  z-index: -1;
+  pointer-events: auto;
+}
+
+/* For top-aligned cards (card displays above the star) */
+.map-hover-card.align-center::before,
+.map-hover-card.align-left::before,
+.map-hover-card.align-right::before {
+  bottom: -40px;
+  left: -20px;
+  right: -20px;
+  height: 60px;
+}
+
+/* For bottom-aligned cards (card displays below the star) */
+.map-hover-card.near-bottom.align-center::before,
+.map-hover-card.near-bottom.align-left::before,
+.map-hover-card.near-bottom.align-right::before {
+  top: -45px;
+  left: -20px;
+  right: -20px;
+  height: 60px;
+}
+
+
 @keyframes cardFadeIn {
   from {
     opacity: 0;

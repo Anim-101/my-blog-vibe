@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Camera, Calendar, ArrowRight, Compass } from 'lucide-react';
@@ -195,6 +195,8 @@ const JapanTravelMap = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [hoveredNode, setHoveredNode] = useState(null);
+  const [selectedNode, setSelectedNode] = useState(null);
+  const hideTimeoutRef = useRef(null);
 
   const isJa = i18n.language.startsWith('ja');
 
@@ -207,15 +209,48 @@ const JapanTravelMap = () => {
     return map;
   }, []);
 
-  const handleNodeClick = (node) => {
+  const handleNodeMouseEnter = (pref) => {
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    setHoveredNode(pref);
+  };
+
+  const handleNodeMouseLeave = () => {
+    // 300ms delay to let the user bridge the gap between the star and the card
+    hideTimeoutRef.current = setTimeout(() => {
+      setHoveredNode(null);
+    }, 300);
+  };
+
+  const handleCardMouseEnter = () => {
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+  };
+
+  const handleCardMouseLeave = () => {
+    setHoveredNode(null);
+  };
+
+  const handleNodeClick = (e, node) => {
+    e.stopPropagation();
     if (!node.isVisited) return;
-    // If it has posts, navigate to the first post. If multiple, let hover handle selections.
-    if (node.posts && node.posts.length === 1) {
-      navigate(`/photography/${node.posts[0].slug}`);
-    } else if (node.posts && node.posts.length > 1) {
-      // Hover overlay has specific links. Click acts as explore trigger.
+    
+    // Toggle locking the card open on click
+    if (selectedNode && selectedNode.id === node.id) {
+      setSelectedNode(null);
+    } else {
+      setSelectedNode(node);
+      setHoveredNode(node);
+      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
     }
   };
+
+  const handleMapClick = (e) => {
+    // Dismiss selected card when clicking background
+    setSelectedNode(null);
+    setHoveredNode(null);
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+  };
+
+  const activeCardNode = hoveredNode || selectedNode;
 
   return (
     <div className="japan-map-card">
@@ -227,12 +262,13 @@ const JapanTravelMap = () => {
         </div>
       </div>
 
-      <div className="map-body-wrapper">
+      <div className="map-body-wrapper" onClick={handleMapClick}>
         <div className="japan-svg-container">
           <svg
             viewBox="0 0 100 100"
             className="japan-constellation-svg"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={handleMapClick}
           >
             {/* Background grids for futuristic terminal look */}
             <defs>
@@ -284,13 +320,14 @@ const JapanTravelMap = () => {
             {/* Constellation Star Nodes */}
             {PREFECTURES_DATA.map((pref) => {
               const starRadius = pref.isVisited ? 1.6 : 0.8;
+              const isActive = activeCardNode?.id === pref.id;
               return (
                 <g
                   key={pref.id}
-                  className={`map-node ${pref.isVisited ? 'visited' : ''} ${hoveredNode?.id === pref.id ? 'hovered' : ''}`}
-                  onMouseEnter={() => setHoveredNode(pref)}
-                  onMouseLeave={() => setHoveredNode(null)}
-                  onClick={() => handleNodeClick(pref)}
+                  className={`map-node ${pref.isVisited ? 'visited' : ''} ${isActive ? 'hovered' : ''}`}
+                  onMouseEnter={() => handleNodeMouseEnter(pref)}
+                  onMouseLeave={handleNodeMouseLeave}
+                  onClick={(e) => handleNodeClick(e, pref)}
                 >
                   {/* Glowing halo indicator for visited stars */}
                   {pref.isVisited && (
@@ -315,43 +352,45 @@ const JapanTravelMap = () => {
           </svg>
 
           {/* Floating Glassmorphic Polaroid Hover Preview Card */}
-          {hoveredNode && (
+          {activeCardNode && (
             <div
-              className={`map-hover-card ${hoveredNode.y > 60 ? 'near-bottom' : 'near-top'} ${hoveredNode.x > 60 ? 'align-right' : hoveredNode.x < 30 ? 'align-left' : 'align-center'}`}
+              className={`map-hover-card ${activeCardNode.y > 60 ? 'near-bottom' : 'near-top'} ${activeCardNode.x > 60 ? 'align-right' : activeCardNode.x < 30 ? 'align-left' : 'align-center'}`}
               style={{
-                left: `${hoveredNode.x}%`,
-                top: `${hoveredNode.y}%`,
+                left: `${activeCardNode.x}%`,
+                top: `${activeCardNode.y}%`,
               }}
+              onMouseEnter={handleCardMouseEnter}
+              onMouseLeave={handleCardMouseLeave}
             >
               <div className="hover-card-inner">
                 {/* Visual Label */}
                 <div className="hover-card-tag-row">
-                  <span className={`hover-card-tag ${hoveredNode.isVisited ? 'visited-tag' : 'unvisited-tag'}`}>
-                    {hoveredNode.isVisited ? t('photography.visitedLabel') : t('photography.unvisitedLabel')}
+                  <span className={`hover-card-tag ${activeCardNode.isVisited ? 'visited-tag' : 'unvisited-tag'}`}>
+                    {activeCardNode.isVisited ? t('photography.visitedLabel') : t('photography.unvisitedLabel')}
                   </span>
-                  {hoveredNode.date && (
+                  {activeCardNode.date && (
                     <span className="hover-card-date">
                       <Calendar size={10} style={{ marginRight: '3px' }} />
-                      {hoveredNode.date}
+                      {activeCardNode.date}
                     </span>
                   )}
                 </div>
 
                 {/* Title */}
                 <h3 className="hover-card-title">
-                  {isJa ? hoveredNode.nameJa : hoveredNode.nameEn}
-                  {isJa && hoveredNode.nameEn && <span className="title-sub"> ({hoveredNode.nameEn})</span>}
-                  {!isJa && hoveredNode.nameJa && <span className="title-sub"> ({hoveredNode.nameJa})</span>}
+                  {isJa ? activeCardNode.nameJa : activeCardNode.nameEn}
+                  {isJa && activeCardNode.nameEn && <span className="title-sub"> ({activeCardNode.nameEn})</span>}
+                  {!isJa && activeCardNode.nameJa && <span className="title-sub"> ({activeCardNode.nameJa})</span>}
                 </h3>
 
                 {/* Visited Content Details */}
-                {hoveredNode.isVisited ? (
+                {activeCardNode.isVisited ? (
                   <div className="visited-card-content">
-                    {hoveredNode.image && (
+                    {activeCardNode.image && (
                       <div className="hover-card-image-wrapper">
                         <img
-                          src={hoveredNode.image}
-                          alt={hoveredNode.nameEn}
+                          src={activeCardNode.image}
+                          alt={activeCardNode.nameEn}
                           className="hover-card-img"
                           onContextMenu={(e) => e.preventDefault()}
                           onDragStart={(e) => e.preventDefault()}
@@ -360,13 +399,13 @@ const JapanTravelMap = () => {
                         <div className="image-protection-shield" />
                       </div>
                     )}
-                    <p className="hover-card-desc">{hoveredNode.details}</p>
+                    <p className="hover-card-desc">{activeCardNode.details}</p>
 
                     {/* Links to posts */}
-                    {hoveredNode.posts && hoveredNode.posts.length > 0 && (
+                    {activeCardNode.posts && activeCardNode.posts.length > 0 && (
                       <div className="hover-card-links">
                         <span className="links-header-label">{t('photography.detailsLabel')}:</span>
-                        {hoveredNode.posts.map((post, pIdx) => (
+                        {activeCardNode.posts.map((post, pIdx) => (
                           <button
                             key={pIdx}
                             onClick={(e) => {
