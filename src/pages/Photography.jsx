@@ -9,7 +9,7 @@ import './Photography.css';
 const Photography = () => {
     const { t } = useTranslation();
     const photos = getPhotoPosts();
-    const [activeView, setActiveView] = useState('map');
+    const [activeView, setActiveView] = useState('grid');
 
     return (
         <div className="photo-page animate-in">
