@@ -44,8 +44,8 @@ const Navbar = () => {
     { name: t('nav.experience'), path: '/experience', icon: <Briefcase size={18} /> },
     { name: t('nav.devBlog'), path: '/devblog', icon: <Code size={18} /> },
     { name: t('nav.photography'), path: '/photography', icon: <Camera size={18} /> },
-    { name: t('nav.tools'), path: '/tools', icon: <Wrench size={18} /> },
     { name: t('nav.memory'), path: '/memory', icon: <Star size={18} /> },
+    { name: t('nav.tools'), path: '/tools', icon: <Wrench size={18} /> },
   ];
 
   const firstName = personalInfo.name.split(' ')[0];
