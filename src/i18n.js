@@ -307,7 +307,14 @@ const resources = {
             "photography": {
                 "title1": "Through the",
                 "title2": "Lens",
-                "subtitle": "A collection of moments captured around the world."
+                "subtitle": "A collection of moments captured around the world.",
+                "mapTitle": "Travel Constellation Map",
+                "mapSubtitle": "Hover glowing stars to explore visited regions, and click to view travel details.",
+                "viewMap": "Switch to Map View",
+                "viewGrid": "Switch to Gallery Grid",
+                "visitedLabel": "Visited Region",
+                "detailsLabel": "Explore Log",
+                "unvisitedLabel": "Yet to Explore"
             },
             "post": {
                 "backGallery": "Back to Gallery",
@@ -738,7 +745,14 @@ const resources = {
             "photography": {
                 "title1": "レンズ",
                 "title2": "越し",
-                "subtitle": "世界中で捉えた瞬間のコレクション。"
+                "subtitle": "世界中で捉えた瞬間のコレクション。",
+                "mapTitle": "旅の星座マップ",
+                "mapSubtitle": "光る星をホバーして旅した地域を巡り、クリックして詳細ログを開きます。",
+                "viewMap": "マップ表示に切り替え",
+                "viewGrid": "ギャラリー表示に切り替え",
+                "visitedLabel": "訪問済みの地域",
+                "detailsLabel": "旅行記を見る",
+                "unvisitedLabel": "未踏の地域"
             },
             "post": {
                 "backGallery": "ギャラリーに戻る",
