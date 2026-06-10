@@ -38,6 +38,7 @@
     color: white;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     width: 48px;
@@ -585,9 +586,18 @@
 }
 
 @media (max-width: 768px) {
+    .memory-close {
+        top: 1rem;
+        left: 1rem;
+        width: 40px;
+        height: 40px;
+    }
+
     .memory-audio-widget {
-        bottom: 1.25rem;
-        right: 1.25rem;
+        bottom: auto;
+        right: 1rem;
+        top: 1rem;
+        left: auto;
         padding: 0.5rem 0.75rem;
     }
 }

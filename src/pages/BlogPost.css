@@ -37,6 +37,8 @@
     line-height: 1.2;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .post-meta {
