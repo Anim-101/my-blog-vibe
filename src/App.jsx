@@ -15,6 +15,7 @@ import Memory from './pages/Memory';
 import Infrastructure from './pages/Infrastructure';
 import Agents from './pages/Agents';
 import Tools from './pages/Tools';
+import SystemsSimulator from './pages/SystemsSimulator';
 import Compiler from './pages/Compiler';
 import GitVisualizer from './pages/GitVisualizer';
 import ApiClient from './pages/ApiClient';
@@ -38,6 +39,7 @@ function App() {
             <Route index element={<Navigate to="/tools/designer" replace />} />
             <Route path="designer" element={<Infrastructure />} />
             <Route path="agents" element={<Agents />} />
+            <Route path="systems" element={<SystemsSimulator />} />
             <Route path="compiler" element={<Compiler />} />
             <Route path="git" element={<GitVisualizer />} />
             <Route path="api" element={<ApiClient />} />
