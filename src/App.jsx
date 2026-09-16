@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import AICopilot from './components/AICopilot';
 
 import Home from './pages/Home';
 import Experience from './pages/Experience';
@@ -31,7 +30,6 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      <AICopilot />
     </Router>
   );
 }

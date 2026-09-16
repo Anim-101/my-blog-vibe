@@ -54,7 +54,7 @@ Located in the **Experience** section, this is an interactive node-graph stream 
 my-blog-vibe/
 ├── docs/                      # Technical specs and architecture plans
 ├── src/
-│   ├── components/            # Global reusable UI (Navbar, Footer, Copilot)
+│   ├── components/            # Global reusable UI (Navbar, Footer)
 │   ├── content/               # Blog and photo Markdown catalogs
 │   ├── pages/                 # Main page components
 │   │   ├── Home.jsx           # Retro CRT Shell Terminal sandbox
