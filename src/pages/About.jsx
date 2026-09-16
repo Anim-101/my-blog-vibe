@@ -4,8 +4,6 @@ import { GitHubCalendar } from 'react-github-calendar';
 import { personalInfo } from '../data/personal';
 import SkillsConstellation from '../components/SkillsConstellation';
 import CertificationsVault from '../components/CertificationsVault';
-import ResumeDebugger from '../components/ResumeDebugger';
-import WorkspaceSetup from '../components/WorkspaceSetup';
 import 'react-activity-calendar/tooltips.css';
 import './About.css';
 
@@ -120,8 +118,6 @@ const About = () => {
 
             <SkillsConstellation />
 
-            <ResumeDebugger />
-
             <section className="github-activity-section">
                 <h3 className="section-title">{t('about.githubTitle')} <span className="text-gradient">{t('about.githubActivity')}</span></h3>
                 <p className="section-subtitle">{t('about.githubSubtitle')}</p>
@@ -182,8 +178,6 @@ const About = () => {
                     />
                 </div>
             </section>
-
-            <WorkspaceSetup />
         </div>
     );
 };
