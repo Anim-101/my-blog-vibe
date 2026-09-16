@@ -24,14 +24,7 @@ const resources = {
                 "experience": "Experience",
                 "devBlog": "Dev Blog",
                 "photography": "Photography",
-                "memory": "Memory",
-                "designer": "Cloud Designer",
-                "agents": "Agent Sandbox",
-                "systems": "Systems Design",
-                "tools": "Tools",
-                "compiler": "Compiler",
-                "git": "Git Visualizer",
-                "apiClient": "API Client"
+                "memory": "Memory"
             },
             "home": {
                 "greeting": "Hi, I'm",
@@ -463,14 +456,7 @@ const resources = {
                 "experience": "経歴",
                 "devBlog": "開発ブログ",
                 "photography": "写真",
-                "memory": "メモリー",
-                "designer": "クラウド設計",
-                "agents": "AIエージェント",
-                "systems": "システム設計",
-                "tools": "ツール",
-                "compiler": "コンパイラ",
-                "git": "Gitビジュアライザ",
-                "apiClient": "APIクライアント"
+                "memory": "メモリー"
             },
             "home": {
                 "greeting": "こんにちは、",

@@ -41,45 +41,7 @@ Located in the **Experience** section, this is an interactive node-graph stream 
 
 ---
 
-## 🕹️ 4. Tools Workspace Dashboard (`/tools`)
-A unified developer workspace housing 5 custom-built sandboxes and utilities.
-
-### A. Cloud Infrastructure Designer (`/tools/designer`)
-A drag-and-drop system topology modeler.
-- **Visual Canvas**: Drag cloud nodes (EC2, S3, RDS, Route53, VPN Gateways, VMs, Azure SQL) onto a coordinate-based architecture board, wire connections, and configure properties.
-- **IaC Export Engine**: Generates production-ready Terraform scripts or Ansible configuration files dynamically matching the active canvas layout.
-- **Design Auditor**: Runs real-time safety checks warning users of unmapped load balancers, public databases, or open S3 buckets.
-- **Bill Estimator**: Calculates real AWS/Azure pricing metrics per hour/month.
-
-### B. Generative AI Agent Sandbox (`/tools/agents`)
-A tool to visualize agentic decision workflows.
-- **Workflow Node Builder**: Drag and drop LLM components, long-term memory buffers, and action tools (Web search, code execution).
-- **Reasoning Log Console**: Simulates multi-turn prompts showing prompt routing logs, thinking delays, tool calls, and final responses.
-- **Code Snippet Exporter**: Outputs configuration templates for Semantic Kernel and LangChain.
-
-### C. Multi-Language Code Compiler (`/tools/compiler`)
-An editor supporting 5 environments.
-- **Python Simulator**: Execute loops, Fibonacci recursions, and variables prints locally.
-- **JavaScript Sandboxed Shell**: Evaluate scripts against localized mock consoles.
-- **Web Live Preview (HTML/CSS)**: Render tags inside visual mock-browser iframes, complete with dynamic address bars.
-- **SQL Mock Engine**: Clean comment strings (`--`), create schemas, run `INSERT` statements, and render queries into grid-aligned table columns.
-- **Markdown Live Preview**: Parse bold tags, inline blocks, code blocks, lists, and header levels, rendering formatted pages inside active iframe panes.
-
-### D. Git Branching Sandbox (`/tools/git`)
-A graphical Git branch simulator.
-- **Graph Tree Vis**: Renders commits, branches, merges, detaches, and tags as dynamic visual canvas nodes.
-- **Git Console Shell**: Run commands (`git commit`, `git checkout`, `git branch`, `git merge`, `git rebase`) and watch the graph update.
-- **Branch Challenge Levels**: Renders puzzles (levels 1-5) where users must execute correct commands to match target graph trees.
-
-### E. REST API Client Simulator (`/tools/api`)
-A browser-based API testing utility (Postman emulator).
-- **Request Formatter**: Select HTTP verbs (GET, POST, PUT, DELETE, PATCH), build request header arrays, and modify JSON bodies.
-- **Latency & Size Metrics**: Computes round-trip response delays in ms and sizes in KB.
-- **Dynamic CORS Warning Intercepts**: Blocks network fetch errors with clean alert modals, offering users to simulate structured mock response values instead.
-
----
-
-## 📖 5. Developer Blog & Media Portfolios
+## 📖 4. Developer Blog & Media Portfolios
 - **DevBlog**: Pagination, keyword tags search (`Fuse.js` fuzzy matching), and parsing markdown templates.
 - **Photography Gallery**: Clean grid layouts loading structured imagery catalog files.
 - **3D Memory Immersive Space**: Dynamic physics-panning photogrid shifts driven by mouse movement or smartphone gyroscopes. Includes a floating glassmorphic lofi background ambient music controller widget playing curated YouTube tracks.
@@ -98,12 +60,7 @@ my-blog-vibe/
 │   │   ├── Home.jsx           # Retro CRT Shell Terminal sandbox
 │   │   ├── About.jsx          # Profile details & Holographic Credentials
 │   │   ├── Experience.jsx     # Streaming Pipeline simulator
-│   │   ├── Memory.jsx         # Immersive 3D Space & Music Player
-│   │   ├── Infrastructure.jsx # Cloud Designer grid canvas
-│   │   ├── Agents.jsx         # GenAI Agent assembler
-│   │   ├── Compiler.jsx       # Multi-language Online Compiler
-│   │   ├── GitVisualizer.jsx  # Git branching playground
-│   │   └── ApiClient.jsx      # REST API Client simulator
+│   │   └── Memory.jsx         # Immersive 3D Space & Music Player
 │   ├── tests/                 # Unit test coverage (Vitest + Testing Library)
 │   └── i18n.js                # Dual-language translations (EN/JA)
 ```

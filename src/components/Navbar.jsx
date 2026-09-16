@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Camera, Code, Briefcase, Home, Menu, X, User, Sun, Moon, Star, Cloud, Sparkles, Wrench } from 'lucide-react';
+import { Camera, Code, Briefcase, Home, Menu, X, User, Sun, Moon, Star } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { personalInfo } from '../data/personal';
@@ -45,7 +45,6 @@ const Navbar = () => {
     { name: t('nav.devBlog'), path: '/devblog', icon: <Code size={18} /> },
     { name: t('nav.photography'), path: '/photography', icon: <Camera size={18} /> },
     { name: t('nav.memory'), path: '/memory', icon: <Star size={18} /> },
-    { name: t('nav.tools'), path: '/tools', icon: <Wrench size={18} /> },
   ];
 
   const firstName = personalInfo.name.split(' ')[0];
@@ -81,7 +80,7 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="nav-links">
           {navLinks.map((link) => {
-            const isActive = location.pathname === link.path || (link.path === '/tools' && location.pathname.startsWith('/tools'));
+            const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
@@ -125,7 +124,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         {navLinks.map((link) => {
-          const isActive = location.pathname === link.path || (link.path === '/tools' && location.pathname.startsWith('/tools'));
+          const isActive = location.pathname === link.path;
           return (
             <Link
               key={link.path}
