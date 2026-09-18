@@ -60,6 +60,36 @@ const resources = {
                     "verify": "Verify Badge"
                 },
                 "certificationsList": {
+                    "claude_code": {
+                        "name": "Anthropic: Claude Code 101",
+                        "score": "Passed",
+                        "skills": {
+                            "0": "Claude Code CLI",
+                            "1": "Agentic Workflows",
+                            "2": "Automated Refactoring",
+                            "3": "AI Pair Programming"
+                        }
+                    },
+                    "claude_101": {
+                        "name": "Anthropic: Claude 101",
+                        "score": "Passed",
+                        "skills": {
+                            "0": "Prompt Engineering",
+                            "1": "Context Optimization",
+                            "2": "System Directives",
+                            "3": "LLM Architectures"
+                        }
+                    },
+                    "agent_skills": {
+                        "name": "Anthropic: Introduction to Agent Skills",
+                        "score": "Passed",
+                        "skills": {
+                            "0": "Agentic Tools Design",
+                            "1": "Autonomous Execution",
+                            "2": "Tool Protocol Specs",
+                            "3": "Multi-Agent Coordination"
+                        }
+                    },
                     "rhce": {
                         "name": "Red Hat Certified Engineer (RHCE)",
                         "score": "300/300 (Perfect Score)",
@@ -368,6 +398,36 @@ const resources = {
                     "verify": "資格を検証する"
                 },
                 "certificationsList": {
+                    "claude_code": {
+                        "name": "Anthropic: Claude Code 101",
+                        "score": "合格",
+                        "skills": {
+                            "0": "Claude Code CLI",
+                            "1": "エージェント型ワークフロー",
+                            "2": "自動コードリファクタリング",
+                            "3": "AIペアプログラミング"
+                        }
+                    },
+                    "claude_101": {
+                        "name": "Anthropic: Claude 101",
+                        "score": "合格",
+                        "skills": {
+                            "0": "プロンプトエンジニアリング",
+                            "1": "コンテキスト最適化",
+                            "2": "システムディレクティブ",
+                            "3": "LLMアーキテクチャ"
+                        }
+                    },
+                    "agent_skills": {
+                        "name": "Anthropic: Introduction to Agent Skills",
+                        "score": "合格",
+                        "skills": {
+                            "0": "エージェントツール設計",
+                            "1": "自律実行制御",
+                            "2": "ツールプロトコル仕様",
+                            "3": "マルチエージェント連携"
+                        }
+                    },
                     "rhce": {
                         "name": "Red Hat 認定エンジニア (RHCE)",
                         "score": "300/300 (満点)",

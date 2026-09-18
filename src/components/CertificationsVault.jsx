@@ -5,6 +5,14 @@ import './CertificationsVault.css';
 
 const getBrandIcon = (id) => {
     switch (id) {
+        case 'claude_code':
+        case 'claude_101':
+        case 'agent_skills':
+            return (
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2L14.8 8.6L22 9.5L16.5 14.2L18.2 21.3L12 17.5L5.8 21.3L7.5 14.2L2 9.5L9.2 8.6L12 2Z" />
+                </svg>
+            );
         case 'rhce':
         case 'rhcsa':
             return (
@@ -43,12 +51,20 @@ const getBrandIcon = (id) => {
     }
 };
 
+const getIssuerName = (id) => {
+    if (id.startsWith('claude') || id === 'agent_skills') return 'Anthropic';
+    if (id.startsWith('azure')) return 'Microsoft';
+    if (id === 'aws') return 'AWS';
+    if (id.startsWith('rh')) return 'Red Hat';
+    if (id === 'jlpt') return 'JLPT';
+    return 'Certification';
+};
+
 const CertificationsVault = () => {
     const { t } = useTranslation();
     const [flippedCards, setFlippedCards] = useState({});
 
     const handleMouseMove = (e, id) => {
-        // Only run coordinates calculation on pointer devices with hover support
         if (window.matchMedia('(hover: none)').matches) return;
         if (flippedCards[id]) return;
 
@@ -120,9 +136,10 @@ const CertificationsVault = () => {
             <div className="cert-grid">
                 {personalInfo.certifications?.map((cert) => {
                     const isCardFlipped = !!flippedCards[cert.id];
-                    const certName = t(`about.certificationsList.${cert.id}.name`);
-                    const certScore = t(`about.certificationsList.${cert.id}.score`);
-                    
+                    const certName = t(`about.certificationsList.${cert.id}.name`, { defaultValue: cert.name });
+                    const certScore = t(`about.certificationsList.${cert.id}.score`, { defaultValue: cert.score });
+                    const issuer = getIssuerName(cert.id);
+
                     return (
                         <div
                             key={cert.id}
@@ -144,9 +161,7 @@ const CertificationsVault = () => {
                                         {getBrandIcon(cert.id)}
                                     </div>
                                     <div className="cert-title-container">
-                                        <span className="cert-issuer">
-                                            {cert.id.startsWith('azure') ? 'Microsoft' : cert.id === 'aws' ? 'AWS' : cert.id.startsWith('rh') ? 'Red Hat' : 'JLPT'}
-                                        </span>
+                                        <span className="cert-issuer">{issuer}</span>
                                         <h4 className="cert-name">{certName}</h4>
                                     </div>
                                     <div className="cert-flip-prompt">
@@ -161,9 +176,7 @@ const CertificationsVault = () => {
                                 <div className="cert-card-back">
                                     <div className="cert-back-header">
                                         <h4 className="cert-back-title">{certName}</h4>
-                                        <span className="cert-back-issuer">
-                                            {cert.id.startsWith('azure') ? 'Microsoft' : cert.id === 'aws' ? 'AWS' : cert.id.startsWith('rh') ? 'Red Hat' : 'JLPT'}
-                                        </span>
+                                        <span className="cert-back-issuer">{issuer}</span>
                                     </div>
 
                                     <div className="cert-details-list">
@@ -182,8 +195,8 @@ const CertificationsVault = () => {
                                         <div className="cert-detail-item skills-item">
                                             <span className="detail-label">{t('about.certVault.skills')}</span>
                                             <div className="cert-skills-tags">
-                                                {cert.skills.map((_, index) => {
-                                                    const skillName = t(`about.certificationsList.${cert.id}.skills.${index}`);
+                                                {cert.skills.map((skill, index) => {
+                                                    const skillName = t(`about.certificationsList.${cert.id}.skills.${index}`, { defaultValue: skill });
                                                     return (
                                                         <span key={index} className="skill-tag">
                                                             {skillName}
