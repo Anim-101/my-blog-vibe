@@ -1,8 +1,38 @@
 export const personalInfo = {
     name: "Anim Akash",
     role: "Team Lead (Consultant) - Full-Stack Development",
-    bio: "Hello! I am Anim Akash, a Consultant and Full-Stack Software Engineer currently based in Tokyo, Japan. With a background extending from deep infrastructure and data engineering to crafting modern frontend experiences, I specialize in architecting resilient, full-stack systems that thrive at scale. I recently joined Avanade, where I build robust data pipelines and cloud applications. Previously, I spent several years at Business Architects Inc. designing critical infrastructure and leading frontend development teams. Beyond traditional web development, I am deeply invested in the intersection of Software Engineering and Artificial Intelligence, frequently exploring AI agents, Semantic Kernel, and advanced architectures.",
+    bio: "Hello! I am Anim Akash, a Consultant and Full-Stack Software Engineer currently based in Tokyo, Japan. With a background extending from deep cloud infrastructure and legacy Unisys mainframe modernization to crafting modern full-stack applications, I specialize in architecting resilient systems at scale. Currently at Avanade Japan, I lead mainframe modernization software engineering and core data pipeline architectures. Previously, I spent several years at Business Architects Inc. designing critical AWS infrastructure, leading engineering teams, and building SaaS platforms. Beyond traditional development, I actively explore Agentic AI architectures, LLM tooling, and cloud automation.",
     certifications: [
+        {
+            id: 'claude_code',
+            name: 'Anthropic: Claude Code 101',
+            score: 'Passed',
+            date: 'Jun 2026',
+            certId: 'i4e7owvqo5um',
+            verifyUrl: 'https://www.anthropic.com',
+            skills: ['Claude Code CLI', 'Agentic Workflows', 'Automated Refactoring', 'AI Pair Programming'],
+            color: '#d97706' // Amber / Anthropic Gold
+        },
+        {
+            id: 'claude_101',
+            name: 'Anthropic: Claude 101',
+            score: 'Passed',
+            date: 'Apr 2026',
+            certId: 'w9e6psj2vq5r',
+            verifyUrl: 'https://www.anthropic.com',
+            skills: ['Prompt Engineering', 'Context Optimization', 'System Directives', 'LLM Architectures'],
+            color: '#b45309' // Dark Amber
+        },
+        {
+            id: 'agent_skills',
+            name: 'Anthropic: Introduction to Agent Skills',
+            score: 'Passed',
+            date: 'Mar 2026',
+            certId: '4co72t6vw2nk',
+            verifyUrl: 'https://www.anthropic.com',
+            skills: ['Agentic Tools Design', 'Autonomous Execution', 'Tool Protocol Specs', 'Multi-Agent Coordination'],
+            color: '#92400e' // Bronze
+        },
         {
             id: 'rhce',
             name: 'Red Hat Certified Engineer (RHCE)',
@@ -65,11 +95,11 @@ export const personalInfo = {
         }
     ],
     expertise: [
-        "Full-Stack Web Development",
-        "Data Engineering & Cloud (AWS)",
-        "AI Agents (SemanticKernel, AutoGen)",
-        "OS Development",
-        "Blockchain Development"
+        "Mainframe Modernization (Unisys AMT)",
+        "Full-Stack Software Engineering (React, C#, Python, Django)",
+        "Data Engineering & Data Pipelines (Azure, AWS)",
+        "DevOps & Infrastructure Automation (Terraform, Ansible, Linux AL2/AL3)",
+        "Agentic AI Systems (Anthropic Claude, Semantic Kernel)"
     ],
     socialLinks: {
         github: "https://github.com/Anim-101",
@@ -84,39 +114,39 @@ export const experiences = [
         role: "Team Lead (Consultant) - Full-Stack Development",
         company: "Avanade",
         period: "Mar 2025 - Present",
-        description: "Full Stack Engineer for an LNG-related trading system at a major gas production company. Responsible for designing core data pipelines and data ingestion workflows. Led the design and implementation of integration, system, and regression testing to ensure high-quality and reliable application performance. Application Developer (Cloud) for a system related to Microsoft AI Lab Kobe and Kawasaki Heavy Industries' robotic arms. Led the migration and transfer of the entire system from one Azure tenant to another. Served as a sub-team lead, leading a team in daily and monthly operations and maintenance for a supply chain system at an electricity and energy company.",
-        technologies: ["Data Engineering", "Cloud Systems", "Microservices"]
+        description: "AMT Mainframe Migration Software Engineer on a high-impact modernization project for a major Japanese enterprise client, migrating legacy Unisys mainframe architectures to open cloud environments ahead of end-of-support deadlines while collaborating across global delivery teams (Netherlands, England, Japan). Full-Stack Engineer for an LNG trading system at a major gas producer, designing core data ingestion workflows and leading integration, system, and regression testing. Led a complete Azure tenant-to-tenant cloud migration for Microsoft AI Lab Kobe and Kawasaki Heavy Industries' robotic arm systems. Sub-Team Lead for daily/monthly O&M operations of a major utility supply chain platform.",
+        technologies: ["Unisys AMT Modernization", "C#", "Python", "Azure", "AWS", "Terraform", "Data Pipelines"]
     },
     {
         id: 1,
-        role: "System Engineer",
+        role: "System Engineer (Infrastructure & Backend)",
         company: "Business Architects Inc.",
         period: "Apr 2022 - Feb 2025",
-        description: "Infrastructure & Backend Engineer contributing to the renewal of the main website for multiple customers. Designed and led infrastructure renewal for a shopping mall system, including stress testing to ensure system reliability. Served as Team Lead for frontend engineers on the renewal of a security service website. Acted as Sub-Team Lead for frontend engineers on the renewal of a financial service website. Contributed as a Frontend Engineer to the renewal of a banking service website. Provided operations and maintenance support for an advertising platform of a Japanese railway system, including upgrading the kernel from Amazon Linux 2 to Amazon Linux 3, and managed monthly maintenance and system monitoring.",
-        technologies: ["AWS", "Infrastructure", "Backend", "Frontend", "Linux"]
+        description: "Infrastructure & Backend Engineering Lead contributing to web portal renewals across multiple enterprise clients. Designed and implemented infrastructure renewals and automated load/stress testing for a major shopping mall system. Served as Frontend Engineering Team Lead for a security service portal renewal, Sub-Team Lead for a financial service website renewal, and core Frontend Engineer for a banking platform renewal. Managed operations, monthly maintenance, and Amazon Linux 2 to Amazon Linux 3 OS kernel upgrades for a Japanese railway system advertising platform.",
+        technologies: ["React.js", "MySQL", "AWS", "Infrastructure Design", "Linux (AL2/AL3)", "Load Testing"]
     },
     {
         id: 2,
         role: "Freelance Software Engineer",
         company: "Business Architects Inc.",
         period: "Oct 2020 - Mar 2022",
-        description: "Backend and Infrastructure Engineer. Served as the primary backend engineer for an in-house SaaS system. Developed a custom admin interaction system and a custom comment and role-based interaction system. Deployed, managed, and maintained infrastructure on AWS. Participated in the full lifecycle, from requirements definition through development, and continued to manage and maintain the system post-production.",
-        technologies: ["Node.js", "SaaS Architecture", "AWS", "Backend Design"]
+        description: "Primary Backend and Infrastructure Engineer for an in-house SaaS platform. Designed custom administrative interaction systems, role-based comment engines, and security access controls. Deployed, configured, and maintained production cloud infrastructure on AWS across the entire SDLC from requirements definition to post-launch maintenance.",
+        technologies: ["Python", "Django REST Framework", "Node.js", "AWS", "Database Design", "SaaS Architecture"]
     },
     {
         id: 3,
         role: "Trainee",
         company: "Japan International Cooperation Agency (JICA)",
         period: "Feb 2020 - Aug 2020",
-        description: "Engaged in learning Japanese business manners and language through collaboration with experienced linguists.",
-        technologies: ["Japanese Language", "Business Culture Adaptation"]
+        description: "Completed intensive training in Japanese business manners, corporate culture, and language communication through direct collaboration with experienced linguists.",
+        technologies: ["Japanese Business Etiquette", "Corporate Communication", "JLPT N2 Preparation"]
     },
     {
         id: 4,
         role: "Teaching Assistant",
         company: "American International University-Bangladesh",
         period: "Mar 2018 - Apr 2018",
-        description: "Assisted in teaching a computer graphics lab course focused on OpenGL, enhancing students' technical skills.",
-        technologies: ["OpenGL", "Computer Graphics", "Mentoring"]
+        description: "Assisted in teaching an undergraduate Computer Graphics laboratory course centered on OpenGL, C, and C++, assisting students with 3D rendering algorithms and laboratory assignments.",
+        technologies: ["OpenGL", "C++", "C", "Computer Graphics", "Mentoring"]
     }
 ];

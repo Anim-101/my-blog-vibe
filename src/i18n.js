@@ -124,115 +124,11 @@ const resources = {
                 "journey": "Journey",
                 "subtitle": "The path that brought me here.",
                 "roles": {
-                    "0": { "role": "Team Lead (Consultant) - Full-Stack Development", "company": "Avanade", "description": "Full Stack Engineer for an LNG-related trading system at a major gas production company. Responsible for designing core data pipelines and data ingestion workflows. Led the design and implementation of integration, system, and regression testing to ensure high-quality and reliable application performance. Application Developer (Cloud) for a system related to Microsoft AI Lab Kobe and Kawasaki Heavy Industries' robotic arms. Led the migration and transfer of the entire system from one Azure tenant to another. Served as a sub-team lead, leading a team in daily and monthly operations and maintenance for a supply chain system at an electricity and energy company." },
-                    "1": { "role": "System Engineer", "company": "Business Architects Inc.", "description": "Infrastructure & Backend Engineer contributing to the renewal of the main website for multiple customers. Designed and led infrastructure renewal for a shopping mall system, including stress testing to ensure system reliability. Served as Team Lead for frontend engineers on the renewal of a security service website. Acted as Sub-Team Lead for frontend engineers on the renewal of a financial service website. Contributed as a Frontend Engineer to the renewal of a banking service website. Provided operations and maintenance support for an advertising platform of a Japanese railway system, including upgrading the kernel from Amazon Linux 2 to Amazon Linux 3, and managed monthly maintenance and system monitoring." },
-                    "2": { "role": "Freelance Software Engineer", "company": "Business Architects Inc.", "description": "Backend and Infrastructure Engineer. Served as the primary backend engineer for an in-house SaaS system. Developed a custom admin interaction system and a custom comment and role-based interaction system. Deployed, managed, and maintained infrastructure on AWS. Participated in the full lifecycle, from requirements definition through development, and continued to manage and maintain the system post-production." },
-                    "3": { "role": "Trainee", "company": "Japan International Cooperation Agency (JICA)", "description": "Engaged in learning Japanese business manners and language through collaboration with experienced linguists." },
-                    "4": { "role": "Teaching Assistant", "company": "American International University-Bangladesh", "description": "Assisted in teaching a computer graphics lab course focused on OpenGL, enhancing students' technical skills." }
-                },
-                "pipeline": {
-                    "title": "Data Engineering",
-                    "subtitle": "Interactive Data Pipeline Simulator",
-                    "desc": "Simulate high-throughput cloud ingestion, validation, transformation, and storage systems modeled after Anim's enterprise architecture experience.",
-                    "controls": {
-                        "title": "Pipeline Controls",
-                        "start": "Resume Stream",
-                        "pause": "Pause Stream",
-                        "speed": "Ingestion Rate (msg/s)",
-                        "errorRate": "Error Rate (%)",
-                        "injectSchema": "Inject Schema Error",
-                        "injectTimeout": "Inject Timeout Error",
-                        "injectDedup": "Inject Dedup Spike",
-                        "clearTerminal": "Clear Console Logs"
-                    },
-                    "metrics": {
-                        "title": "Live Pipeline Metrics",
-                        "ingested": "Ingested",
-                        "processed": "Processed",
-                        "success": "Success Rate",
-                        "latency": "Avg Latency",
-                        "dlq": "DLQ Failures",
-                        "backpressure": "System Backpressure"
-                    },
-                    "nodeDetail": {
-                        "title": "Component Diagnostics",
-                        "selectNode": "Click any pipeline node to inspect technical specs, code highlights, and Anim's real-world implementation history.",
-                        "techSpecs": "Technical Diagnostics",
-                        "animExp": "Anim's Project Implementation"
-                    },
-                    "stages": {
-                        "ingestion": "Ingestion",
-                        "validation": "Validation",
-                        "transformation": "Transformation",
-                        "storage": "Storage"
-                    },
-                    "nodes": {
-                        "iot": {
-                            "name": "LNG Transaction Feed",
-                            "tech": "Simulates real-time ingestion of trade deal bookings, cargo schedules, and financial transactions from global trading desks.",
-                            "animExp": "At Avanade, Anim designed core data pipelines and ingestion workflows to handle transaction and supply chain data streams for an LNG trading system."
-                        },
-                        "api": {
-                            "name": "Supply Chain API Gateway",
-                            "tech": "Ingests secure HTTP Webhook payloads containing logistics, scheduling, and power grid status updates for utility supply chains.",
-                            "animExp": "Anim developed API configurations and backend endpoints at Business Architects Inc. to support secure, high-traffic website renewals for e-commerce and banking clients."
-                        },
-                        "cdc": {
-                            "name": "Transactional DB CDC",
-                            "tech": "Log-based Change Data Capture parsing transactional commits from Postgres or SQL Server database logs to sync trading registries.",
-                            "animExp": "Anim managed database migrations and state replication. He notably led a full system and database tenant migration on Azure for a robotic systems client at Avanade."
-                        },
-                        "schema": {
-                            "name": "Schema Registry",
-                            "tech": "Validates message payload schemas against strict Apache Avro declarations. Bad JSON is instantly flagged.",
-                            "animExp": "To maintain data integrity, Anim led the design of integration and regression testing suites at Avanade to validate data schemas and application performance."
-                        },
-                        "dedup": {
-                            "name": "Deduplicator",
-                            "tech": "Filters duplicate message IDs using a sliding-window cache in a high-speed Redis cluster.",
-                            "animExp": "Anim designed custom role-based permission and deduplication logics in in-house SaaS applications during his freelance tenure."
-                        },
-                        "compliance": {
-                            "name": "Compliance Guard",
-                            "tech": "Inspects text fields for PII (Personally Identifiable Information) and masks values before cloud ingestion.",
-                            "animExp": "He led frontend and backend engineering teams renewing financial and security service systems, ensuring strict security and compliance standards."
-                        },
-                        "joiner": {
-                            "name": "Streaming Joiner",
-                            "tech": "Enriches real-time transaction event streams by joining them with static dimensional database caches.",
-                            "animExp": "Anim designed trading pipeline enrichment steps for a major gas production client, joining trade transaction feeds with static reference data."
-                        },
-                        "aggregator": {
-                            "name": "Aggregator",
-                            "tech": "Groups metrics into 1-minute tumbling windows to calculate rolling averages, sums, and traffic peaks.",
-                            "animExp": "He supervised the maintenance and calculation of daily/monthly aggregation metrics for supply chain systems at a power and energy utility."
-                        },
-                        "anomaly": {
-                            "name": "Anomaly Detector",
-                            "tech": "Uses statistical analysis (z-scores) on stream inputs to detect spikes or unexpected data drops.",
-                            "animExp": "Anim set up monitoring dashboards, logs, and alerts for e-commerce and advertising platforms to detect system anomalies and performance drops."
-                        },
-                        "datalake": {
-                            "name": "S3 Data Lake",
-                            "tech": "Compacts raw messages into compressed Apache Parquet formats, saving them in AWS S3 partitions.",
-                            "animExp": "Anim deployed, managed, and maintained scalable cloud storage and hosting infrastructures on AWS for customer platforms."
-                        },
-                        "snowflake": {
-                            "name": "Snowflake DW",
-                            "tech": "Loads cleansed events into analytics tables for business intelligence, reporting, and dashboard querying.",
-                            "animExp": "At Avanade, he integrated data warehouses and structured schemas to generate energy trading reports for business analysis."
-                        },
-                        "cache": {
-                            "name": "PostgreSQL Cache",
-                            "tech": "Hot database replica maintaining the latest system state, powering web app dashboards and real-time APIs.",
-                            "animExp": "He optimized database performance, upgraded OS kernels (Amazon Linux 2 to 3), and performed extensive stress testing to guarantee cache reliability."
-                        },
-                        "dlq": {
-                            "name": "Dead Letter Queue",
-                            "tech": "Quarantines bad, malformed, or timed-out events. Holds them for manual inspection and re-driving.",
-                            "animExp": "Anim led O&M engineering teams, designing retry rules and error handlers to capture processing failures and notify maintenance teams."
-                        }
-                    }
+                    "0": { "role": "Team Lead (Consultant) - Full-Stack Development", "company": "Avanade", "description": "AMT Mainframe Migration Software Engineer on a high-impact modernization project for a major Japanese enterprise client, migrating legacy Unisys mainframe architectures to open cloud environments ahead of end-of-support deadlines while collaborating across global delivery teams (Netherlands, England, Japan). Full-Stack Engineer for an LNG trading system at a major gas producer, designing core data ingestion workflows and leading integration, system, and regression testing. Led a complete Azure tenant-to-tenant cloud migration for Microsoft AI Lab Kobe and Kawasaki Heavy Industries' robotic arm systems. Sub-Team Lead for daily/monthly O&M operations of a major utility supply chain platform." },
+                    "1": { "role": "System Engineer (Infrastructure & Backend)", "company": "Business Architects Inc.", "description": "Infrastructure & Backend Engineering Lead contributing to web portal renewals across multiple enterprise clients. Designed and implemented infrastructure renewals and automated load/stress testing for a major shopping mall system. Served as Frontend Engineering Team Lead for a security service portal renewal, Sub-Team Lead for a financial service website renewal, and core Frontend Engineer for a banking platform renewal. Managed operations, monthly maintenance, and Amazon Linux 2 to Amazon Linux 3 OS kernel upgrades for a Japanese railway system advertising platform." },
+                    "2": { "role": "Freelance Software Engineer", "company": "Business Architects Inc.", "description": "Primary Backend and Infrastructure Engineer for an in-house SaaS platform. Designed custom administrative interaction systems, role-based comment engines, and security access controls. Deployed, configured, and maintained production cloud infrastructure on AWS across the entire SDLC from requirements definition to post-launch maintenance." },
+                    "3": { "role": "Trainee", "company": "Japan International Cooperation Agency (JICA)", "description": "Completed intensive training in Japanese business manners, corporate culture, and language communication through direct collaboration with experienced linguists." },
+                    "4": { "role": "Teaching Assistant", "company": "American International University-Bangladesh", "description": "Assisted in teaching an undergraduate Computer Graphics laboratory course centered on OpenGL, C, and C++, assisting students with 3D rendering algorithms and laboratory assignments." }
                 }
             },
             "devblog": {
@@ -536,13 +432,6 @@ const resources = {
                 "journey": "道のり",
                 "subtitle": "私がここに至るまでの歩み",
                 "roles": {
-                    "0": { "role": "チームリード（コンサルタント）- フルスタック開発", "company": "Avanade", "description": "大手ガス生産会社におけるLNG関連トレーディングシステムのフルスタックエンジニア。コアデータパイプラインおよびデータ取り込みワークフローの設計を担当。高品質で信頼性の高いアプリケーションパフォーマンスを保証するため、統合・システム・回帰テストの設計と実装を主導。Microsoft AI Lab神戸および川崎重工業のロボットアーム関連システムのアプリケーションデベロッパー（クラウド）。システム全体をあるAzureテナントから別のテナントへ移行・転送する作業を主導。電力・エネルギー会社のサプライチェーンシステムにおける日次・月次の運用保守チームのサブチームリードとして従事。" },
-                    "1": { "role": "システムエンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "複数顧客向けの本サイトリニューアルにおけるインフラおよびバックエンドエンジニア。ショッピングモールシステムのインフラリニューアルの設計およびシステム信頼性確保のための負荷テストを主導。セキュリティサービスサイトリニューアルにおけるフロントエンドエンジニアのチームリードを担当。金融サービスサイトリニューアルにおけるフロントエンドエンジニアのサブチームリードとして従事。銀行サービスサイトリニューアルにフロントエンドエンジニアとして貢献。日本の鉄道会社の広告プラットフォームの運用保守サポートを担当し、Amazon Linux 2からAmazon Linux 3へのカーネルアップグレード、月次メンテナンス、およびシステム監視を管理。" },
-                    "2": { "role": "フリーランス ソフトウェア エンジニア", "company": "株式会社ビジネス・アーキテクツ", "description": "バックエンドおよびインフラエンジニア。社内SaaSシステムのメインバックエンドエンジニアとして従事。カスタム管理画面連携システムやコメント・ロールベースの連携システムを開発。AWS上のインフラストラクチャのデプロイ、管理、保守。要件定義から開発までのフルライフサイクルに参画し、本番移行後のシステム管理・保守を継続。" },
-                    "3": { "role": "研修生", "company": "独立行政法人国際協力機構（JICA）", "description": "熟練の言語専門家との直接的な協働を通じて、日本のビジネス・マナーと語学の学習に従事。" },
-                    "4": { "role": "ティーチング・アシスタント", "company": "アメリカン・インターナショナル・ユニバーシティー・バングラデシュ", "description": "OpenGLに特化したコンピュータ・グラフィックス実験講座の教育補助を行い、参加学生の技術的基礎力の向上に積極的に貢献。" }
-                },
-                "pipeline": {
                     "title": "データエンジニアリング",
                     "subtitle": "インタラクティブ・データパイプライン・シミュレーター",
                     "desc": "アニムのエンタープライズアーキテクチャ設計の経験をモデルにした、高速なデータ取り込み、検証、変換、ストレージシステムのシミュレーションです。",
